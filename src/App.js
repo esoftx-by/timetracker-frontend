@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import {Routes, Route} from "react-router-dom";
+import AuthPage from "./pages/authPage";
+import MainPage from "./pages/mainPage";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const isAuthenticated = true
+
+    return (
+        <div className="App">
+            <Routes>
+                <Route path={'/*'} element={<AuthPage isAuthenticated={isAuthenticated}/>}/>
+                {isAuthenticated &&
+                    <Route exact path={'/mainPage'} element={<MainPage/>}/>
+                }
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
