@@ -1,21 +1,15 @@
 import React from 'react'
-import {Routes, Route} from "react-router-dom";
-import AuthPage from "./pages/authPage";
-import MainPage from "./pages/mainPage";
+import {useRoutes} from "./utilities/routes";
 
 
 function App() {
 
     const isAuthenticated = true
+    const routes = useRoutes(isAuthenticated)
 
     return (
         <div className="App">
-            <Routes>
-                <Route path={'/*'} element={<AuthPage isAuthenticated={isAuthenticated}/>}/>
-                {isAuthenticated &&
-                    <Route exact path={'/mainPage'} element={<MainPage/>}/>
-                }
-            </Routes>
+            {routes}
         </div>
     );
 }

@@ -134,7 +134,7 @@ const RegistrationForm = () => {
                         </Button>
                     </Box>
                 </CardContent>
-                <div className="login__registration">
+                <div className="registration__registration">
                     <NavLink to='/login'>Sign In</NavLink>
                 </div>
             </Card>
