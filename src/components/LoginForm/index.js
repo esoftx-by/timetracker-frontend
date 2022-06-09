@@ -91,7 +91,7 @@ const LoginForm = () => {
                     </Box>
                 </CardContent>
                 <div className="login__registration">
-                    <NavLink to='/registation'>Sign Up</NavLink>
+                    <NavLink to='/registration'>Sign Up</NavLink>
                 </div>
             </Card>
         </div>
