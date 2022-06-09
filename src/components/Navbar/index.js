@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import {NavLink} from "react-router-dom";
+import style from './Navbar.module.css'
 
 const pages = ['test1', 'test2', 'test3'];
 const settings = ['Logout'];
@@ -55,7 +56,7 @@ const ResponsiveAppBar = () => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/'}>
+                        <NavLink to={'/'} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -116,7 +117,7 @@ const ResponsiveAppBar = () => {
                     </Typography>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
-                            <NavLink to={page}>
+                            <NavLink to={page} className={style.nav}>
                                 <Button
                                     key={page}
                                     onClick={handleCloseNavMenu}
