@@ -5,42 +5,35 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import {Grid} from "@mui/material";
 
-const bull = (
-    <Box
-        component="span"
-        sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-        •
-    </Box>
-);
 
-const card = (
-    <React.Fragment>
-        <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                Task 1
-            </Typography>
-            <Typography variant="h5" component="div">
-                Fixed bag
-            </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                Project
-            </Typography>
-            <Typography variant="body2">
-                Description task
-            </Typography>
-        </CardContent>
-        <CardActions>
-            <Button size="small">Learn More</Button>
-        </CardActions>
-    </React.Fragment>
-);
-
-export default function OutlinedCard() {
+export default function OutlinedCard({data}) {
     return (
-        <Box sx={{ maxWidth: 500 }}>
-            <Card variant="outlined">{card}</Card>
-        </Box>
+        <Grid item xs={12} md={4}>
+            <Box sx={{maxWidth: 500}}>
+                <Card variant="outlined">
+                    <React.Fragment>
+                        <CardContent>
+                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                                task: {data.taskNumber}
+                            </Typography>
+                            <Typography variant="h5" component="div">
+                                {data.taskName}
+                            </Typography>
+                            <Typography sx={{mb: 1.5}} color="text.secondary">
+                                {data.projectName}
+                            </Typography>
+                            <Typography variant="body2">
+                                {data.description}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Button size="small">Learn More</Button>
+                        </CardActions>
+                    </React.Fragment>
+                </Card>
+            </Box>
+        </Grid>
     );
 }
