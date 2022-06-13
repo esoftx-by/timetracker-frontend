@@ -6,6 +6,7 @@ import RegistrationForm from "../components/RegistrationForm";
 import {Container} from "@mui/material";
 import Projects from "../pages/projects/projects";
 import ResponsiveAppBar from "../components/Navbar";
+import Project from "../pages/project";
 
 export const useRoutes = isAuthenticated => {
     if (isAuthenticated) {
@@ -15,7 +16,8 @@ export const useRoutes = isAuthenticated => {
                 <Routes>
                     <Route exact path={'/login'} element={<Navigate to={'/'}/>}/>
                     <Route exact path={'/*'} element={<MainPage/>}/>
-                    <Route exact path={'/projects'} element={<Projects/>}/>
+                    <Route exact path={'/projects/'} element={<Projects/>}/>
+                    <Route exact path={'/projects/:id'} element={<Project/>}/>
                 </Routes>
             </>
         )

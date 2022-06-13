@@ -16,5 +16,11 @@ export const ProjectAPI = {
             .then(response => {
                 return response
             })
+    },
+    getProjectId(id){
+        return instance.get(`projects/${id}`)
+            .then(response => {
+                return response
+            })
     }
 }
