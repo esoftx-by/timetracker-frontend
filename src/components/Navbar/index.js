@@ -15,7 +15,8 @@ import AvTimerIcon from '@mui/icons-material/AvTimer';
 import {NavLink} from "react-router-dom";
 import style from './Navbar.module.css'
 
-const pages = ['test1', 'test2', 'test3'];
+
+const pages = ['projects'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = () => {
@@ -128,7 +129,6 @@ const ResponsiveAppBar = () => {
                             </NavLink>
                         ))}
                     </Box>
-
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
