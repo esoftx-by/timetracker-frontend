@@ -8,9 +8,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from "@mui/material/Box";
 import style from './NewTask.module.css'
-import axios from "axios";
 
-export default function FormDialog() {
+export default function FormDialog(props) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -33,11 +32,7 @@ export default function FormDialog() {
 
 
     const handleSubmit = async () => {
-        try {
-            await axios.post('http://localhost:8080/api/projects/', {...values})
-        } catch (e){
-            console.log(e.message);
-        }
+        props.setNewProjectThunk(values.name, values.description, values.customer)
         setOpen(false)
     }
 
