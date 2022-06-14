@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import './Login.scss'
@@ -15,15 +15,21 @@ import {
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
 import {NavLink} from "react-router-dom";
+import {AuthContext} from "../../context/AuthContext";
+import {AuthAPI} from "../../API/api";
+import {connect} from "react-redux";
+import {setUser} from "../../redux/reducers/authReducer";
 
 
-const LoginForm = () => {
+const LoginForm = (props) => {
 
     const [values, setValues] = React.useState({
-        name: '',
+        email: '',
         password: '',
         showPassword: false,
     });
+
+    const auth = useContext(AuthContext)
 
     const handleChange = (prop) => (event) => {
         setValues({...values, [prop]: event.target.value});
@@ -40,8 +46,17 @@ const LoginForm = () => {
         event.preventDefault();
     };
 
-    const handleSubmit = () => {
-        console.log(values)
+    const handleSubmit = (event) => {
+        try {
+            AuthAPI.auth(values.email, values.password)
+                .then(response => {
+                    debugger
+                    auth.login(response.data.token, response.data.user.id)
+                    props.setUser(response.data.user)
+                })
+        } catch (e){
+
+        }
     }
 
     return (
@@ -60,8 +75,8 @@ const LoginForm = () => {
                         <TextField
                             id="outlined-name"
                             label="Name"
-                            value={values.name}
-                            onChange={handleChange('name')}
+                            value={values.email}
+                            onChange={handleChange('email')}
                         />
                         <FormControl variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -98,4 +113,8 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+let mapStateToProps = (state) => ({
+
+})
+
+export default connect(mapStateToProps, {setUser})(LoginForm)
