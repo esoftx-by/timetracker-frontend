@@ -8,7 +8,8 @@ import Projects from "../pages/projects/projects";
 import ResponsiveAppBar from "../components/Navbar";
 import Project from "../pages/project";
 
-export const useRoutes = isAuthenticated => {
+
+export const useRoutes = (isAuthenticated) => {
     if (isAuthenticated) {
         return (
             <>
@@ -19,16 +20,18 @@ export const useRoutes = isAuthenticated => {
                     <Route exact path={'/projects/'} element={<Projects/>}/>
                     <Route exact path={'/projects/:id'} element={<Project/>}/>
                 </Routes>
+                {/*<SpeedDialTooltipOpen/>*/}
             </>
         )
     }
     return (
-        <Container maxWidth="sm">
-            <Routes>
-                <Route exact path="/*" element={<Navigate to={'/login'} replace/>}/>
-                <Route exact path="/login" element={<LoginForm/>}/>
-                <Route exact path="/registration" element={<RegistrationForm/>}/>
-            </Routes>
-        </Container>
-    )
+            <Container maxWidth="sm">
+                <Routes>
+                    <Route exact path="/" element={<Navigate to={'/login'} replace/>}/>
+                    <Route exact path="/login" element={<LoginForm/>}/>
+                    <Route exact path="/registration" element={<RegistrationForm/>}/>
+                </Routes>
+            </Container>
+        )
+
 }

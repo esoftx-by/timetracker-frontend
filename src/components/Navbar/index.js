@@ -12,14 +12,16 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
+import {useContext} from "react";
+import {AuthContext} from "../../context/AuthContext";
 
 
 const pages = ['projects'];
 const settings = ['Logout'];
 
-const ResponsiveAppBar = () => {
+const ResponsiveAppBar = ({setTokenAC}) => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -37,7 +39,13 @@ const ResponsiveAppBar = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
+    const navigate = useNavigate();
+    const auth = useContext(AuthContext)
+    const logoutHandler = event => {
+        event.preventDefault()
+        auth.logout()
+        navigate('/')
+    }
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -152,8 +160,10 @@ const ResponsiveAppBar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                                <MenuItem key={setting} onClick={logoutHandler}>
+                                    <Typography textAlign="center">
+                                        {setting}
+                                    </Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

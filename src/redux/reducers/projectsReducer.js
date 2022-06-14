@@ -19,7 +19,7 @@ export const projectReducer = (state = initialState, action) => {
             }
         case SET_NEW_PROJECT:
             let stateCopy = {...state}
-            stateCopy.projects = [...state.project]
+            stateCopy.projects = [...state.projects]
             stateCopy.projects.push({
                 id: state.projects.length + 1,
                 name: action.name,

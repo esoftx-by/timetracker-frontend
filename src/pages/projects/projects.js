@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import FormDialog from "../../components/NewTask";
+import FormDialog from "../../components/NewProject";
 import style from './Projects.module.css'
 import ProjectCard from "../../components/ProjectCard";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -24,9 +24,10 @@ const Projects = (props) => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.projects.length !== 0 ? props.projects.map(project => <ProjectCard setProjectIdThunk={props.setProjectIdThunk} project={project}
-                                                                                                key={props.projects.id}/>) :
-                            /*<div className={style.preloader}><CircularIndeterminate/></div>*/ <h2>No projects</h2>}
+                        {props.projects.length !== 0 ? props.projects.map(project => <ProjectCard
+                                setProjectIdThunk={props.setProjectIdThunk} project={project}
+                                key={props.projects.id}/>) :
+                                <h2>No projects</h2>}
                     </Grid>
                 </Box>
             </div>
