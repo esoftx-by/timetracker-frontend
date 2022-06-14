@@ -15,6 +15,7 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import SendIcon from "@mui/icons-material/Send";
 import {NavLink} from "react-router-dom";
 import './Registration.scss'
+import {AuthAPI} from "../../API/api";
 
 const RegistrationForm = () => {
 
@@ -46,7 +47,7 @@ const RegistrationForm = () => {
     };
 
     const handleSubmit = () => {
-        console.log(values)
+        AuthAPI.newUser(values.email, values.firstName, values.lastName, values.password)
     }
 
 

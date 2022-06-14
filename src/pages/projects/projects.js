@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react'
-import FormDialog from "../../components/NewTask";
+import FormDialog from "../../components/NewProject";
 import style from './Projects.module.css'
 import ProjectCard from "../../components/ProjectCard";
-import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
@@ -25,9 +24,10 @@ const Projects = (props) => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.project.length !== 0 ? props.project.map(project => <ProjectCard project={project}
-                                                                                                key={props.project.id}/>) :
-                            /*<div className={style.preloader}><CircularIndeterminate/></div>*/ <h2>No projects</h2>}
+                        {props.projects.length !== 0 ? props.projects.map(project => <ProjectCard
+                                setProjectIdThunk={props.setProjectIdThunk} project={project}
+                                key={props.projects.id}/>) :
+                                <h2>No projects</h2>}
                     </Grid>
                 </Box>
             </div>
@@ -44,7 +44,7 @@ function CircularIndeterminate() {
 }
 
 const mapStateToProps = (state) => ({
-    project: state.project.project
+    projects: state.projectsPage.projects
 })
 
 
