@@ -1,10 +1,17 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import OutlinedCard from "../../components/TaskCard";
 import './mainPage.scss'
 import {Grid} from "@mui/material";
 import Box from "@mui/material/Box";
+import {connect} from "react-redux";
+import {setAllTaskThunk, setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 
-const MainPage = () => {
+const MainPage = (props) => {
+
+    useEffect(()=>{
+        props.setAllTaskThunk()
+        props.setAllTaskUserIdThunk(props.userId)
+    },[])
 
     let tasks = [
         {
@@ -39,4 +46,8 @@ const MainPage = () => {
     </div>
 }
 
-export default MainPage
+let mapStateToProps = (state) => ({
+
+})
+
+export default connect(mapStateToProps, {setAllTaskUserIdThunk, setAllTaskThunk})(MainPage)

@@ -3,3 +3,7 @@
     text-decoration: none;
     cursor: pointer!important;
 }
+
+.name{
+    margin: 0 1rem;
+}

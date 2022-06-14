@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import FormDialog from "../../components/NewProject";
 import style from './Projects.module.css'
 import ProjectCard from "../../components/ProjectCard";
-import CircularProgress from '@mui/material/CircularProgress';
+
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
 import {connect} from "react-redux";
@@ -35,13 +35,13 @@ const Projects = (props) => {
     )
 }
 
-function CircularIndeterminate() {
-    return (
-        <Box sx={{display: 'flex'}}>
-            <CircularProgress/>
-        </Box>
-    );
-}
+// function CircularIndeterminate() {
+//     return (
+//         <Box sx={{display: 'flex'}}>
+//             <CircularProgress/>
+//         </Box>
+//     );
+// }
 
 const mapStateToProps = (state) => ({
     projects: state.projectsPage.projects

@@ -9,14 +9,14 @@ import ResponsiveAppBar from "../components/Navbar";
 import Project from "../pages/project";
 
 
-export const useRoutes = (isAuthenticated) => {
+export const useRoutes = (isAuthenticated, userId, props) => {
     if (isAuthenticated) {
         return (
             <>
-                <ResponsiveAppBar/>
+                <ResponsiveAppBar user={props}/>
                 <Routes>
-                    <Route exact path={'/login'} element={<Navigate to={'/'}/>}/>
-                    <Route exact path={'/*'} element={<MainPage/>}/>
+                    <Route exact path={'/login'} element={<Navigate to={'/'+userId}/>}/>
+                    <Route exact path={'/' + userId} element={<MainPage userId = {userId}/>}/>
                     <Route exact path={'/projects/'} element={<Projects/>}/>
                     <Route exact path={'/projects/:id'} element={<Project/>}/>
                 </Routes>

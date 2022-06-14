@@ -21,7 +21,8 @@ import {AuthContext} from "../../context/AuthContext";
 const pages = ['projects'];
 const settings = ['Logout'];
 
-const ResponsiveAppBar = ({setTokenAC}) => {
+const ResponsiveAppBar = (props) => {
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -65,7 +66,7 @@ const ResponsiveAppBar = ({setTokenAC}) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/'} className={style.nav}>
+                        <NavLink to={'/' + props.user.id} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -137,6 +138,7 @@ const ResponsiveAppBar = ({setTokenAC}) => {
                             </NavLink>
                         ))}
                     </Box>
+                    <div className={style.name}>{props.user && props.user.firstName + ' ' + props.user.lastName}</div>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
