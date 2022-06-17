@@ -1,8 +1,8 @@
 .project{
-    margin: 0 2rem;
+    margin: 1rem 2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: end;
 }
 .tasks{
     margin: 1rem 2rem;

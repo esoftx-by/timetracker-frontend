@@ -1,23 +1,15 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {Grid} from "@mui/material";
-
-const bull = (
-    <Box
-        component="span"
-        sx={{display: 'inline-block', mx: '2px', transform: 'scale(0.8)'}}
-    >
-        •
-    </Box>
-);
+import VirtualizedList from "../Track";
+import FormDialogTrack from "../NewTrack";
 
 
 export default function OutlinedCardTask(props) {
+    let projectTracks = props.allTracks.filter(tracks => tracks.task.id === props.tasksProject.id)
     return (
         <Grid item xs={12} md={4}>
             <Box sx={{maxWidth: 500}}>
@@ -36,11 +28,13 @@ export default function OutlinedCardTask(props) {
                             <Typography variant="body2">
                                 {'Description Task: ' + props.tasksProject.description}
                             </Typography>
+                            <FormDialogTrack userId={props.userId} taskId={props.tasksProject.id} setNewTrackThunk={props.setNewTrackThunk}/>
                         </CardContent>
                         {/*<CardActions>*/}
                         {/*    <Button size="small">Learn More</Button>*/}
                         {/*</CardActions>*/}
                     </React.Fragment>
+                    {projectTracks && projectTracks.reverse().map(tracks => <VirtualizedList traks={tracks}/>)}
                 </Card>
             </Box>
         </Grid>

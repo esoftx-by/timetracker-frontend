@@ -1,45 +1,56 @@
-import React, {useEffect} from 'react'
+import React, {lazy, useEffect, Suspense} from 'react'
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
-import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
-import {setAllTasksProjectThunk} from "../../redux/reducers/taskReducer";
-import {Box, Grid} from "@mui/material";
-import OutlinedCardTask from "../../components/Task";
+import {setAllTaskThunk, setNewTaskThunk} from "../../redux/reducers/taskReducer";
+import {Helmet} from "react-helmet";
+import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
+import CircularIndeterminate from "../../components/Loader";
+import TasksProject from "../../components/TasksProject";
+import {SetAllTracksThunks, setNewTrackThunk} from "../../redux/reducers/trackReducer";
 
 
 const Project = (props) => {
 
     const params = useParams();
-    let id = params.id
+    let id = Number(params.id)
+    let AllTaskByProject = props.allTasks.filter(tasks => tasks.project.id === id)
     useEffect(() => {
+        props.setAllTaskThunk()
         props.setProjectIdThunk(id)
-        props.setAllTasksProjectThunk(id)
+        props.SetAllTracksThunks()
     }, [])
+    // const TasksProject = lazy(() => import('../../components/TasksProject'))
     return (
-        <>
+        <div>
+            <Helmet>
+                <title>{props.project && props.project.name}</title>
+            </Helmet>
             <div className={style.project}>
-                {props.project && <div>
-                    <h2>{props.project.name}</h2>
-                    <div>{props.project.description}</div>
-                    <div>{props.project.customer}</div>
-                </div>}
-                <FormDialogTask projectId={props.project && props.project.id} userId={props.userId}/>
+                <FormDialogTask projectId={props.project && props.project.id}
+                                userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}
+                                setNewTask={props.setNewTask}/>
             </div>
-            <Box sx={{flexGrow: 1}} className={style.tasks}>
-                <Grid container spacing={3}>
-                    {props.tasksProject ? props.tasksProject.map(task => <OutlinedCardTask tasksProject={task}/>) : <h2>No tasks</h2>}
-                </Grid>
-            </Box>
-        </>
+            {/*<Suspense fallback={<CircularIndeterminate/>}>*/}
+            <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk} allTracks={props.allTracks}
+                          userId={props.userId} AllTaskByProject={AllTaskByProject}/>
+            {/*</Suspense>*/}
+        </div>
     )
 }
 
 const mapStateToProps = (state) => ({
     project: state.projectsPage.project,
     userId: state.auth.user.id,
-    tasksProject: state.tasks.allTasksProject
+    allTasks: state.tasks.allTask,
+    allTracks: state.tracks.allTracks
 })
 
-export default connect(mapStateToProps, {setProjectIdThunk, setAllTasksProjectThunk})(Project)
+export default connect(mapStateToProps, {
+    setNewTaskThunk,
+    setAllTaskThunk,
+    setProjectIdThunk,
+    setNewTrackThunk,
+    SetAllTracksThunks
+})(Project)

@@ -7,12 +7,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from "@mui/material/Box";
-import style from './NewTask.module.css'
-import {setNewTask} from "../../redux/reducers/taskReducer";
 
 
-
-export default function FormDialogTask(props) {
+export default function FormDialogTrack(props) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -25,9 +22,7 @@ export default function FormDialogTask(props) {
     };
 
     const [values, setValues] = React.useState({
-        name: '',
-        description: '',
-        estimatedHours: ''
+        hours: ''
     });
 
     const handleChange = (prop) => (event) => {
@@ -36,47 +31,31 @@ export default function FormDialogTask(props) {
 
 
     const handleSubmit = async () => {
-        props.setNewTaskThunk(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)
-
-        // console.log(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)
+        props.setNewTrackThunk(props.userId, props.taskId, parseInt(values.hours))
+        //console.log(props.userId, props.taskId, parseInt(values.hours))
         setOpen(false)
     }
 
     return (
         <div>
-            <Button variant="contained" onClick={handleClickOpen}>
-                New Task
+            <Button style={{margin: '1rem 0 0 0'}} variant="contained" onClick={handleClickOpen}>
+                Add Track
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>New Task</DialogTitle>
+                <DialogTitle>New Track</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Create a new task. Please indicate the name of the task, description and customer.
+                        Create a new track. Please indicate the time.
                     </DialogContentText><br/>
                     <Box sx={{
                         '& > :not(style)': {width: '100%'},
                     }}>
                         <TextField
-                            id="outlined-name"
-                            label="task name"
-                            value={values.name}
-                            onChange={handleChange('name')}
-                            className={style.field}
-                        />
-                        <TextField
-                            id="outlined-name"
-                            label="description"
-                            value={values.description}
-                            onChange={handleChange('description')}
-                            className={style.field}
-                        />
-                        <TextField
                             type={"number"}
                             id="outlined-name"
-                            label="estimatedHours"
-                            value={values.estimatedHours}
-                            onChange={handleChange('estimatedHours')}
-                            className={style.field}
+                            label="hours"
+                            value={values.hours}
+                            onChange={handleChange('hours')}
                         />
                     </Box>
                 </DialogContent>

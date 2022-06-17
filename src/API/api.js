@@ -8,13 +8,13 @@ export let instance = axios.create({
 
 export const ProjectAPI = {
     getAllProject() {
-        return instance.get('projects/')
+        return instance.get('projects')
             .then(response => {
                 return response
             })
     },
     newProject(name, description, customer) {
-        return instance.post('projects/', {name, description, customer})
+        return instance.post('projects', {name, description, customer})
             .then(response => {
                 return response
             })
@@ -29,7 +29,7 @@ export const ProjectAPI = {
 
 export const AuthAPI = {
     newUser(email, firstName, lastName, password) {
-        return instance.post('users/', {email, firstName, lastName, password})
+        return instance.post('users', {email, firstName, lastName, password})
             .then(response => {
                 return response
             })
@@ -50,13 +50,13 @@ export const AuthAPI = {
 
 export const TaskAPI = {
     allTasks() {
-        return instance.get('tasks/')
+        return instance.get('tasks')
             .then(response => {
                 return response
             })
     },
     newTask(name, description, estimatedHours, authorId, projectId) {
-        return instance.post('tasks/', {name, description, estimatedHours, authorId, projectId})
+        return instance.post('tasks', {name, description, estimatedHours, authorId, projectId})
             .then(response => {
                 return response
             })
@@ -70,6 +70,21 @@ export const TaskAPI = {
     },
     allTasksProject(projectId) {
         return instance.get(`tasks/project/${projectId}`)
+            .then(response => {
+                return response
+            })
+    }
+}
+
+export const TracksAPI = {
+    newTrack(userId, taskId, hours){
+        return instance.post('tracks', {userId, taskId, hours})
+            .then(response => {
+                return response
+            })
+    },
+    setAllTracks(){
+        return instance.get('tracks')
             .then(response => {
                 return response
             })

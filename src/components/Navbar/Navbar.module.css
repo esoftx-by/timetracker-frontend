@@ -7,3 +7,8 @@
 .name{
     margin: 0 1rem;
 }
+.iconName{
+    background-color: lightgray;
+    border-radius: 100%;
+    padding: .7rem;
+}

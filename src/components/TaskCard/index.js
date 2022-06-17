@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {Grid} from "@mui/material";
 
@@ -16,21 +14,21 @@ export default function OutlinedCard({data}) {
                     <React.Fragment>
                         <CardContent>
                             <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                task: {data.taskNumber}
+                                {'Current Assignee: ' + data.currentAssignee.firstName + ' ' + data.currentAssignee.lastName}
                             </Typography>
                             <Typography variant="h5" component="div">
-                                {data.taskName}
+                                {'Task Name: ' + data.name}
                             </Typography>
                             <Typography sx={{mb: 1.5}} color="text.secondary">
-                                {data.projectName}
+                                {'Estimated time: ' + data.estimatedHours + ' hours'}
                             </Typography>
                             <Typography variant="body2">
-                                {data.description}
+                                {'Description Task: ' + data.description}
                             </Typography>
                         </CardContent>
-                        <CardActions>
-                            <Button size="small">Learn More</Button>
-                        </CardActions>
+                        {/*<CardActions>*/}
+                        {/*    <Button size="small">Learn More</Button>*/}
+                        {/*</CardActions>*/}
                     </React.Fragment>
                 </Card>
             </Box>

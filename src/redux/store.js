@@ -3,6 +3,7 @@ import {projectReducer} from "./reducers/projectsReducer";
 import thunkMiddleware from "redux-thunk";
 import {authReducer} from "./reducers/authReducer";
 import {taskReducer} from "./reducers/taskReducer";
+import {trackReducers} from "./reducers/trackReducer";
 
 
 const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
@@ -11,7 +12,8 @@ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX
 const Reducers = combineReducers({
     projectsPage: projectReducer,
     auth:authReducer,
-    tasks: taskReducer
+    tasks: taskReducer,
+    tracks: trackReducers
 })
 
 
