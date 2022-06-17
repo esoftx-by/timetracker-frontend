@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,12 +15,15 @@ import {NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
 import {useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
+import Avatar from "@mui/material/Avatar";
 
 
 const pages = ['projects'];
 const settings = ['Logout'];
 
-const ResponsiveAppBar = ({setTokenAC}) => {
+const ResponsiveAppBar = (props) => {
+    // let firstName = props.user.firstName.split('')
+    // let lastName = props.user.lastName.split('')
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -65,7 +67,7 @@ const ResponsiveAppBar = ({setTokenAC}) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/'} className={style.nav}>
+                        <NavLink to={'/' + props.user.id} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -137,10 +139,12 @@ const ResponsiveAppBar = ({setTokenAC}) => {
                             </NavLink>
                         ))}
                     </Box>
+                    <div className={style.name}>{props.user && props.user.firstName + ' ' + props.user.lastName}</div>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
+                                {/*{props.user && <div className={style.iconName}>{firstName[0] + lastName[0]}</div>}*/}
                             </IconButton>
                         </Tooltip>
                         <Menu
