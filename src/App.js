@@ -4,18 +4,19 @@ import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {connect} from "react-redux";
 import {setUserData} from "./redux/reducers/authReducer";
-import Preloader from "./components/Loader";
+
 
 
 function App(props) {
 
-
     const {token, login, logout, userId} = useAuth()
     const isAuthenticated = !!token
     const routes = useRoutes(isAuthenticated, userId, props.userData)
-    useEffect(()=>{
-        {userId && props.setUserData(userId)}
-    },[userId])
+    useEffect(() => {
+        {
+            userId && props.setUserData(userId)
+        }
+    }, [userId])
     return (
         <AuthContext.Provider value={{
             token, login, logout, isAuthenticated, userId

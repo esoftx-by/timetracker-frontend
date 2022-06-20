@@ -29,9 +29,9 @@ const Projects = (props) => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.projects.length !== 0 && props.projects.map(project => <Suspense fallback={<CircularIndeterminate/>}><ProjectCard
+                        {props.projects.length !== 0 ? props.projects.map(project => <Suspense fallback={<CircularIndeterminate/>}><ProjectCard
                                 project={project}
-                                key={props.projects.id}/></Suspense>)}
+                                key={props.projects.id}/></Suspense>) :  <h2>No projects</h2>}
                     </Grid>
                 </Box>
             </div>
