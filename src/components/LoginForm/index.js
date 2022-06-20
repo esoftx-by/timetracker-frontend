@@ -70,7 +70,7 @@ const LoginForm = (props) => {
                     >
                         <TextField
                             id="outlined-name"
-                            label="Name"
+                            label="E-mail"
                             value={values.email}
                             onChange={handleChange('email')}
                         />

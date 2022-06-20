@@ -1,4 +1,4 @@
-import React, {lazy, useEffect, Suspense} from 'react'
+import React, {useEffect} from 'react'
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
 import style from './Project.module.css'
@@ -6,13 +6,12 @@ import FormDialogTask from "../../components/NewTask";
 import {setAllTaskThunk, setNewTaskThunk} from "../../redux/reducers/taskReducer";
 import {Helmet} from "react-helmet";
 import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
-import CircularIndeterminate from "../../components/Loader";
 import TasksProject from "../../components/TasksProject";
 import {SetAllTracksThunks, setNewTrackThunk} from "../../redux/reducers/trackReducer";
 
 
 const Project = (props) => {
-
+    debugger
     const params = useParams();
     let id = Number(params.id)
     let AllTaskByProject = props.allTasks.filter(tasks => tasks.project.id === id)
@@ -20,8 +19,8 @@ const Project = (props) => {
         props.setAllTaskThunk()
         props.setProjectIdThunk(id)
         props.SetAllTracksThunks()
-    }, [])
-    // const TasksProject = lazy(() => import('../../components/TasksProject'))
+    }, [id])
+
     return (
         <div>
             <Helmet>
@@ -32,10 +31,9 @@ const Project = (props) => {
                                 userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}
                                 setNewTask={props.setNewTask}/>
             </div>
-            {/*<Suspense fallback={<CircularIndeterminate/>}>*/}
             <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk} allTracks={props.allTracks}
                           userId={props.userId} AllTaskByProject={AllTaskByProject}/>
-            {/*</Suspense>*/}
+
         </div>
     )
 }

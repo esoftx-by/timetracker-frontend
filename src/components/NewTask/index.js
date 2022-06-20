@@ -36,6 +36,7 @@ export default function FormDialogTask(props) {
 
 
     const handleSubmit = async () => {
+        debugger
         props.setNewTaskThunk(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)
 
         // console.log(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)

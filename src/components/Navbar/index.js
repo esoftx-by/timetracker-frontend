@@ -67,7 +67,7 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/' + props.user.id} className={style.nav}>
+                        <NavLink to={'/' + props.user.id + "-" + props.user.lastName} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
