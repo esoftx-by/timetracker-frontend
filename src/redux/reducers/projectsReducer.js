@@ -20,12 +20,7 @@ export const projectReducer = (state = initialState, action) => {
         case SET_NEW_PROJECT:
             let stateCopy = {...state}
             stateCopy.projects = [...state.projects]
-            stateCopy.projects.push({
-                id: state.projects.length + 1,
-                name: action.name,
-                description: action.description,
-                customer: action.customer
-            })
+            stateCopy.projects.push(action.data)
             return stateCopy
         case SET_PROJECT:
             return {
@@ -37,7 +32,7 @@ export const projectReducer = (state = initialState, action) => {
     }
 }
 const setProjects = (data) => ({type: SET_PROJECTS, data})
-const setNewProject = (name, description, customer) => ({type: SET_NEW_PROJECT, name, description, customer})
+const setNewProject = (data) => ({type: SET_NEW_PROJECT, data})
 const setProject = (project) => ({type: SET_PROJECT, project})
 
 export const setProjectThunk = (data) => {
@@ -57,7 +52,8 @@ export const setNewProjectThunk = (name, description, customer) => {
         ProjectAPI.newProject(name, description, customer)
             .then(response => {
                 if (response.data.success) {
-                    dispatch(setNewProject(name, description, customer))
+                    let data = response.data.response
+                    dispatch(setNewProject(data))
                 }
             })
     }

@@ -17,8 +17,6 @@ import SendIcon from "@mui/icons-material/Send";
 import {NavLink} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {AuthAPI} from "../../API/api";
-import {connect} from "react-redux";
-import {setUser} from "../../redux/reducers/authReducer";
 
 
 const LoginForm = (props) => {
@@ -50,9 +48,7 @@ const LoginForm = (props) => {
         try {
             AuthAPI.auth(values.email, values.password)
                 .then(response => {
-                    debugger
                     auth.login(response.data.token, response.data.user.id)
-                    props.setUser(response.data.user)
                 })
         } catch (e){
 
@@ -74,7 +70,7 @@ const LoginForm = (props) => {
                     >
                         <TextField
                             id="outlined-name"
-                            label="Name"
+                            label="E-mail"
                             value={values.email}
                             onChange={handleChange('email')}
                         />
@@ -113,8 +109,5 @@ const LoginForm = (props) => {
     )
 }
 
-let mapStateToProps = (state) => ({
 
-})
-
-export default connect(mapStateToProps, {setUser})(LoginForm)
+export default LoginForm
