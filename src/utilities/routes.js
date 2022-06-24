@@ -9,16 +9,16 @@ import ResponsiveAppBar from "../components/Navbar";
 import Project from "../pages/project";
 
 
+export const useRoutes = (isAuthenticated, userId, props, deleteUser) => {
 
-export const useRoutes = (isAuthenticated, userId, props) => {
-    debugger
     if (isAuthenticated && props.lastName) {
+
         return (
             <>
-                <ResponsiveAppBar user={props}/>
+                <ResponsiveAppBar deleteUser={deleteUser} user={props}/>
                 <Routes>
                     <Route exact path={'/login'} element={<Navigate to={'/' + userId + '-' + props.lastName}/>}/>
-                    <Route exact path={'/' + userId + '-' + props.lastName} element={<MainPage userId = {userId}/>}/>
+                    <Route exact path={'/' + userId + '-' + props.lastName} element={<MainPage userId={userId}/>}/>
                     <Route exact path={'/projects/'} element={<Projects/>}/>
                     <Route exact path={'/projects/:id'} element={<Project/>}/>
                 </Routes>
@@ -27,13 +27,13 @@ export const useRoutes = (isAuthenticated, userId, props) => {
         )
     }
     return (
-            <Container maxWidth="sm">
-                <Routes>
-                    <Route exact path="/" element={<Navigate to={'/login'} replace/>}/>
-                    <Route exact path="/login" element={<LoginForm/>}/>
-                    <Route exact path="/registration" element={<RegistrationForm/>}/>
-                </Routes>
-            </Container>
-        )
+        <Container maxWidth="sm">
+            <Routes>
+                <Route exact path="/" element={<Navigate to={'/login'} replace/>}/>
+                <Route exact path="/login" element={<LoginForm/>}/>
+                <Route exact path="/registration" element={<RegistrationForm/>}/>
+            </Routes>
+        </Container>
+    )
 
 }

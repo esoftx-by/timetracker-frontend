@@ -31,7 +31,7 @@ const Projects = (props) => {
                     <Grid container spacing={2}>
                         {props.projects.length !== 0 ? props.projects.map(project => <Suspense fallback={<CircularIndeterminate/>}><ProjectCard
                                 project={project}
-                                key={props.projects.id}/></Suspense>) :  <h2>No projects</h2>}
+                                key={props.projects.id}/></Suspense>) :  <Grid item xs={12} md={12}><h2>No projects</h2></Grid>}
                     </Grid>
                 </Box>
             </div>

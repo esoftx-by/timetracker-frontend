@@ -11,7 +11,7 @@ import {SetAllTracksThunks, setNewTrackThunk} from "../../redux/reducers/trackRe
 
 
 const Project = (props) => {
-    debugger
+
     const params = useParams();
     let id = Number(params.id)
     let AllTaskByProject = props.allTasks.filter(tasks => tasks.project.id === id)

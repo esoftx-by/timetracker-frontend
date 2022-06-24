@@ -18,10 +18,13 @@ import {AuthContext} from "../../context/AuthContext";
 import Avatar from "@mui/material/Avatar";
 
 
+
+
 const pages = ['projects'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = (props) => {
+
     // let firstName = props.user.firstName.split('')
     // let lastName = props.user.lastName.split('')
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -45,6 +48,7 @@ const ResponsiveAppBar = (props) => {
     const auth = useContext(AuthContext)
     const logoutHandler = event => {
         event.preventDefault()
+        props.deleteUser()
         auth.logout()
         navigate('/')
     }
@@ -143,8 +147,8 @@ const ResponsiveAppBar = (props) => {
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
-                                {/*{props.user && <div className={style.iconName}>{firstName[0] + lastName[0]}</div>}*/}
+                                {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
+                                {props.user && <div className={style.iconName}>{props.user.firstName[0] + props.user.lastName[0]}</div>}
                             </IconButton>
                         </Tooltip>
                         <Menu

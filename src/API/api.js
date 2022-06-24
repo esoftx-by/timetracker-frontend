@@ -88,5 +88,17 @@ export const TracksAPI = {
             .then(response => {
                 return response
             })
+    },
+    setAllTracksByUserId(userId){
+        return instance.get(`tracks/user/${userId}`)
+            .then(response => {
+                return response
+            })
+    },
+    setTracksByTaskId(taskId){
+        return instance(`tracks/task/${taskId}`)
+            .then(response => {
+                return response
+            })
     }
 }

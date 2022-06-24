@@ -10,5 +10,6 @@
 .iconName{
     background-color: lightgray;
     border-radius: 100%;
-    padding: .7rem;
+    padding: .7rem .6rem;
+    font-size: 18px;
 }

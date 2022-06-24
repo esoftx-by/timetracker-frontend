@@ -3,12 +3,12 @@ import {TaskAPI} from "../../API/api";
 const SET_NEW_TASK = 'tasks/SET_NEW_TASK'
 const SET_ALL_TASKS = 'tasks/SET_ALL_TASK'
 // const SET_ALL_TASKS_PROJECT = 'tasks/SET_ALL_TASKS_PROJECT'
-// const SET_ALL_TASKS_USER_ID = 'tasks/SET_ALL_TASK_USER_ID'
+const SET_ALL_TASKS_USER_ID = 'tasks/SET_ALL_TASK_USER_ID'
 
 
 const initialState = {
-    allTask: []
-    // taskUsedId: [],
+    allTask: [],
+    taskUsedId: [],
     // allTasksProject: []
 }
 
@@ -24,11 +24,11 @@ export const taskReducer = (state = initialState, action) => {
             stateCopy.allTask = [...state.allTask]
             stateCopy.allTask.push(action.data)
             return stateCopy
-        // case SET_ALL_TASKS_USER_ID:
-        //     return {
-        //         ...state,
-        //         taskUsedId: action.data
-        //     }
+        case SET_ALL_TASKS_USER_ID:
+            return {
+                ...state,
+                taskUsedId: action.data
+            }
         // case SET_ALL_TASKS_PROJECT:
         //     return {
         //         ...state,
@@ -40,7 +40,7 @@ export const taskReducer = (state = initialState, action) => {
 }
 const setAllTask = (data) => ({type: SET_ALL_TASKS, data})
 const setNewTask = (data) => ({type: SET_NEW_TASK, data})
-// const setAllTaskUserId = (data) => ({type: SET_ALL_TASKS_USER_ID, data})
+const setAllTaskUserId = (data) => ({type: SET_ALL_TASKS_USER_ID, data})
 // const setAllTasksProject = (data) => ({type: SET_ALL_TASKS_PROJECT, data})
 
 
@@ -67,17 +67,17 @@ export const setAllTaskThunk = (data) => {
 
 }
 
-// export const setAllTaskUserIdThunk = (id) => {
-//     return dispatch => {
-//         TaskAPI.allTaskUserId(id)
-//             .then(response => {
-//                 if (response.data.success) {
-//                     let data = response.data.response
-//                     dispatch(setAllTaskUserId(data))
-//                 }
-//             })
-//     }
-// }
+export const setAllTaskUserIdThunk = (id) => {
+    return dispatch => {
+        TaskAPI.allTaskUserId(id)
+            .then(response => {
+                if (response.data.success) {
+                    let data = response.data.response
+                    dispatch(setAllTaskUserId(data))
+                }
+            })
+    }
+}
 //
 // export const setAllTasksProjectThunk = (projectId) => {
 //     return dispath => {
