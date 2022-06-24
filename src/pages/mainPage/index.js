@@ -5,15 +5,18 @@ import Box from "@mui/material/Box";
 import {Helmet} from "react-helmet";
 import CircularIndeterminate from "../../components/Loader";
 import {connect} from "react-redux";
-import {setAllTaskThunk} from "../../redux/reducers/taskReducer";
+import {setAllTaskThunk, setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
+import {setAllTracksByUserIdThunk, setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
 
 const MainPage = (props) => {
 
     useEffect(() => {
-        props.setAllTaskThunk()
+        props.setAllTaskUserIdThunk(props.userId)
+        props.setAllTracksByUserIdThunk(props.userId)
     }, [])
 
-    let AllTasksByUserId = props.allTasks.filter(tasks => tasks.currentAssignee.id === props.userId)
+
+    // let AllTasksByUserId = props.allTasks.filter(tasks => tasks.currentAssignee.id === props.userId)
     const OutlinedCard = lazy(() => import('../../components/TaskCard'))
 
 
@@ -25,8 +28,9 @@ const MainPage = (props) => {
             <h1>List of my tasks:</h1>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {AllTasksByUserId.length ? AllTasksByUserId.map(data => <Suspense
-                        fallback={<CircularIndeterminate/>}><OutlinedCard data={data}/></Suspense>) : <h2>No Tasks</h2>}
+                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <Suspense
+                            fallback={<CircularIndeterminate/>}><OutlinedCard data={data}/></Suspense>) :
+                        <Grid item xs={12} md={12}><h2>No Tasks</h2></Grid>}
                 </Grid>
             </Box>
         </div>
@@ -34,9 +38,15 @@ const MainPage = (props) => {
 }
 
 let mapStateToProps = (state) => ({
-    allTasks: state.tasks.allTask,
+    allTasksUserId: state.tasks.taskUsedId,
+    allTracksByUserId: state.tracks.allTrackByUserId,
     user: state.auth.user
 })
 
 
-export default connect(mapStateToProps, {setAllTaskThunk})(MainPage)
+export default connect(mapStateToProps, {
+    setAllTaskThunk,
+    setAllTaskUserIdThunk,
+    setAllTracksByUserIdThunk,
+    setTracksByTaskIdThunk
+})(MainPage)

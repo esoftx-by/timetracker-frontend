@@ -6,7 +6,9 @@ import Typography from '@mui/material/Typography';
 import {Grid} from "@mui/material";
 
 
+
 export default function OutlinedCard({data}) {
+
     return (
         <Grid item xs={12} md={4}>
             <Box sx={{maxWidth: 500}}>

@@ -9,7 +9,9 @@ import FormDialogTrack from "../NewTrack";
 
 
 export default function OutlinedCardTask(props) {
+
     let projectTracks = props.allTracks.filter(tracks => tracks.task.id === props.tasksProject.id)
+
     return (
         <Grid item xs={12} md={4}>
             <Box sx={{maxWidth: 500}}>
@@ -20,21 +22,22 @@ export default function OutlinedCardTask(props) {
                                 {'Current Assignee: ' + props.tasksProject.currentAssignee.firstName + ' ' + props.tasksProject.currentAssignee.lastName}
                             </Typography>
                             <Typography variant="h5" component="div">
-                                {'Task Name: ' + props.tasksProject.name}
+                                {props.tasksProject.name}
                             </Typography>
                             <Typography sx={{mb: 1.5}} color="text.secondary">
-                                {'Estimated time: '+ props.tasksProject.estimatedHours + ' hours'}
+                                {'Estimated time: ' + props.tasksProject.estimatedHours + ' hours'}
                             </Typography>
                             <Typography variant="body2">
-                                {'Description Task: ' + props.tasksProject.description}
+                                {props.tasksProject.description}
                             </Typography>
-                            <FormDialogTrack userId={props.userId} taskId={props.tasksProject.id} setNewTrackThunk={props.setNewTrackThunk}/>
+                            <FormDialogTrack userId={props.userId} taskId={props.tasksProject.id}
+                                             setNewTrackThunk={props.setNewTrackThunk}/>
                         </CardContent>
                         {/*<CardActions>*/}
                         {/*    <Button size="small">Learn More</Button>*/}
                         {/*</CardActions>*/}
                     </React.Fragment>
-                    {projectTracks && projectTracks.reverse().map(tracks => <VirtualizedList traks={tracks}/>)}
+                    <div style={{'overflow-y': 'scroll', 'height': '190px'}}>{projectTracks && projectTracks.reverse().map(tracks => <VirtualizedList traks={tracks}/>)}</div>
                 </Card>
             </Box>
         </Grid>

@@ -7,13 +7,15 @@ const storageName = 'userData'
 export const useAuth = () => {
     const [token, setToken] = useState(null)
     const [userId, setUserId] = useState(null)
+    const [lastName, setLastName] = useState(null)
 
-    const login = useCallback((jwtToken, id) => {
+    const login = useCallback((jwtToken, id, lastName) => {
         setToken(jwtToken)
         setUserId(id)
+        setLastName(lastName)
 
         localStorage.setItem(storageName, JSON.stringify({
-            userId: id, token: jwtToken
+            userId: id, token: jwtToken, lastName: lastName
         }))
         instance.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
     }, [])
@@ -28,9 +30,9 @@ export const useAuth = () => {
     useEffect(() => {
         const data = JSON.parse(localStorage.getItem(storageName))
         if (data && data.token) {
-            login(data.token, data.userId)
+            login(data.token, data.userId, data.lastName)
         }
     }, [login])
 
-    return {login, logout, token, userId}
+    return {login, logout, token, userId, lastName}
 }
