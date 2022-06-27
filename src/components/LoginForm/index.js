@@ -122,56 +122,6 @@ const LoginForm = (props) => {
                     <ToastContainer/>
                 </div>
             </Card>
-            {/*<Card sx={{minWidth: 275}}>*/}
-            {/*    <h1>Log In</h1>*/}
-            {/*    <CardContent>*/}
-            {/*        <Box*/}
-            {/*            component="form"*/}
-            {/*            sx={{*/}
-            {/*                '& > :not(style)': {m: 1, width: '30ch'},*/}
-            {/*            }}*/}
-            {/*            noValidate*/}
-            {/*            autoComplete="off"*/}
-            {/*        >*/}
-            {/*            <TextField*/}
-            {/*                id="outlined-name"*/}
-            {/*                label="E-mail"*/}
-            {/*                value={values.email}*/}
-            {/*                onChange={handleChange('email')}*/}
-            {/*            />*/}
-            {/*            <FormControl variant="outlined">*/}
-            {/*                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>*/}
-            {/*                <OutlinedInput*/}
-            {/*                    id="outlined-adornment-password"*/}
-            {/*                    type={values.showPassword ? 'text' : 'password'}*/}
-            {/*                    value={values.password}*/}
-            {/*                    onChange={handleChange('password')}*/}
-            {/*                    endAdornment={*/}
-            {/*                        <InputAdornment position="end">*/}
-            {/*                            <IconButton*/}
-            {/*                                aria-label="toggle password visibility"*/}
-            {/*                                onClick={handleClickShowPassword}*/}
-            {/*                                onMouseDown={handleMouseDownPassword}*/}
-            {/*                                edge="end"*/}
-            {/*                            >*/}
-            {/*                                {values.showPassword ? <VisibilityOff/> : <Visibility/>}*/}
-            {/*                            </IconButton>*/}
-            {/*                        </InputAdornment>*/}
-            {/*                    }*/}
-            {/*                    label="Password"*/}
-            {/*                />*/}
-            {/*            </FormControl>*/}
-            {/*            <Button variant="contained" size="large" onClick={handleSubmit} endIcon={<SendIcon/>}>*/}
-            {/*                Send*/}
-            {/*            </Button>*/}
-            {/*        </Box>*/}
-            {/*    </CardContent>*/}
-            {/*    <div className="login__registration">*/}
-            {/*        <NavLink to='/registration'>Sign Up</NavLink>*/}
-            {/*        <ToastContainer/>*/}
-            {/*    </div>*/}
-            {/*</Card>*/}
-            {/*<Basic/>*/}
         </div>
     )
 }

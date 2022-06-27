@@ -13,7 +13,7 @@ export default function ProjectCard({project}) {
         <Grid item xs={12} md={6}>
             <Card sx={{maxWidth: 800}}>
                 <CardContent>
-                    <Typography variant="h5" component="div">
+                    <Typography variant="h5" component="div" style={{'word-break': 'break-all'}}>
                         {project.name}
                     </Typography>
                     <Typography sx={{mb: 1.5}} color="text.secondary">
@@ -24,8 +24,8 @@ export default function ProjectCard({project}) {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small"><NavLink
-                        to={'/projects/' + project.id}>More</NavLink></Button>
+                    <Button variant="contained" size="large"><NavLink
+                        to={'/projects/' + project.id} style={{'color': '#fff', 'text-decoration':'none'}}>More</NavLink></Button>
                 </CardActions>
             </Card>
         </Grid>

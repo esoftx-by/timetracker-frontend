@@ -18,8 +18,6 @@ import {AuthContext} from "../../context/AuthContext";
 import Avatar from "@mui/material/Avatar";
 
 
-
-
 const pages = ['projects'];
 const settings = ['Logout'];
 
@@ -106,7 +104,9 @@ const ResponsiveAppBar = (props) => {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <NavLink to={page} className={style.navMobile}>
+                                        <Typography textAlign="center">{page}</Typography>
+                                    </NavLink>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -128,7 +128,9 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        Tracker
+                        <NavLink to={'/' + props.user.id + "-" + props.user.lastName} className={style.nav}>
+                            Tracker
+                        </NavLink>
                     </Typography>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
@@ -148,7 +150,8 @@ const ResponsiveAppBar = (props) => {
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                 {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
-                                {props.user && <div className={style.iconName}>{props.user.firstName[0] + props.user.lastName[0]}</div>}
+                                {props.user && <div
+                                    className={style.iconName}>{props.user.firstName[0] + props.user.lastName[0]}</div>}
                             </IconButton>
                         </Tooltip>
                         <Menu
