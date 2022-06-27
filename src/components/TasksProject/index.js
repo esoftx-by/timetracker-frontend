@@ -7,7 +7,7 @@ const TasksProject = (props) => {
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
             {props.project ? <div>
-                <h2>{props.project.name}</h2>
+                <h2 style={{'word-break': 'break-all'}}>{props.project.name}</h2>
                 <div>{props.project.description}</div>
                 <div>{props.project.customer}</div>
             </div> : <div></div>}

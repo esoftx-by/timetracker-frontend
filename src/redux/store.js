@@ -11,15 +11,15 @@ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX
 
 const Reducers = combineReducers({
     projectsPage: projectReducer,
-    auth:authReducer,
+    auth: authReducer,
     tasks: taskReducer,
     tracks: trackReducers
 })
 
 
-const store = createStore(Reducers, composeEnhancers(
+const store = createStore(Reducers,
     applyMiddleware(thunkMiddleware)
-))
+)
 
 export default store
 
