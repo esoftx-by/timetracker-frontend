@@ -7,8 +7,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from "@mui/material/Box";
-import style from './NewTask.module.css'
 import {setNewTask} from "../../redux/reducers/taskReducer";
+import {Alert} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import {Formik} from "formik";
 
 
 
@@ -24,24 +26,6 @@ export default function FormDialogTask(props) {
         setOpen(false);
     };
 
-    const [values, setValues] = React.useState({
-        name: '',
-        description: '',
-        estimatedHours: ''
-    });
-
-    const handleChange = (prop) => (event) => {
-        setValues({...values, [prop]: event.target.value});
-    };
-
-
-    const handleSubmit = async () => {
-        debugger
-        props.setNewTaskThunk(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)
-
-        // console.log(values.name, values.description, parseInt(values.estimatedHours), props.userId, props.projectId)
-        setOpen(false)
-    }
 
     return (
         <div>
@@ -52,38 +36,108 @@ export default function FormDialogTask(props) {
                 <DialogTitle>New Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Create a new task. Please indicate the name of the task, description and customer.
+                        Create a new task. Please indicate the name of the task, description and estimated hours.
                     </DialogContentText><br/>
-                    <Box sx={{
-                        '& > :not(style)': {width: '100%'},
-                    }}>
-                        <TextField
-                            id="outlined-name"
-                            label="task name"
-                            value={values.name}
-                            onChange={handleChange('name')}
-                            className={style.field}
-                        />
-                        <TextField
-                            id="outlined-name"
-                            label="description"
-                            value={values.description}
-                            onChange={handleChange('description')}
-                            className={style.field}
-                        />
-                        <TextField
-                            type={"number"}
-                            id="outlined-name"
-                            label="estimatedHours"
-                            value={values.estimatedHours}
-                            onChange={handleChange('estimatedHours')}
-                            className={style.field}
-                        />
-                    </Box>
+                    <Formik
+                        initialValues={{name: '', description: '', estimatedHours: ''}}
+                        validate={values => {
+                            const errors = {};
+                            if (!values.name) {
+                                errors.name = 'Required';
+                            }
+                            if (!values.description) {
+                                errors.description = 'Required'
+                            }
+                            if (!values.estimatedHours) {
+                                errors.estimatedHours = 'Required'
+                            }
+                            return errors;
+                        }}
+                        onSubmit={(values, {setSubmitting, resetForm}) => {
+                            setTimeout(() => {
+                                setSubmitting(false);
+                                props.setNewTaskThunk((values.name), (values.description), (parseInt(values.estimatedHours)),props.userId, props.projectId)
+                                resetForm()
+                                setOpen(false)
+                            }, 400);
+                        }}
+                    >
+                        {({
+                              values,
+                              errors,
+                              touched,
+                              handleChange,
+                              handleBlur,
+                              handleSubmit,
+                              isSubmitting,
+                              /* and other goodies */
+                          }) => (
+                            <form onSubmit={handleSubmit}>
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': {width: '100%'},
+                                    }}>
+                                    <TextField
+                                        error={errors.name && touched.name && 'error'}
+                                        type="text"
+                                        name="name"
+                                        label="name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.name}
+                                    />
+                                </Box>
+
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.name && touched.name &&
+                                    <Alert severity="error">{errors.name && touched.name && errors.name}</Alert>}</div>
+                                <Box sx={{
+                                    '& > :not(style)': {width: '100%'},
+                                }}>
+                                    <TextField
+                                        error={errors.description && touched.description && 'error'}
+                                        type="text"
+                                        name="description"
+                                        label="Description"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.description}
+                                    />
+                                </Box>
+
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.description && touched.description &&
+                                    <Alert
+                                        severity="error">{errors.description && touched.description && errors.description}</Alert>}</div>
+
+                                <Box
+                                    sx={{
+                                        '& > :not(style)': {width: '100%'},
+                                    }}>
+                                    <TextField
+                                        error={errors.estimatedHours && touched.estimatedHours && 'error'}
+                                        type="number"
+                                        name="estimatedHours"
+                                        label="EstimatedHours"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.estimatedHours}
+                                    />
+                                </Box>
+
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.estimatedHours && touched.estimatedHours &&
+                                    <Alert severity="error">{errors.estimatedHours && touched.estimatedHours && errors.estimatedHours}</Alert>}</div>
+                                <Box sx={{
+                                    '& > :not(style)': {width: '100%'},
+                                }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
+                                           disabled={isSubmitting}>
+                                    Create
+                                </Button>
+                                </Box>
+                            </form>
+                        )}
+                    </Formik>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleSubmit}>Create</Button>
                 </DialogActions>
             </Dialog>
         </div>
