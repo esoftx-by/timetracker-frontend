@@ -87,7 +87,7 @@ export default function FormDialogTrack(props) {
                                         error={errors.hours && touched.hours && 'error'}
                                         type="number"
                                         name="hours"
-                                        label="hours"
+                                        label="Hours"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.hours}
