@@ -62,7 +62,7 @@ export default function FormDialogTrack(props) {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewTrackThunk(props.userId, props.taskId, parseInt(values.hours))
+                                props.setNewTrackThunk(props.userId, props.taskId, Number(values.hours))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

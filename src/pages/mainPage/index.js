@@ -7,6 +7,7 @@ import CircularIndeterminate from "../../components/Loader";
 import {connect} from "react-redux";
 import {setAllTaskThunk, setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import {setAllTracksByUserIdThunk, setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
+import {Navigate, NavLink, Route, Routes, useNavigate} from "react-router-dom";
 
 const MainPage = (props) => {
 
@@ -18,7 +19,6 @@ const MainPage = (props) => {
 
     // let AllTasksByUserId = props.allTasks.filter(tasks => tasks.currentAssignee.id === props.userId)
     const OutlinedCard = lazy(() => import('../../components/TaskCard'))
-
 
     return <div className="mainPage">
         <Helmet>

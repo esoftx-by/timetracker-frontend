@@ -3,10 +3,12 @@ import {ProjectAPI} from "../../API/api";
 const SET_PROJECTS = 'project/SET_PROJECTS';
 const SET_NEW_PROJECT = 'project/SET__NEW_PROJECT'
 const SET_PROJECT = 'project/SET_PROJECT'
+const SET_PROJECT_BY_USER_ID = 'project/SET_PROJECT_BY_USER_ID'
 
 
 const initialState = {
     projects: [],
+    projectsByUser: [],
     project: null
 }
 
@@ -22,6 +24,11 @@ export const projectReducer = (state = initialState, action) => {
             stateCopy.projects = [...state.projects]
             stateCopy.projects.push(action.data)
             return stateCopy
+        case SET_PROJECT_BY_USER_ID:
+            return {
+                ...state,
+                projectsByUser: action.data
+            }
         case SET_PROJECT:
             return {
                 ...state,
@@ -34,6 +41,7 @@ export const projectReducer = (state = initialState, action) => {
 const setProjects = (data) => ({type: SET_PROJECTS, data})
 const setNewProject = (data) => ({type: SET_NEW_PROJECT, data})
 const setProject = (project) => ({type: SET_PROJECT, project})
+const setProjectByUserId = (data) => ({type: SET_PROJECT_BY_USER_ID, data})
 
 export const setProjectThunk = (data) => {
     return dispatch => {
@@ -59,13 +67,25 @@ export const setNewProjectThunk = (name, description, customer) => {
     }
 }
 
-export const setProjectIdThunk = (id) =>{
+export const setProjectIdThunk = (id) => {
     return dispatch => {
         ProjectAPI.getProjectId(id)
             .then(response => {
-                if (response.data.success){
+                if (response.data.success) {
                     const project = response.data.response
                     dispatch(setProject(project))
+                }
+            })
+    }
+}
+
+export const setProjectByUserIdThunk = (id) => {
+    return dispatch => {
+        ProjectAPI.getProjectByUserId(id)
+            .then(response => {
+                if (response.data.success) {
+                    const projectByUserId = response.data.response
+                    dispatch(setProjectByUserId(projectByUserId))
                 }
             })
     }

@@ -4,6 +4,7 @@ import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 import {connect} from "react-redux";
 import {deleteUser, setUserData} from "./redux/reducers/authReducer";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -14,10 +15,9 @@ function App(props) {
     const routes = useRoutes(isAuthenticated, userId, props.userData, props.deleteUser)
 
     useEffect(() => {
-        {
-            userId && props.setUserData(userId)
-        }
-    }, [userId])
+        props.setUserData(userId)
+    }, [userId, token])
+
     return (
         <AuthContext.Provider value={{
             token, login, logout, isAuthenticated, userId, lastName

@@ -24,6 +24,18 @@ export const ProjectAPI = {
             .then(response => {
                 return response
             })
+    },
+    getProjectByUserId(id) {
+        return instance.get(`project-users/user/${id}`)
+            .then(response => {
+                return response
+            })
+    },
+    newUserInProject(userId, projectId, role){
+        return instance.post('project-users', {userId, projectId, role})
+            .then(response => {
+                return response
+            })
     }
 }
 
@@ -42,6 +54,12 @@ export const AuthAPI = {
     },
     setUserData(id) {
         return instance.get(`users/${id}`)
+            .then(response => {
+                return response
+            })
+    },
+    setAllUsers() {
+        return instance.get('users')
             .then(response => {
                 return response
             })
@@ -77,25 +95,25 @@ export const TaskAPI = {
 }
 
 export const TracksAPI = {
-    newTrack(userId, taskId, hours){
+    newTrack(userId, taskId, hours) {
         return instance.post('tracks', {userId, taskId, hours})
             .then(response => {
                 return response
             })
     },
-    setAllTracks(){
+    setAllTracks() {
         return instance.get('tracks')
             .then(response => {
                 return response
             })
     },
-    setAllTracksByUserId(userId){
+    setAllTracksByUserId(userId) {
         return instance.get(`tracks/user/${userId}`)
             .then(response => {
                 return response
             })
     },
-    setTracksByTaskId(taskId){
+    setTracksByTaskId(taskId) {
         return instance(`tracks/task/${taskId}`)
             .then(response => {
                 return response

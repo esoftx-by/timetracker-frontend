@@ -56,7 +56,7 @@ export default function FormDialogTask(props) {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewTaskThunk((values.name), (values.description), (parseInt(values.estimatedHours)),props.userId, props.projectId)
+                                props.setNewTaskThunk((values.name), (values.description), (Number(values.estimatedHours)),props.userId, props.projectId)
                                 resetForm()
                                 setOpen(false)
                             }, 400);

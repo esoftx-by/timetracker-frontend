@@ -8,7 +8,7 @@ import {
     TextField
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {AuthAPI} from "../../API/api";
 import {ToastContainer, toast} from 'react-toastify';
@@ -18,7 +18,7 @@ import {Formik} from "formik";
 const LoginForm = (props) => {
 
     const auth = useContext(AuthContext)
-
+    const navigate = useNavigate()
     return (
         <div className="login">
             <Card sx={{minWidth: 275}}>
@@ -45,6 +45,7 @@ const LoginForm = (props) => {
                                 .then(response => {
                                     if (response.data.token) {
                                         auth.login(response.data.token, response.data.user.id, response.data.user.lastName)
+                                        navigate('/')
                                     } else {
                                         toast.error(response.data.response.message, {
                                             position: "top-right",
