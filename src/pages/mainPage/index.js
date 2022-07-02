@@ -7,18 +7,17 @@ import CircularIndeterminate from "../../components/Loader";
 import {connect} from "react-redux";
 import {setAllTaskThunk, setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import {setAllTracksByUserIdThunk, setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
+import OutlinedCard from "../../components/TaskCard";
 
 const MainPage = (props) => {
 
     useEffect(() => {
         props.setAllTaskUserIdThunk(props.userId)
-        props.setAllTracksByUserIdThunk(props.userId)
+        // props.setAllTracksByUserIdThunk(props.userId)
     }, [])
 
 
     // let AllTasksByUserId = props.allTasks.filter(tasks => tasks.currentAssignee.id === props.userId)
-    const OutlinedCard = lazy(() => import('../../components/TaskCard'))
-
 
     return <div className="mainPage">
         <Helmet>

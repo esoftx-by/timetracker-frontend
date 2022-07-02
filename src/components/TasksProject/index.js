@@ -6,12 +6,12 @@ import OutlinedCardTask from "../Task";
 const TasksProject = (props) => {
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
-            {props.project ? <div>
-                <h2 style={{'word-break': 'break-all'}}>{props.project.name}</h2>
-                <div>{props.project.description}</div>
-                <div>{props.project.customer}</div>
-            </div> : <div></div>}
-            <h1>Project tasks: </h1>
+            {props.project && <div>
+                <h1>{props.project.name}</h1>
+                <div className={style.description}>{props.project.description}</div>
+                <div className={style.customer}>{props.project.customer}</div>
+            </div>}
+            <h2>Project tasks: </h2>
             <Grid container spacing={3}>
                 {props.AllTaskByProject ? props.AllTaskByProject.map(task => <OutlinedCardTask
                         allTracks={props.allTracks} userId={props.userId} setNewTrackThunk={props.setNewTrackThunk}

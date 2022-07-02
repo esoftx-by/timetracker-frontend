@@ -24,21 +24,6 @@ export default function FormDialogTrack(props) {
         setOpen(false);
     };
 
-    const [values, setValues] = React.useState({
-        hours: ''
-    });
-
-    const handleChange = (prop) => (event) => {
-        setValues({...values, [prop]: event.target.value});
-    };
-
-
-    const handleSubmit = async () => {
-        props.setNewTrackThunk(props.userId, props.taskId, parseInt(values.hours))
-        //console.log(props.userId, props.taskId, parseInt(values.hours))
-        setOpen(false)
-    }
-
     return (
         <div>
             <Button style={{margin: '1rem 0 0 0'}} variant="contained" onClick={handleClickOpen}>
@@ -51,18 +36,32 @@ export default function FormDialogTrack(props) {
                         Create a new track. Please indicate the time.
                     </DialogContentText><br/>
                     <Formik
-                        initialValues={{hours: ''}}
+                        initialValues={{date: '', hours: ''}}
                         validate={values => {
+
                             const errors = {};
-                            if (!values.hours) {
+                            if (!values.date) {
+                                errors.date = 'Required';
+                            }
+                            if (!values.hours && values.hours !== 0) {
                                 errors.hours = 'Required';
                             }
+
+                            if (values.hours && values.hours > 0 && values.hours < 24) {
+                                return errors;
+                            } else if (!errors.hours) {
+                                errors.hours = 'Enter a number within (0, 24) range';
+                            }
+
                             return errors;
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewTrackThunk(props.userId, props.taskId, parseInt(values.hours))
+                                let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
+                                let gmtFirst = gmt.slice(0, 3)
+                                let gmtSecond = gmt.slice(2, 4)
+                                props.setNewTrackThunk(props.userId, props.taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours))
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -79,6 +78,27 @@ export default function FormDialogTrack(props) {
                               /* and other goodies */
                           }) => (
                             <form onSubmit={handleSubmit}>
+
+                                <Box sx={{
+                                    '& > :not(style)': {width: '100%'},
+                                }}>
+                                    <TextField
+                                        error={errors.date && touched.date && 'error'}
+                                        id="datetime-local"
+                                        label="Next appointment"
+                                        type="datetime-local"
+                                        name="date"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        sx={{width: 250}}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                    />
+                                </Box>
+                                <div style={{'width': '100%', 'margin': ' 1rem auto'}}>{errors.date && touched.date &&
+                                    <Alert
+                                        severity="error">{errors.date && touched.date && errors.date}</Alert>}</div>
                                 <Box
                                     sx={{
                                         '& > :not(style)': {width: '100%'},
@@ -87,7 +107,7 @@ export default function FormDialogTrack(props) {
                                         error={errors.hours && touched.hours && 'error'}
                                         type="number"
                                         name="hours"
-                                        label="hours"
+                                        label="Hours"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.hours}

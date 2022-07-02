@@ -8,19 +8,23 @@ import {
     TextField
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
 import {AuthAPI} from "../../API/api";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Formik} from "formik";
+import {Helmet} from "react-helmet";
 
 const LoginForm = (props) => {
 
     const auth = useContext(AuthContext)
-
+    const navigate = useNavigate()
     return (
         <div className="login">
+            <Helmet>
+                <title>login</title>
+            </Helmet>
             <Card sx={{minWidth: 275}}>
                 <h1>Log In</h1>
                 <Formik
@@ -45,6 +49,7 @@ const LoginForm = (props) => {
                                 .then(response => {
                                     if (response.data.token) {
                                         auth.login(response.data.token, response.data.user.id, response.data.user.lastName)
+                                        navigate('/')
                                     } else {
                                         toast.error(response.data.response.message, {
                                             position: "top-right",
@@ -118,7 +123,7 @@ const LoginForm = (props) => {
                     )}
                 </Formik>
                 <div className="login__registration">
-                    <NavLink to='/registration'>Sign Up</NavLink>
+                    {/*<NavLink to='/registration'>Sign Up</NavLink>*/}
                     <ToastContainer/>
                 </div>
             </Card>

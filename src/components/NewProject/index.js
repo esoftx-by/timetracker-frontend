@@ -79,7 +79,7 @@ export default function FormDialog(props) {
                                         error={errors.name && touched.name && 'error'}
                                         type="text"
                                         name="name"
-                                        label="name"
+                                        label="Name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.name}

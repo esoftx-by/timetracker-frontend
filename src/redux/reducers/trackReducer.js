@@ -45,9 +45,9 @@ const setAllTracksByUserId = (data) => ({type: SET_ALL_TRACK_BY_USER_ID, data})
 const setTracksByTaskId = (data) => ({type: SET_TRACKS_BY_TASK_ID, data})
 
 
-export const setNewTrackThunk = (userId, taskId, hours) => {
+export const setNewTrackThunk = (userId, taskId, startTime, hours) => {
     return dispatch => {
-        TracksAPI.newTrack(userId, taskId, hours)
+        TracksAPI.newTrack(userId, taskId, startTime, hours)
             .then(response => {
                 if (response.data.success) {
                     let newTrack = response.data.response

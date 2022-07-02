@@ -56,7 +56,7 @@ export default function FormDialogTask(props) {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewTaskThunk((values.name), (values.description), (parseInt(values.estimatedHours)),props.userId, props.projectId)
+                                props.setNewTaskThunk((values.name), (values.description), (Number(values.estimatedHours)),props.userId, props.projectId)
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -81,7 +81,7 @@ export default function FormDialogTask(props) {
                                         error={errors.name && touched.name && 'error'}
                                         type="text"
                                         name="name"
-                                        label="name"
+                                        label="Name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.name}
@@ -116,7 +116,7 @@ export default function FormDialogTask(props) {
                                         error={errors.estimatedHours && touched.estimatedHours && 'error'}
                                         type="number"
                                         name="estimatedHours"
-                                        label="EstimatedHours"
+                                        label="Estimated Hours"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.estimatedHours}
