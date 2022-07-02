@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {Grid} from "@mui/material";
+import {Alert, Grid} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 
@@ -18,9 +18,12 @@ export default function OutlinedCardTask(props) {
                 <Card variant="outlined">
                     <React.Fragment>
                         <CardContent>
-                            <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                {'Current Assignee: ' + props.tasksProject.currentAssignee.firstName + ' ' + props.tasksProject.currentAssignee.lastName}
-                            </Typography>
+                            <div style={{'display':'flex', 'justify-content': 'space-between', 'align-items':'center'}}>
+                                <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                                    {props.tasksProject.currentAssignee.firstName + ' ' + props.tasksProject.currentAssignee.lastName}
+                                </Typography>
+                                <Alert icon={false} severity="info">{props.tasksProject.status}</Alert>
+                            </div>
                             <Typography variant="h5" component="div">
                                 {props.tasksProject.name}
                             </Typography>
@@ -33,9 +36,6 @@ export default function OutlinedCardTask(props) {
                             <FormDialogTrack userId={props.userId} taskId={props.tasksProject.id}
                                              setNewTrackThunk={props.setNewTrackThunk}/>
                         </CardContent>
-                        {/*<CardActions>*/}
-                        {/*    <Button size="small">Learn More</Button>*/}
-                        {/*</CardActions>*/}
                     </React.Fragment>
                     <div style={{'overflow-y': 'scroll', 'height': '190px'}}>{projectTracks && projectTracks.reverse().map(tracks => <VirtualizedList traks={tracks}/>)}</div>
                 </Card>

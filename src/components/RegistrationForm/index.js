@@ -19,8 +19,7 @@ const RegistrationForm = () => {
 
     return (
         <div className="registration">
-            <Card sx={{minWidth: 275}}>
-                <h1>Sign Up</h1>
+                <h1>Create new user</h1>
                 <Formik
                     initialValues={{firstName: '', lastName: '', email: '', password: ''}}
                     validate={values => {
@@ -148,11 +147,7 @@ const RegistrationForm = () => {
                         </form>
                     )}
                 </Formik>
-                <div className="registration__registration">
-                    <NavLink to='/login'>Sign In</NavLink>
-                </div>
                 {isSent &&  <div style={{'width': '30ch', 'margin': '1rem auto'}}><Alert severity="success">User created. Return to login page.</Alert></div>}
-            </Card>
         </div>
     )
 }

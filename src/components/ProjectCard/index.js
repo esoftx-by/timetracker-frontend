@@ -8,7 +8,6 @@ import {Grid} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import CustomizedMenus from "../CustomizationMenu";
 import style from './ProjectCard.module.css'
-import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 
 
 export default function ProjectCard({project, role, setAllUsersThunk, allUsers}) {
@@ -26,11 +25,10 @@ export default function ProjectCard({project, role, setAllUsersThunk, allUsers})
                         <Typography variant="body2">
                             {project.description}
                         </Typography>
-                        <CardActions>
-                            <Button variant="contained" size="large"><NavLink
-                                to={'/projects/' + project.id}
-                                style={{'color': '#fff', 'text-decoration': 'none'}}>More</NavLink></Button>
-                        </CardActions>
+                        <Button className={style.btn} variant="contained" size="large"><NavLink
+                            to={'/projects/' + project.id}
+                            style={{'color': '#fff', 'text-decoration': 'none'}}>More</NavLink>
+                        </Button>
                     </CardContent>
                     <div className={style.mainProjectCardItem}>
                         {role === 'ADMIN' && <CustomizedMenus setAllUsersThunk={setAllUsersThunk} allUsers={allUsers}

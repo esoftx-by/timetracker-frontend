@@ -95,8 +95,8 @@ export const TaskAPI = {
 }
 
 export const TracksAPI = {
-    newTrack(userId, taskId, hours) {
-        return instance.post('tracks', {userId, taskId, hours})
+    newTrack(userId, taskId, startTime, hours) {
+        return instance.post('tracks', {userId, taskId, startTime, hours})
             .then(response => {
                 return response
             })

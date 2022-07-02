@@ -11,15 +11,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import {MyEnhancedForm} from "../NewUserInProject";
-import {Formik, useFormik} from 'formik'
+import {Formik} from 'formik'
 import Select from 'react-select';
-import {AuthAPI, ProjectAPI} from "../../API/api";
-import {toast} from "react-toastify";
-import {setAllUsersThunk} from "../../redux/reducers/authReducer";
-import {useEffect} from "react";
+import {ProjectAPI} from "../../API/api";
+import {useEffect, useState} from "react";
 import SendIcon from "@mui/icons-material/Send";
 import {Alert, Box} from "@mui/material";
+import RegistrationForm from "../RegistrationForm";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const StyledMenu = styled((props) => (
     <Menu
@@ -68,7 +67,7 @@ export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleClose = () => {
+    const handleCloseBtn = () => {
         setAnchorEl(null);
     };
 
@@ -97,9 +96,9 @@ export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
                 }}
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={handleCloseBtn}
             >
-                <AlertDialogSlide allUsers={allUsers} project={project}/>
+                <AlertDialogSlide handleCloseBtn={handleCloseBtn} allUsers={allUsers} project={project}/>
             </StyledMenu>
         </div>
     );
@@ -135,12 +134,12 @@ const role = [
     {role: 'DEVELOPER', label: 'DEV'},
     {role: 'TEAM_LEAD', label: 'TEAM LEAD'},
     {role: 'PROJECT_MANAGER', label: 'PROJECT MANAGER'},
-    {role: 'PROJECT_MANAGER', label: 'PROJECT MANAGER'}
+    {role: 'ACCOUNTANT', label: 'ACCOUNTANT'}
 ]
 
 
-const AlertDialogSlide = ({project, allUsers}) => {
-
+const AlertDialogSlide = ({project, allUsers, handleCloseBtn}) => {
+    const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
 
@@ -150,6 +149,7 @@ const AlertDialogSlide = ({project, allUsers}) => {
 
     const handleClose = () => {
         setOpen(false);
+        handleCloseBtn(null)
     };
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
@@ -168,82 +168,96 @@ const AlertDialogSlide = ({project, allUsers}) => {
                 keepMounted
                 onClose={handleClose}
                 aria-describedby="alert-dialog-slide-description"
-            >
-                <DialogTitle>{"Add a user to the project"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description">
-                        <Formik
-                            initialValues={{id: '', role: ''}}
-                            validate={values => {
-                                const errors = {};
-                                if (!values.id) {
-                                    errors.id = 'Required';
-                                }
-                                if (!values.role) {
-                                    errors.role = 'Required'
-                                }
-                                return errors;
-                            }}
-                            onSubmit={(values, {setSubmitting, resetForm}) => {
-                                setTimeout(() => {
-                                    setSubmitting(false);
-                                    ProjectAPI.newUserInProject(values.id, project.id, values.role)
+            >{newUser ? <><RegistrationForm/><Button onClick={() => {
+                    setNewUser(false)
+                }}>Back</Button></> :
+                <>
+                    <div style={{'display': 'flex', 'justify-content': 'space-between', 'align-items': 'center'}}>
+                        <DialogTitle>{"Add a user to the project"}</DialogTitle>
+                        <Box sx={{
+                            '& > :not(style)': {width: '20ch', 'margin': '0 auto'},
+                        }}><Button style={{'margin': '0 1rem'}} onClick={() => setNewUser(true)}
+                                   endIcon={<PersonAddIcon/>} variant="contained" size="small" type="submit">
+                            New User
+                        </Button>
+                        </Box>
+                    </div>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            <Formik
+                                initialValues={{id: '', role: ''}}
+                                validate={values => {
+                                    const errors = {};
+                                    if (!values.id) {
+                                        errors.id = 'Required';
+                                    }
+                                    if (!values.role) {
+                                        errors.role = 'Required'
+                                    }
+                                    return errors;
+                                }}
+                                onSubmit={(values, {setSubmitting, resetForm}) => {
+                                    setTimeout(() => {
+                                        setSubmitting(false);
+                                        ProjectAPI.newUserInProject(values.id, project.id, values.role)
 
-                                    handleClose()
-                                    resetForm()
-                                }, 400);
-                            }}
-                        >{({
-                               values,
-                               errors,
-                               touched,
-                               handleChange,
-                               handleBlur,
-                               handleSubmit,
-                               setFieldValue,
-                               isSubmitting,
-                               /* and other goodies */
-                           }) => (
-                            <form onSubmit={handleSubmit} style={{'min-height': '300px'}}>
+                                        handleClose()
+                                        resetForm()
+                                    }, 400);
+                                }}
+                            >{({
+                                   values,
+                                   errors,
+                                   touched,
+                                   handleChange,
+                                   handleBlur,
+                                   handleSubmit,
+                                   setFieldValue,
+                                   isSubmitting,
+                                   /* and other goodies */
+                               }) => (
+                                <form onSubmit={handleSubmit} style={{'min-height': '300px'}}>
 
-                                <label htmlFor="id">User name</label>
+                                    <label htmlFor="id">User name</label>
 
-                                <CustomSelect
-                                    className='input'
-                                    onChange={values => setFieldValue('id', values.id)}
-                                    value={values.id}
-                                    options={newUsers}
-                                />
+                                    <CustomSelect
+                                        className='input'
+                                        onChange={values => setFieldValue('id', values.id)}
+                                        value={values.id}
+                                        options={newUsers}
+                                    />
 
-                                <div style={{'margin': '1rem auto'}}>{errors.id && touched.id &&
-                                    <Alert severity="error">{errors.id && touched.id && errors.id}</Alert>}</div>
+                                    <div style={{'margin': '1rem auto'}}>{errors.id && touched.id &&
+                                        <Alert severity="error">{errors.id && touched.id && errors.id}</Alert>}</div>
 
-                                <label htmlFor="role">Role</label>
+                                    <label htmlFor="role">Role</label>
 
-                                <CustomSelect
-                                    className='input'
-                                    onChange={values => setFieldValue('role', values.role)}
-                                    value={values.role}
-                                    options={role}
-                                />
+                                    <CustomSelect
+                                        className='input'
+                                        onChange={values => setFieldValue('role', values.role)}
+                                        value={values.role}
+                                        options={role}
+                                    />
 
-                                <div style={{'margin': '1rem auto'}}>{errors.role && touched.role &&
-                                    <Alert severity="error">{errors.role && touched.role && errors.role}</Alert>}</div>
+                                    <div style={{'margin': '1rem auto'}}>{errors.role && touched.role &&
+                                        <Alert
+                                            severity="error">{errors.role && touched.role && errors.role}</Alert>}</div>
 
 
-                                <Box sx={{
-                                    '& > :not(style)': {width: '100%', 'margin': '0 auto'},
-                                }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
-                                        disabled={isSubmitting}>
-                                    Send
-                                </Button>
-                                </Box>
+                                    <Box sx={{
+                                        '& > :not(style)': {width: '100%', 'margin': '1rem auto'},
+                                    }}><Button endIcon={<SendIcon/>} variant="contained" size="medium" type="submit"
+                                               disabled={isSubmitting}>
+                                        Send
+                                    </Button>
+                                    </Box>
 
-                            </form>)}
-                        </Formik>
-
-                    </DialogContentText>
-                </DialogContent>
+                                </form>)}
+                            </Formik>
+                        </DialogContentText>
+                    </DialogContent>
+                </>
+            }
                 <DialogActions>
                     <Button onClick={handleClose}>Close</Button>
                 </DialogActions>
@@ -253,80 +267,7 @@ const AlertDialogSlide = ({project, allUsers}) => {
 }
 
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
 
-function getStyles(name, personName, theme) {
-    return {
-        fontWeight:
-            personName.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    };
-}
 
-/*
-const MultipleSelect = () => {
-    const theme = useTheme();
-    const [personName, setPersonName] = React.useState([]);
 
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setPersonName(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-        console.log(value)
-    };
-
-    return (
-        <div>
-            <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel id="demo-multiple-name-label">Name</InputLabel>
-                <Select
-                    labelId="demo-multiple-name-label"
-                    id="demo-multiple-name"
-                    multiple
-                    value={personName}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Name" />}
-                    MenuProps={MenuProps}
-                >
-                    {names.map((name) => (
-                        <MenuItem
-                            key={name}
-                            value={name}
-                            style={getStyles(name, personName, theme)}
-                        >
-                            {name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </div>
-    );
-}
-*/

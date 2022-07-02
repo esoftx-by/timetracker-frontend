@@ -14,6 +14,7 @@ import {AuthAPI} from "../../API/api";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Formik} from "formik";
+import {Helmet} from "react-helmet";
 
 const LoginForm = (props) => {
 
@@ -21,6 +22,9 @@ const LoginForm = (props) => {
     const navigate = useNavigate()
     return (
         <div className="login">
+            <Helmet>
+                <title>login</title>
+            </Helmet>
             <Card sx={{minWidth: 275}}>
                 <h1>Log In</h1>
                 <Formik
@@ -119,7 +123,7 @@ const LoginForm = (props) => {
                     )}
                 </Formik>
                 <div className="login__registration">
-                    <NavLink to='/registration'>Sign Up</NavLink>
+                    {/*<NavLink to='/registration'>Sign Up</NavLink>*/}
                     <ToastContainer/>
                 </div>
             </Card>

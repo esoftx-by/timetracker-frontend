@@ -33,7 +33,6 @@ export const useRoutes = (isAuthenticated, userId, props, deleteUser) => {
             <Routes>
                 <Route exact path="/" element={<Navigate to={'/login'} replace/>}/>
                 <Route exact path="/login" element={<LoginForm/>}/>
-                <Route exact path="/registration" element={<RegistrationForm/>}/>
             </Routes>
         </Container>
     )
