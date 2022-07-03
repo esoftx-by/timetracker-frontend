@@ -15,7 +15,7 @@ function App(props) {
     const routes = useRoutes(isAuthenticated, userId, props.userData, props.deleteUser)
 
     useEffect(() => {
-        props.setUserData(userId)
+        {userId && props.setUserData(userId)}
     }, [userId, token])
 
     return (

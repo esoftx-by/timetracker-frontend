@@ -4,19 +4,21 @@ const SET_ALL_TRACKS = 'tracks/SET_ALL_TRACKS'
 const SET_NEW_TRACK = 'tracks/SET_NEW_TRACK'
 const SET_ALL_TRACK_BY_USER_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_TRACKS_BY_TASK_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
+const SET_ALL_TRACKS_BY_PROJECT_ID = 'tracks/SET_ALL_TRACKS_BY_PROJECT_ID'
 
 const initialState = {
     allTracks: [],
     allTrackByUserId: [],
-    tracksByTaskId: []
+    tracksByTaskId: [],
+    allTracksByProjectId:[]
 }
 
 export const trackReducers = (state = initialState, action) => {
     switch (action.type) {
         case SET_NEW_TRACK:
             let stateCopy = {...state}
-            stateCopy.allTracks = [...state.allTracks]
-            stateCopy.allTracks.push(action.data)
+            stateCopy.allTracksByProjectId = [...state.allTracksByProjectId]
+            stateCopy.allTracksByProjectId.push(action.data)
             return stateCopy
         case SET_ALL_TRACKS:
             return {
@@ -33,6 +35,11 @@ export const trackReducers = (state = initialState, action) => {
                 ...state,
                 tracksByTaskId: action.data
             }
+        case SET_ALL_TRACKS_BY_PROJECT_ID:
+            return {
+                ...state,
+                allTracksByProjectId: action.data
+            }
         default:
             return state
     }
@@ -43,6 +50,20 @@ const setAllTracks = (data) => ({type: SET_ALL_TRACKS, data})
 const setNewTrack = (data) => ({type: SET_NEW_TRACK, data})
 const setAllTracksByUserId = (data) => ({type: SET_ALL_TRACK_BY_USER_ID, data})
 const setTracksByTaskId = (data) => ({type: SET_TRACKS_BY_TASK_ID, data})
+const setAllTracksByProjectId = (data) => ({type: SET_ALL_TRACKS_BY_PROJECT_ID, data})
+
+
+export const setAllTracksByProjectIdThunk = (projectId) => {
+    return dispatch => {
+        TracksAPI.setAllTracksByProjectId(projectId)
+            .then(response => {
+                if (response.data.success){
+                    let allTracksByProjectId = response.data.response
+                    dispatch(setAllTracksByProjectId(allTracksByProjectId))
+                }
+            })
+    }
+}
 
 
 export const setNewTrackThunk = (userId, taskId, startTime, hours) => {

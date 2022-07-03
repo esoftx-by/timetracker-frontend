@@ -1,4 +1,4 @@
-import React, {lazy, useEffect, Suspense} from 'react'
+import React, {useEffect} from 'react'
 import FormDialog from "../../components/NewProject";
 import style from './Projects.module.css'
 import Box from '@mui/material/Box';

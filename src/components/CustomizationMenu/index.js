@@ -71,9 +71,7 @@ export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
         setAnchorEl(null);
     };
 
-    useEffect(() => {
-        setAllUsersThunk()
-    }, [])
+
 
     return (
         <div>
@@ -98,7 +96,7 @@ export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
                 open={open}
                 onClose={handleCloseBtn}
             >
-                <AlertDialogSlide handleCloseBtn={handleCloseBtn} allUsers={allUsers} project={project}/>
+                <AlertDialogSlide setAllUsersThunk={setAllUsersThunk} handleCloseBtn={handleCloseBtn} allUsers={allUsers} project={project}/>
             </StyledMenu>
         </div>
     );
@@ -138,7 +136,7 @@ const role = [
 ]
 
 
-const AlertDialogSlide = ({project, allUsers, handleCloseBtn}) => {
+const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk}) => {
     const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
@@ -147,13 +145,19 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn}) => {
         setOpen(true);
     };
 
+    let newUsers = allUsers.map(({email, ...n}) => (n.label = email, n))
+
+    useEffect(() => {
+        setAllUsersThunk()
+    }, [newUser])
+
     const handleClose = () => {
         setOpen(false);
         handleCloseBtn(null)
     };
     const [fullWidth, setFullWidth] = React.useState(true);
     const [maxWidth, setMaxWidth] = React.useState('sm');
-    let newUsers = allUsers.map(({email, ...n}) => (n.label = email, n))
+
     return (
         <div>
             <MenuItem onClick={handleClickOpen} disableRipple>

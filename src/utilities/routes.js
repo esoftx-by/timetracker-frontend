@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react'
-import {Navigate, NavLink, Route, Routes, useNavigate} from "react-router-dom";
+import React from 'react'
+import {Navigate, NavLink, Route, Routes} from "react-router-dom";
 import MainPage from "../pages/mainPage";
 import LoginForm from "../components/LoginForm";
-import RegistrationForm from "../components/RegistrationForm";
 import {Container} from "@mui/material";
 import Projects from "../pages/projects/projects";
 import ResponsiveAppBar from "../components/Navbar";
