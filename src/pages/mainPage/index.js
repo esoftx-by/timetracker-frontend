@@ -27,8 +27,7 @@ const MainPage = (props) => {
             <h1>List of my tasks:</h1>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <Suspense
-                            fallback={<CircularIndeterminate/>}><OutlinedCard data={data}/></Suspense>) :
+                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <OutlinedCard key={data.id}  data={data}/>) :
                         <Grid item xs={12} md={12}><h2>No Tasks</h2></Grid>}
                 </Grid>
             </Box>

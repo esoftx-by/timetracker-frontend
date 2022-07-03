@@ -21,8 +21,8 @@ export const taskReducer = (state = initialState, action) => {
             }
         case SET_NEW_TASK:
             let stateCopy = {...state}
-            stateCopy.allTask = [...state.allTask]
-            stateCopy.allTask.push(action.data)
+            stateCopy.allTasksProject = [...state.allTasksProject]
+            stateCopy.allTasksProject.push(action.data)
             return stateCopy
         case SET_ALL_TASKS_USER_ID:
             return {
@@ -48,7 +48,7 @@ export const setNewTaskThunk = (name, description, estimatedHours, authorId, pro
     return dispatch => {
         TaskAPI.newTask(name, description, estimatedHours, authorId, projectId)
             .then(response => {
-                if (response.data.success){
+                if (response.data.success) {
                     let data = response.data.response
                     dispatch(setNewTask(data))
                 }
@@ -83,7 +83,7 @@ export const setAllTasksProjectThunk = (projectId) => {
     return dispath => {
         TaskAPI.allTasksProject(projectId)
             .then(response => {
-                if (response.data.success){
+                if (response.data.success) {
                     let data = response.data.response
                     dispath(setAllTasksProject(data))
                 }
