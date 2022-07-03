@@ -14,7 +14,7 @@ const TasksProject = (props) => {
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
                 {props.AllTaskByProject ? props.AllTaskByProject.map(task => <OutlinedCardTask
-                        allTracks={props.allTracks} userId={props.userId} setNewTrackThunk={props.setNewTrackThunk}
+                        allTracks={props.allTracks} key={task.id} userId={props.userId} setNewTrackThunk={props.setNewTrackThunk}
                         tasksProject={task}/>) :
                     <h2>No tasks</h2>}
             </Grid>
