@@ -15,7 +15,7 @@ import {NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
 import {useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import Avatar from "@mui/material/Avatar";
+
 
 
 const pages = ['projects'];

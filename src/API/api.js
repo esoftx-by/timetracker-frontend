@@ -31,7 +31,7 @@ export const ProjectAPI = {
                 return response
             })
     },
-    newUserInProject(userId, projectId, role){
+    newUserInProject(userId, projectId, role) {
         return instance.post('project-users', {userId, projectId, role})
             .then(response => {
                 return response
@@ -115,6 +115,12 @@ export const TracksAPI = {
     },
     setTracksByTaskId(taskId) {
         return instance(`tracks/task/${taskId}`)
+            .then(response => {
+                return response
+            })
+    },
+    setAllTracksByProjectId(projectId) {
+        return instance.get(`tracks/project/${projectId}`)
             .then(response => {
                 return response
             })
