@@ -39,7 +39,7 @@ const MainPage = (props) => {
 }
 
 let mapStateToProps = (state) => ({
-    allTasksUserId: state.tasks.taskUsedId,
+    allTasksUserId: state.tasks.taskUserId,
     user: state.auth.user
 })
 
