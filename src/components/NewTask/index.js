@@ -7,14 +7,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from "@mui/material/Box";
-import {setNewTask} from "../../redux/reducers/taskReducer";
 import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 
 
-
-export default function FormDialogTask(props) {
+export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
 
     const [open, setOpen] = React.useState(false);
 
@@ -56,7 +54,7 @@ export default function FormDialogTask(props) {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewTaskThunk((values.name), (values.description), (Number(values.estimatedHours)),props.userId, props.projectId)
+                                setNewTaskThunk((values.name), (values.description), (Number(values.estimatedHours)), userId, projectId)
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -88,7 +86,7 @@ export default function FormDialogTask(props) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.name && touched.name &&
+                                <div style={{'width': '100%', 'margin': ' 1rem auto'}}>{errors.name && touched.name &&
                                     <Alert severity="error">{errors.name && touched.name && errors.name}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
@@ -104,7 +102,10 @@ export default function FormDialogTask(props) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.description && touched.description &&
+                                <div style={{
+                                    'width': '100%',
+                                    'margin': ' 1rem auto'
+                                }}>{errors.description && touched.description &&
                                     <Alert
                                         severity="error">{errors.description && touched.description && errors.description}</Alert>}</div>
 
@@ -123,8 +124,12 @@ export default function FormDialogTask(props) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.estimatedHours && touched.estimatedHours &&
-                                    <Alert severity="error">{errors.estimatedHours && touched.estimatedHours && errors.estimatedHours}</Alert>}</div>
+                                <div style={{
+                                    'width': '100%',
+                                    'margin': ' 1rem auto'
+                                }}>{errors.estimatedHours && touched.estimatedHours &&
+                                    <Alert
+                                        severity="error">{errors.estimatedHours && touched.estimatedHours && errors.estimatedHours}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
                                 }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"

@@ -4,6 +4,12 @@
     align-items: center;
     justify-content: flex-end;
 }
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10% auto;
+}
 
 .tasks {
     margin: 1rem 2rem;

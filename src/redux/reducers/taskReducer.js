@@ -8,7 +8,7 @@ const SET_ALL_TASKS_USER_ID = 'tasks/SET_ALL_TASK_USER_ID'
 
 const initialState = {
     allTask: [],
-    taskUsedId: [],
+    taskUsedId: null,
     allTasksProject: []
 }
 

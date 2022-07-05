@@ -25,16 +25,17 @@ export default function VirtualizedList(props) {
         let minutes = mins % 60;
         if (!minutes) {
             return hours + 'h '
+        } else if (!hours) {
+            return minutes + 'm'
         }
         return hours + 'h ' + minutes + 'm';
     };
 
-    function getTimeISO(date){
-        let time = new Date(date).toLocaleDateString()
-        return time
+    function getTimeISO(date) {
+        return new Date(date).toLocaleDateString()
     }
-    let timeInMinutes = (new Date(props.traks.endTime) - new Date(props.traks.startTime)) / 1000 / 60
 
+    let timeInMinutes = (new Date(props.traks.endTime) - new Date(props.traks.startTime)) / 1000 / 60
 
 
     return (

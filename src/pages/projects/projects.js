@@ -13,11 +13,11 @@ import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 const Projects = (props) => {
 
     useEffect(() => {
-        {
-            props.role === 'ADMIN' && props.setProjectThunk()
+        if (props.role === 'ADMIN') {
+            props.setProjectThunk()
         }
         props.setProjectByUserIdThunk(props.userData.id)
-    }, [props.userData.id])
+    }, [props.userData.id, props.role])
 
     return (
         <>

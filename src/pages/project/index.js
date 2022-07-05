@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
 import style from './Project.module.css'
@@ -8,18 +8,29 @@ import {Helmet} from "react-helmet";
 import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
 import TasksProject from "../../components/TasksProject";
 import {setAllTracksByProjectIdThunk, setNewTrackThunk} from "../../redux/reducers/trackReducer";
+import CircularIndeterminate from "../../components/Loader";
 
 
 const Project = (props) => {
+
+    const [loaded, setLoaded] = useState(false);
 
     const params = useParams();
     let id = Number(params.id)
 
     useEffect(() => {
         props.setProjectIdThunk(id)
-        props.setAllTracksByProjectIdThunk(id)
         props.setAllTasksProjectThunk(id)
+        props.setAllTracksByProjectIdThunk(id)
+        if (!loaded) {
+            setTimeout(() => setLoaded(true), 600);
+        }
+
     }, [id])
+
+    if (!loaded) {
+        return <div className={style.loader}><CircularIndeterminate/></div>
+    }
 
     return (
         <div>
