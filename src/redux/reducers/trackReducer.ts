@@ -1,4 +1,5 @@
 import {TracksAPI} from "../../API/api";
+import {allTracksByProjectIdType} from "../../types";
 
 const SET_ALL_TRACKS = 'tracks/SET_ALL_TRACKS'
 const SET_NEW_TRACK = 'tracks/SET_NEW_TRACK'
@@ -6,14 +7,23 @@ const SET_ALL_TRACK_BY_USER_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_TRACKS_BY_TASK_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_ALL_TRACKS_BY_PROJECT_ID = 'tracks/SET_ALL_TRACKS_BY_PROJECT_ID'
 
-const initialState = {
+
+
+type initialStateType = {
+    allTracks: null | object,
+    allTrackByUserId: null | object,
+    tracksByTaskId: null | object,
+    allTracksByProjectId: Array<allTracksByProjectIdType>
+}
+
+const initialState: initialStateType = {
     allTracks: [],
     allTrackByUserId: [],
     tracksByTaskId: [],
-    allTracksByProjectId:[]
+    allTracksByProjectId: []
 }
 
-export const trackReducers = (state = initialState, action) => {
+export const trackReducers = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
         case SET_NEW_TRACK:
             let stateCopy = {...state}
@@ -46,19 +56,19 @@ export const trackReducers = (state = initialState, action) => {
 }
 
 
-const setAllTracks = (data) => ({type: SET_ALL_TRACKS, data})
-const setNewTrack = (data) => ({type: SET_NEW_TRACK, data})
-const setAllTracksByUserId = (data) => ({type: SET_ALL_TRACK_BY_USER_ID, data})
-const setTracksByTaskId = (data) => ({type: SET_TRACKS_BY_TASK_ID, data})
-const setAllTracksByProjectId = (data) => ({type: SET_ALL_TRACKS_BY_PROJECT_ID, data})
+const setAllTracks = (data: object) => ({type: SET_ALL_TRACKS, data})
+const setNewTrack = (data: object) => ({type: SET_NEW_TRACK, data})
+const setAllTracksByUserId = (data: object) => ({type: SET_ALL_TRACK_BY_USER_ID, data})
+const setTracksByTaskId = (data: object) => ({type: SET_TRACKS_BY_TASK_ID, data})
+const setAllTracksByProjectId = (data: object) => ({type: SET_ALL_TRACKS_BY_PROJECT_ID, data})
 
 
-export const setAllTracksByProjectIdThunk = (projectId) => {
-    return dispatch => {
+export const setAllTracksByProjectIdThunk = (projectId: number) => {
+    return (dispatch: any) => {
         TracksAPI.setAllTracksByProjectId(projectId)
             .then(response => {
-                if (response.data.success){
-                    let allTracksByProjectId = response.data.response
+                if (response.data.success) {
+                    let allTracksByProjectId: allTracksByProjectIdType = response.data.response
                     dispatch(setAllTracksByProjectId(allTracksByProjectId))
                 }
             })
@@ -66,8 +76,8 @@ export const setAllTracksByProjectIdThunk = (projectId) => {
 }
 
 
-export const setNewTrackThunk = (userId, taskId, startTime, hours) => {
-    return dispatch => {
+export const setNewTrackThunk = (userId: number, taskId: number, startTime: number, hours: number) => {
+    return (dispatch: any) => {
         TracksAPI.newTrack(userId, taskId, startTime, hours)
             .then(response => {
                 if (response.data.success) {
@@ -79,34 +89,34 @@ export const setNewTrackThunk = (userId, taskId, startTime, hours) => {
 }
 
 export const SetAllTracksThunks = () => {
-    return dispatch => {
+    return (dispatch: any) => {
         TracksAPI.setAllTracks()
             .then(response => {
                 if (response.data.success) {
-                    let allTracks = response.data.response
+                    let allTracks: object = response.data.response
                     dispatch(setAllTracks(allTracks))
                 }
             })
     }
 }
 
-export const setAllTracksByUserIdThunk = (userId) => {
-    return dispatch => {
+export const setAllTracksByUserIdThunk = (userId: number) => {
+    return (dispatch: any) => {
         TracksAPI.setAllTracksByUserId(userId)
             .then(response => {
-                if (response.data.success){
-                    let allTracksByUser = response.data.response
+                if (response.data.success) {
+                    let allTracksByUser: object = response.data.response
                     dispatch(setAllTracksByUserId(allTracksByUser))
                 }
             })
     }
 }
-export const setTracksByTaskIdThunk = (TaskId) => {
-    return dispatch => {
+export const setTracksByTaskIdThunk = (TaskId: number) => {
+    return (dispatch: any) => {
         TracksAPI.setTracksByTaskId(TaskId)
             .then(response => {
-                if (response.data.success){
-                    let allTracksByTask = response.data.response
+                if (response.data.success) {
+                    let allTracksByTask: object = response.data.response
                     dispatch(setTracksByTaskId(allTracksByTask))
                 }
             })

@@ -1,18 +1,20 @@
 import {useCallback, useEffect, useState} from "react";
 import {instance} from "../API/api";
-import {useNavigate} from "react-router-dom";
-
-
 
 const storageName = 'userData'
 
+export type storageType = {
+    token: string | null
+    userId: number | null
+    lastName: string | null
+}
 
 export const useAuth = () => {
-    const [token, setToken] = useState(null)
-    const [userId, setUserId] = useState(null)
-    const [lastName, setLastName] = useState(null)
+    const [token, setToken] = useState<string | null>(null)
+    const [userId, setUserId] = useState<number | null>(null)
+    const [lastName, setLastName] = useState<string | null>(null)
 
-    const login = useCallback((jwtToken, id, lastName) => {
+    const login = useCallback((jwtToken: string | null, id: number | null, lastName: string | null) => {
         setToken(jwtToken)
         setUserId(id)
         setLastName(lastName)
@@ -26,15 +28,17 @@ export const useAuth = () => {
     const logout = useCallback(() => {
         setToken(null)
         setUserId(null)
+        setLastName(null)
         delete instance.defaults.headers.common['Authorization']
         localStorage.removeItem(storageName)
     }, [])
 
     useEffect(() => {
-        const data = JSON.parse(localStorage.getItem(storageName))
+        const data: storageType = JSON.parse(localStorage.getItem(storageName) || '{}')
         if (data && data.token) {
             login(data.token, data.userId, data.lastName)
         }
+
     }, [login])
 
     return {login, logout, token, userId, lastName}

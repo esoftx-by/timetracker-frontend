@@ -1,23 +1,46 @@
-import React, {useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import FormDialog from "../../components/NewProject";
+// @ts-ignore
 import style from './Projects.module.css'
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
 import {connect} from "react-redux";
 import {setNewProjectThunk, setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/projectsReducer";
-import {Helmet} from "react-helmet";
+
 import ProjectCard from "../../components/ProjectCard";
 import {setAllUsersThunk} from "../../redux/reducers/authReducer";
+import {Helmet} from "react-helmet-async";
+import {projectType, userType} from "../../types";
+import {AppStateType} from "../../redux/store";
+
+type TStateProps = {
+    projects: Array<projectType> | null
+    projectsByUser: Array<projectType> | null
+    allUsers: Array<userType> | null
+}
+
+type TDispatchProps = {
+    setProjectThunk: () => void
+    setProjectByUserIdThunk: (id: number) => void
+    setNewProjectThunk: (name: string, description: string, customer: string) => void
+    setAllUsersThunk: () => void
+}
+
+type OwnToProps = {
+    user: userType
+}
+
+type PropsType = TStateProps & TDispatchProps & OwnToProps
 
 
-const Projects = (props) => {
+const Projects: FC<PropsType> = (props) => {
 
     useEffect(() => {
-        {
-            props.role === 'ADMIN' && props.setProjectThunk()
+        if (props.user.applicationRole === 'ADMIN') {
+            props.setProjectThunk()
         }
-        props.setProjectByUserIdThunk(props.userData.id)
-    }, [props.userData.id])
+        props.setProjectByUserIdThunk(props.user.id)
+    }, [props.user.id, props.user.applicationRole])
 
     return (
         <>
@@ -26,24 +49,24 @@ const Projects = (props) => {
                     <title>Projects</title>
                 </Helmet>
                 <h1>Projects:</h1>
-                {props.role === "ADMIN" && <FormDialog setNewProjectThunk={props.setNewProjectThunk}/>}
+                {props.user.applicationRole === "ADMIN" && <FormDialog setNewProjectThunk={props.setNewProjectThunk}/>}
             </div>
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.role === 'ADMIN' ? (props.projects.length !== 0 ? props.projects.map(project =>
+                        {props.user.applicationRole === 'ADMIN' ? (props.projects ? props.projects.map(project =>
                                 <ProjectCard
                                     allUsers={props.allUsers}
                                     setAllUsersThunk={props.setAllUsersThunk}
                                     project={project}
-                                    key={props.projects.id} role={props.role}/>) :
+                                    key={project.id} role={props.user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2>
-                            </Grid>) : (props.projectsByUser.length !== 0 ? props.projectsByUser.map(project =>
+                            </Grid>) : (props.projectsByUser ? props.projectsByUser.map(project =>
                                 <ProjectCard
                                     allUsers={props.allUsers}
                                     setAllUsersThunk={props.setAllUsersThunk}
                                     project={project}
-                                    key={props.projectsByUser.id} role={props.role}/>) :
+                                    key={project.id} role={props.user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2></Grid>)}
                     </Grid>
                 </Box>
@@ -52,16 +75,14 @@ const Projects = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType):TStateProps  => ({
     projects: state.projectsPage.projects,
     projectsByUser: state.projectsPage.projectsByUser,
-    role: state.auth.user.applicationRole,
-    userData: state.auth.user,
     allUsers: state.auth.allUsers
 })
 
 
-export default connect(mapStateToProps, {
+export default connect<TStateProps, TDispatchProps, OwnToProps, AppStateType>(mapStateToProps, {
     setProjectThunk,
     setNewProjectThunk,
     setProjectByUserIdThunk,

@@ -18,13 +18,12 @@ import {AuthContext} from "../../context/AuthContext";
 
 
 
+
 const pages = ['projects'];
 const settings = ['Logout'];
 
 const ResponsiveAppBar = (props) => {
 
-    // let firstName = props.user.firstName.split('')
-    // let lastName = props.user.lastName.split('')
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -69,7 +68,7 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/' + props.user.id + "-" + props.user.lastName} className={style.nav}>
+                        <NavLink to={props.user ? ('/' + props.user.id + "-" + props.user.lastName) : '/'} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -128,7 +127,7 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={'/' + props.user.id + "-" + props.user.lastName} className={style.nav}>
+                        <NavLink to={props.user ? ('/' + props.user.id + "-" + props.user.lastName) : '/'} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -145,13 +144,13 @@ const ResponsiveAppBar = (props) => {
                             </NavLink>
                         ))}
                     </Box>
-                    <div className={style.name}>{props.user && props.user.firstName + ' ' + props.user.lastName}</div>
+                    <div className={style.name}>{props.user && (props.user && props.user.firstName + ' ' + props.user.lastName)}</div>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                 {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
                                 {props.user && <div
-                                    className={style.iconName}>{props.user.firstName[0] + props.user.lastName[0]}</div>}
+                                    className={style.iconName}>{props.user && (props.user.firstName[0] + props.user.lastName[0])}</div>}
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -184,4 +183,6 @@ const ResponsiveAppBar = (props) => {
         </AppBar>
     );
 };
-export default ResponsiveAppBar;
+
+
+export default ResponsiveAppBar

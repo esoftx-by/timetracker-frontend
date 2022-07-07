@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export let instance = axios.create({
-    baseURL: "http://localhost:8080/api/v1/"
+    baseURL: `http://localhost:8080/api/v1/`
 })
 
 
