@@ -18,15 +18,15 @@ export type taskType = {
     name: string,
     description: string,
     estimatedHours: number,
-    currentAssignee: Array<userType>,
-    project: Array<projectType>,
+    currentAssignee: userType,
+    project: projectType,
     status: string
 }
 
 export type allTracksByProjectIdType = {
     id: number,
-    task: Array<taskType>,
-    user: Array<userType>,
+    task: taskType,
+    user: userType,
     startTime: string,
     endTime: string
 }
@@ -36,7 +36,7 @@ export type allTasksProjectType = {
     name: string,
     description: string,
     estimatedHours: number,
-    currentAssignee: Array<userType>,
+    currentAssignee: userType,
     project: Array<projectType>,
     status: string
 }

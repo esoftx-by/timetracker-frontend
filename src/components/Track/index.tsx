@@ -1,4 +1,5 @@
 import * as React from 'react';
+// @ts-ignore
 import style from './Track.module.css'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,11 +7,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
+import {FC} from "react";
 
+type OwnToProps = {
+    tracks: allTracksByProjectIdType
+}
 
-export default function VirtualizedList(props) {
+const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -20,7 +26,7 @@ export default function VirtualizedList(props) {
         setOpen(false);
     };
 
-    function getTimeFromMins(mins) {
+    function getTimeFromMins(mins: number) {
         let hours = Math.trunc(mins / 60);
         let minutes = mins % 60;
         if (!minutes) {
@@ -31,17 +37,21 @@ export default function VirtualizedList(props) {
         return hours + 'h ' + minutes + 'm';
     };
 
-    function getTimeISO(date) {
+    function getTimeISO(date: string) {
         return new Date(date).toLocaleDateString()
     }
 
-    let timeInMinutes = (new Date(props.traks.endTime) - new Date(props.traks.startTime)) / 1000 / 60
+    let endTime: number = +(new Date(tracks.endTime))
+    let startTime: number = +(new Date(tracks.startTime))
+
+
+    let timeInMinutes = (endTime - startTime) / 1000 / 60
 
 
     return (
         <>
             <div onClick={handleClickOpen} className={style.newTrack}>
-                <div>{props.traks.user.firstName + ' ' + props.traks.user.lastName}</div>
+                <div>{tracks.user.firstName + ' ' + tracks.user.lastName}</div>
                 <div>{getTimeFromMins(timeInMinutes)}</div>
             </div>
             <div>
@@ -56,13 +66,13 @@ export default function VirtualizedList(props) {
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            {getTimeISO(props.traks.startTime)}
+                            {getTimeISO(tracks.startTime)}
                         </DialogContentText>
                         <DialogContentText id="alert-dialog-description">
                             {getTimeFromMins(timeInMinutes)}
                         </DialogContentText>
                         <DialogContentText id="alert-dialog-description">
-                            {props.traks.user.firstName + ' ' + props.traks.user.lastName}
+                            {tracks.user.firstName + ' ' + tracks.user.lastName}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
@@ -73,3 +83,5 @@ export default function VirtualizedList(props) {
         </>
     );
 }
+
+export default VirtualizedList

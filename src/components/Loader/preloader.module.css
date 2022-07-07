@@ -1,3 +1,8 @@
 .preloader{
-    margin: 10% auto;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
 }

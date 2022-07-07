@@ -1,0 +1,10 @@
+.cardContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tracks {
+    overflow-y: scroll;
+    height: 190px
+}
