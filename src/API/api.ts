@@ -13,25 +13,25 @@ export const ProjectAPI = {
                 return response
             })
     },
-    newProject(name, description, customer) {
+    newProject(name: string, description: string, customer: string) {
         return instance.post('projects', {name, description, customer})
             .then(response => {
                 return response
             })
     },
-    getProjectId(id) {
+    getProjectId(id: number) {
         return instance.get(`projects/${id}`)
             .then(response => {
                 return response
             })
     },
-    getProjectByUserId(id) {
+    getProjectByUserId(id: number) {
         return instance.get(`project-users/user/${id}`)
             .then(response => {
                 return response
             })
     },
-    newUserInProject(userId, projectId, role) {
+    newUserInProject(userId: number, projectId: number, role: string) {
         return instance.post('project-users', {userId, projectId, role})
             .then(response => {
                 return response
@@ -40,19 +40,19 @@ export const ProjectAPI = {
 }
 
 export const AuthAPI = {
-    newUser(email, firstName, lastName, password) {
+    newUser(email: string, firstName: string, lastName: string, password: string | number) {
         return instance.post('users', {email, firstName, lastName, password})
             .then(response => {
                 return response
             })
     },
-    auth(email, password) {
+    auth(email: string, password: string | number) {
         return instance.post('login', {email, password})
             .then(response => {
                 return response
             })
     },
-    setUserData(id) {
+    setUserData(id: number) {
         return instance.get(`users/${id}`)
             .then(response => {
                 return response
@@ -73,20 +73,20 @@ export const TaskAPI = {
                 return response
             })
     },
-    newTask(name, description, estimatedHours, authorId, projectId) {
+    newTask(name: string, description: string, estimatedHours: number, authorId: number, projectId: number) {
         return instance.post('tasks', {name, description, estimatedHours, authorId, projectId})
             .then(response => {
                 return response
             })
 
     },
-    allTaskUserId(id) {
+    allTaskUserId(id: number) {
         return instance.get(`tasks/user/${id}`)
             .then(response => {
                 return response
             })
     },
-    allTasksProject(projectId) {
+    allTasksProject(projectId: number) {
         return instance.get(`tasks/project/${projectId}`)
             .then(response => {
                 return response
@@ -95,7 +95,7 @@ export const TaskAPI = {
 }
 
 export const TracksAPI = {
-    newTrack(userId, taskId, startTime, hours) {
+    newTrack(userId: number, taskId: number, startTime: string, hours: number) {
         return instance.post('tracks', {userId, taskId, startTime, hours})
             .then(response => {
                 return response
@@ -107,19 +107,19 @@ export const TracksAPI = {
                 return response
             })
     },
-    setAllTracksByUserId(userId) {
+    setAllTracksByUserId(userId: number) {
         return instance.get(`tracks/user/${userId}`)
             .then(response => {
                 return response
             })
     },
-    setTracksByTaskId(taskId) {
+    setTracksByTaskId(taskId: number) {
         return instance(`tracks/task/${taskId}`)
             .then(response => {
                 return response
             })
     },
-    setAllTracksByProjectId(projectId) {
+    setAllTracksByProjectId(projectId: number) {
         return instance.get(`tracks/project/${projectId}`)
             .then(response => {
                 return response

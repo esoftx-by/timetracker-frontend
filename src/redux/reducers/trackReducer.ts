@@ -76,7 +76,7 @@ export const setAllTracksByProjectIdThunk = (projectId: number) => {
 }
 
 
-export const setNewTrackThunk = (userId: number, taskId: number, startTime: number, hours: number) => {
+export const setNewTrackThunk = (userId: number, taskId: number, startTime: string, hours: number) => {
     return (dispatch: any) => {
         TracksAPI.newTrack(userId, taskId, startTime, hours)
             .then(response => {

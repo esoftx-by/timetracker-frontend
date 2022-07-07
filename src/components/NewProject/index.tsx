@@ -10,11 +10,16 @@ import Box from "@mui/material/Box";
 import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
+import {FC} from "react";
 
 
-export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
+type OwnToProps = {
+    setNewProjectThunk: (name: string, description: string, customer: string) => void
+}
 
-    const [open, setOpen] = React.useState(false);
+
+const FormDialog:FC<OwnToProps> = ({setNewProjectThunk}) => {
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -24,37 +29,36 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
         setOpen(false);
     };
 
-
     return (
         <div>
             <Button variant="contained" onClick={handleClickOpen}>
-                New Task
+                New Project
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>New Task</DialogTitle>
+                <DialogTitle>New Project</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Create a new task. Please indicate the name of the task, description and estimated hours.
+                        Create a new project. Please indicate the name of the project, description and customer.
                     </DialogContentText><br/>
                     <Formik
-                        initialValues={{name: '', description: '', estimatedHours: ''}}
+                        initialValues={{name: '', description: '', customer: ''}}
                         validate={values => {
-                            const errors = {};
+                            const errors: any = {};
                             if (!values.name) {
                                 errors.name = 'Required';
                             }
                             if (!values.description) {
                                 errors.description = 'Required'
                             }
-                            if (!values.estimatedHours) {
-                                errors.estimatedHours = 'Required'
+                            if (!values.customer) {
+                                errors.customer = 'Required'
                             }
                             return errors;
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                setNewTaskThunk((values.name), (values.description), (Number(values.estimatedHours)), userId, projectId)
+                                setNewProjectThunk((values.name), (values.description), (values.customer))
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -76,7 +80,7 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
                                         '& > :not(style)': {width: '100%'},
                                     }}>
                                     <TextField
-                                        error={errors.name && touched.name && 'error'}
+                                        error={!!(errors.name && touched.name)}
                                         type="text"
                                         name="name"
                                         label="Name"
@@ -86,13 +90,13 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin': ' 1rem auto'}}>{errors.name && touched.name &&
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.name && touched.name &&
                                     <Alert severity="error">{errors.name && touched.name && errors.name}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
                                 }}>
                                     <TextField
-                                        error={errors.description && touched.description && 'error'}
+                                        error={!!(errors.description && touched.description)}
                                         type="text"
                                         name="description"
                                         label="Description"
@@ -102,10 +106,7 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
                                     />
                                 </Box>
 
-                                <div style={{
-                                    'width': '100%',
-                                    'margin': ' 1rem auto'
-                                }}>{errors.description && touched.description &&
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.description && touched.description &&
                                     <Alert
                                         severity="error">{errors.description && touched.description && errors.description}</Alert>}</div>
 
@@ -114,22 +115,18 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
                                         '& > :not(style)': {width: '100%'},
                                     }}>
                                     <TextField
-                                        error={errors.estimatedHours && touched.estimatedHours && 'error'}
-                                        type="number"
-                                        name="estimatedHours"
-                                        label="Estimated Hours"
+                                        error={!!(errors.customer && touched.customer)}
+                                        type="text"
+                                        name="customer"
+                                        label="Customer"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.estimatedHours}
+                                        value={values.customer}
                                     />
                                 </Box>
 
-                                <div style={{
-                                    'width': '100%',
-                                    'margin': ' 1rem auto'
-                                }}>{errors.estimatedHours && touched.estimatedHours &&
-                                    <Alert
-                                        severity="error">{errors.estimatedHours && touched.estimatedHours && errors.estimatedHours}</Alert>}</div>
+                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.customer && touched.customer &&
+                                    <Alert severity="error">{errors.customer && touched.customer && errors.customer}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
                                 }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
@@ -148,3 +145,5 @@ export default function FormDialogTask({setNewTaskThunk, userId, projectId}) {
         </div>
     );
 }
+
+export default FormDialog

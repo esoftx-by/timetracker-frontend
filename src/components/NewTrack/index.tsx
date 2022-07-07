@@ -10,11 +10,17 @@ import Box from "@mui/material/Box";
 import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
+import {FC} from "react";
 
+type OwnToProps = {
+    userId: number
+    taskId: number
+    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
+}
 
-export default function FormDialogTrack(props) {
+const FormDialogTrack: FC<OwnToProps> = ({userId, taskId, setNewTrackThunk}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -39,15 +45,15 @@ export default function FormDialogTrack(props) {
                         initialValues={{date: '', hours: ''}}
                         validate={values => {
 
-                            const errors = {};
+                            const errors: any = {};
                             if (!values.date) {
                                 errors.date = 'Required';
                             }
-                            if (!values.hours && values.hours !== 0) {
+                            if (!values.hours) {
                                 errors.hours = 'Required';
                             }
 
-                            if (values.hours && values.hours > 0 && values.hours < 24) {
+                            if (values.hours && +(values.hours) > 0 && +(values.hours) < 24) {
                                 return errors;
                             } else if (!errors.hours) {
                                 errors.hours = 'Enter a number within (0, 24) range';
@@ -58,10 +64,11 @@ export default function FormDialogTrack(props) {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
+                                // @ts-ignore
                                 let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
                                 let gmtFirst = gmt.slice(0, 3)
                                 let gmtSecond = gmt.slice(2, 4)
-                                props.setNewTrackThunk(props.userId, props.taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours))
+                                setNewTrackThunk(userId, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours))
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -83,7 +90,7 @@ export default function FormDialogTrack(props) {
                                     '& > :not(style)': {width: '100%'},
                                 }}>
                                     <TextField
-                                        error={errors.date && touched.date && 'error'}
+                                        error={!!(errors.date && touched.date)}
                                         id="datetime-local"
                                         label="Next appointment"
                                         type="datetime-local"
@@ -104,7 +111,7 @@ export default function FormDialogTrack(props) {
                                         '& > :not(style)': {width: '100%'},
                                     }}>
                                     <TextField
-                                        error={errors.hours && touched.hours && 'error'}
+                                        error={!!(errors.hours && touched.hours)}
                                         type="number"
                                         name="hours"
                                         label="Hours"
@@ -136,3 +143,5 @@ export default function FormDialogTrack(props) {
         </div>
     );
 }
+
+export default FormDialogTrack

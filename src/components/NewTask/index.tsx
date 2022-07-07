@@ -7,15 +7,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Box from "@mui/material/Box";
-import style from './NewTask.module.css'
-import {AuthAPI} from "../../API/api";
-import {toast} from "react-toastify";
 import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
+import {FC} from "react";
 
-export default function FormDialog(props) {
-    const [open, setOpen] = React.useState(false);
+type OwnToProps = {
+    setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
+    userId: number
+    projectId: number
+}
+
+const FormDialogTask: FC<OwnToProps> = ({setNewTaskThunk, userId, projectId}) => {
+
+    const [open, setOpen] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -25,36 +30,37 @@ export default function FormDialog(props) {
         setOpen(false);
     };
 
+
     return (
         <div>
             <Button variant="contained" onClick={handleClickOpen}>
-                New Project
+                New Task
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>New Project</DialogTitle>
+                <DialogTitle>New Task</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Create a new project. Please indicate the name of the project, description and customer.
+                        Create a new task. Please indicate the name of the task, description and estimated hours.
                     </DialogContentText><br/>
                     <Formik
-                        initialValues={{name: '', description: '', customer: ''}}
+                        initialValues={{name: '', description: '', estimatedHours: ''}}
                         validate={values => {
-                            const errors = {};
+                            const errors: any = {};
                             if (!values.name) {
                                 errors.name = 'Required';
                             }
                             if (!values.description) {
                                 errors.description = 'Required'
                             }
-                            if (!values.customer) {
-                                errors.customer = 'Required'
+                            if (!values.estimatedHours) {
+                                errors.estimatedHours = 'Required'
                             }
                             return errors;
                         }}
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                props.setNewProjectThunk((values.name), (values.description), (values.customer))
+                                setNewTaskThunk((values.name), (values.description), (+(values.estimatedHours)), userId, projectId)
                                 resetForm()
                                 setOpen(false)
                             }, 400);
@@ -76,7 +82,7 @@ export default function FormDialog(props) {
                                         '& > :not(style)': {width: '100%'},
                                     }}>
                                     <TextField
-                                        error={errors.name && touched.name && 'error'}
+                                        error={!!(errors.name && touched.name)}
                                         type="text"
                                         name="name"
                                         label="Name"
@@ -86,13 +92,13 @@ export default function FormDialog(props) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.name && touched.name &&
+                                <div style={{'width': '100%', 'margin': ' 1rem auto'}}>{errors.name && touched.name &&
                                     <Alert severity="error">{errors.name && touched.name && errors.name}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
                                 }}>
                                     <TextField
-                                        error={errors.description && touched.description && 'error'}
+                                        error={!!(errors.description && touched.description)}
                                         type="text"
                                         name="description"
                                         label="Description"
@@ -102,7 +108,10 @@ export default function FormDialog(props) {
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.description && touched.description &&
+                                <div style={{
+                                    'width': '100%',
+                                    'margin': ' 1rem auto'
+                                }}>{errors.description && touched.description &&
                                     <Alert
                                         severity="error">{errors.description && touched.description && errors.description}</Alert>}</div>
 
@@ -111,18 +120,22 @@ export default function FormDialog(props) {
                                         '& > :not(style)': {width: '100%'},
                                     }}>
                                     <TextField
-                                        error={errors.customer && touched.customer && 'error'}
-                                        type="text"
-                                        name="customer"
-                                        label="Customer"
+                                        error={!!(errors.estimatedHours && touched.estimatedHours)}
+                                        type="number"
+                                        name="estimatedHours"
+                                        label="Estimated Hours"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.customer}
+                                        value={values.estimatedHours}
                                     />
                                 </Box>
 
-                                <div style={{'width': '100%', 'margin':' 1rem auto'}}>{errors.customer && touched.customer &&
-                                    <Alert severity="error">{errors.customer && touched.customer && errors.customer}</Alert>}</div>
+                                <div style={{
+                                    'width': '100%',
+                                    'margin': ' 1rem auto'
+                                }}>{errors.estimatedHours && touched.estimatedHours &&
+                                    <Alert
+                                        severity="error">{errors.estimatedHours && touched.estimatedHours && errors.estimatedHours}</Alert>}</div>
                                 <Box sx={{
                                     '& > :not(style)': {width: '100%'},
                                 }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
@@ -141,3 +154,5 @@ export default function FormDialog(props) {
         </div>
     );
 }
+
+export default FormDialogTask

@@ -12,25 +12,63 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import {NavLink, useNavigate} from "react-router-dom";
+// @ts-ignore
 import style from './Navbar.module.css'
-import {useContext} from "react";
+import {FC, useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
+import {userType} from "../../types";
+import {Avatar} from "@mui/material";
 
 
+const pages: Array<string> = ['projects'];
+const settings: Array<string> = ['Logout'];
+
+type OwnToProps = {
+    user: userType | null
+    deleteUser: () => void
+}
 
 
-const pages = ['projects'];
-const settings = ['Logout'];
+function stringToColor(string: string) {
+    let hash = 0;
+    let i;
 
-const ResponsiveAppBar = (props) => {
+    /* eslint-disable no-bitwise */
+    for (i = 0; i < string.length; i += 1) {
+        hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
 
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    let color = '#';
 
-    const handleOpenNavMenu = (event) => {
+    for (i = 0; i < 3; i += 1) {
+        const value = (hash >> (i * 8)) & 0xff;
+        color += `00${value.toString(16)}`.slice(-2);
+    }
+    /* eslint-enable no-bitwise */
+
+    return color;
+}
+
+function stringAvatar(name: string) {
+    return {
+        sx: {
+            bgcolor: stringToColor(name),
+        },
+        children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    };
+}
+
+
+const ResponsiveAppBar: FC<OwnToProps> = ({user, deleteUser}) => {
+    let fullName: null | string = user && user.firstName + ' ' + user.lastName
+
+    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleOpenUserMenu = (event) => {
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
@@ -43,12 +81,14 @@ const ResponsiveAppBar = (props) => {
     };
     const navigate = useNavigate();
     const auth = useContext(AuthContext)
-    const logoutHandler = event => {
+    const logoutHandler = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault()
-        props.deleteUser()
+        deleteUser()
         auth.logout()
         navigate('/')
     }
+
+
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
@@ -68,7 +108,7 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={props.user ? ('/' + props.user.id + "-" + props.user.lastName) : '/'} className={style.nav}>
+                        <NavLink to={'/home'} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -127,7 +167,7 @@ const ResponsiveAppBar = (props) => {
                             textDecoration: 'none',
                         }}
                     >
-                        <NavLink to={props.user ? ('/' + props.user.id + "-" + props.user.lastName) : '/'} className={style.nav}>
+                        <NavLink to={'/home'} className={style.nav}>
                             Tracker
                         </NavLink>
                     </Typography>
@@ -144,13 +184,11 @@ const ResponsiveAppBar = (props) => {
                             </NavLink>
                         ))}
                     </Box>
-                    <div className={style.name}>{props.user && (props.user && props.user.firstName + ' ' + props.user.lastName)}</div>
+                    <div className={style.name}>{user && (user.firstName + ' ' + user.lastName)}</div>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                {/*<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>*/}
-                                {props.user && <div
-                                    className={style.iconName}>{props.user && (props.user.firstName[0] + props.user.lastName[0])}</div>}
+                                {user && <Avatar {...stringAvatar(fullName as string)} />}
                             </IconButton>
                         </Tooltip>
                         <Menu
