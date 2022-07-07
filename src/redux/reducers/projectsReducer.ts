@@ -10,8 +10,8 @@ const SET_PROJECT_BY_USER_ID = 'project/SET_PROJECT_BY_USER_ID'
 
 export type initialStateType = {
     projects: Array<projectType>,
-    projectsByUser: object | null,
-    project: null | object
+    projectsByUser: Array<projectType> | null,
+    project: projectType | null
 }
 
 const initialState: initialStateType = {

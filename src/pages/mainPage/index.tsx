@@ -1,20 +1,34 @@
-import React, {useEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import './mainPage.scss'
 import {Grid} from "@mui/material";
 import Box from "@mui/material/Box";
-import {Helmet} from "react-helmet";
 import CircularIndeterminate from "../../components/Loader";
 import {connect} from "react-redux";
 import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
-import {setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
 import OutlinedCard from "../../components/TaskCard";
+import {AppStateType} from "../../redux/store";
+import {taskType, userType} from "../../types";
+import {Helmet} from "react-helmet-async";
 
-const MainPage = (props) => {
+type TStateProps = {
+    allTasksUserId: Array<taskType>
+}
+
+type TDispatchProps = {
+    setAllTaskUserIdThunk: (userId: number) => void
+}
+
+type OwnToProps = {
+    userId: number
+    user: userType | null
+}
+
+type PropsType = TStateProps & TDispatchProps & OwnToProps
+
+const MainPage: FC<PropsType> = (props) => {
 
     useEffect(() => {
-
         props.setAllTaskUserIdThunk(props.userId)
-
     }, [])
 
     if (!props.allTasksUserId) {
@@ -23,7 +37,7 @@ const MainPage = (props) => {
 
     return <div className="mainPage">
         <Helmet>
-            <title>{props.user.firstName + ' ' + props.user.lastName}</title>
+            <title>{props.user && props.user.firstName + ' ' + props.user.lastName}</title>
         </Helmet>
         <div className="mainPage__item">
             <h1>List of my tasks:</h1>
@@ -38,13 +52,11 @@ const MainPage = (props) => {
     </div>
 }
 
-let mapStateToProps = (state) => ({
+let mapStateToProps = (state: AppStateType): TStateProps => ({
     allTasksUserId: state.tasks.taskUserId,
-    user: state.auth.user
 })
 
 
-export default connect(mapStateToProps, {
-    setAllTaskUserIdThunk,
-    setTracksByTaskIdThunk
+export default connect<TStateProps, TDispatchProps, OwnToProps, AppStateType>(mapStateToProps, {
+    setAllTaskUserIdThunk
 })(MainPage)

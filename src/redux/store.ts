@@ -13,6 +13,9 @@ const Reducers = combineReducers({
     tracks: trackReducers
 })
 
+type reducersType = typeof Reducers
+export type AppStateType = ReturnType<reducersType>
+
 
 const store = createStore(Reducers,
     applyMiddleware(thunkMiddleware)
@@ -20,4 +23,5 @@ const store = createStore(Reducers,
 
 export default store
 
+// @ts-ignore
 window.store = store

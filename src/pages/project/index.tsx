@@ -1,22 +1,46 @@
-import React, {useEffect, useState} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom";
+// @ts-ignore
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
 import {setAllTasksProjectThunk, setNewTaskThunk} from "../../redux/reducers/taskReducer";
-import {Helmet} from "react-helmet";
 import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
 import TasksProject from "../../components/TasksProject";
 import {setAllTracksByProjectIdThunk, setNewTrackThunk} from "../../redux/reducers/trackReducer";
 import CircularIndeterminate from "../../components/Loader";
+import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
+import {Helmet} from "react-helmet-async";
+import {AppStateType} from "../../redux/store";
 
 
-const Project = (props) => {
+type TStateProps = {
+    project: projectType | null
+    allTasksProject: Array<allTasksProjectType>
+    allTracksByProjectId: Array<allTracksByProjectIdType>
+}
 
-    const [loaded, setLoaded] = useState(false);
+type TDispatchProps = {
+    setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
+    setProjectIdThunk:(id: number) => void
+    setNewTrackThunk:(userId: number, taskId: number, startTime: number, hours: number) => void
+    setAllTasksProjectThunk:(id: number) => void
+    setAllTracksByProjectIdThunk:(id: number) => void
+}
+
+type OwnToProps = {
+    userId: number
+}
+
+type PropsType = TStateProps & TDispatchProps & OwnToProps
+
+
+const Project:FC<PropsType> = (props) => {
+
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     const params = useParams();
-    let id = Number(params.id)
+    let id:number = Number(params.id)
 
     useEffect(() => {
         props.setProjectIdThunk(id)
@@ -38,9 +62,7 @@ const Project = (props) => {
                 <title>{props.project && props.project.name}</title>
             </Helmet>
             <div className={style.project}>
-                <FormDialogTask projectId={props.project && props.project.id}
-                                userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}
-                                setNewTask={props.setNewTask}/>
+                <FormDialogTask userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}/>
             </div>
             <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk}
                           allTracks={props.allTracksByProjectId}
@@ -50,9 +72,8 @@ const Project = (props) => {
     )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: AppStateType): TStateProps => ({
     project: state.projectsPage.project,
-    userId: state.auth.user.id,
     allTasksProject: state.tasks.allTasksProject,
     allTracksByProjectId: state.tracks.allTracksByProjectId
 })

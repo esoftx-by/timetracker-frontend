@@ -1,9 +1,21 @@
-import React from 'react'
+import React, {FC} from 'react'
+// @ts-ignore
 import style from "../../pages/project/Project.module.css";
 import {Box, Grid} from "@mui/material";
 import OutlinedCardTask from "../Task";
+import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
 
-const TasksProject = ({project, AllTaskByProject, userId, setNewTrackThunk, allTracks}) => {
+
+type OwnToProps = {
+    project: projectType | null
+    AllTaskByProject: Array<allTasksProjectType>
+    userId: number
+    setNewTrackThunk: (userId: number, taskId: number, startTime: number, hours: number) => void
+    allTracks: Array<allTracksByProjectIdType>
+}
+
+
+const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, setNewTrackThunk, allTracks}) => {
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>

@@ -1,5 +1,5 @@
 import {TaskAPI} from "../../API/api";
-import {allTasksProjectType} from "../../types";
+import {allTasksProjectType, taskType} from "../../types";
 
 const SET_NEW_TASK = 'tasks/SET_NEW_TASK'
 const SET_ALL_TASKS = 'tasks/SET_ALL_TASK'
@@ -10,13 +10,13 @@ const SET_ALL_TASKS_USER_ID = 'tasks/SET_ALL_TASK_USER_ID'
 
 type initialStateType = {
     allTask: object | null,
-    taskUserId: object | null,
+    taskUserId: Array<taskType>,
     allTasksProject: Array<allTasksProjectType>
 }
 
 const initialState: initialStateType = {
     allTask: null,
-    taskUserId: null,
+    taskUserId: [],
     allTasksProject: []
 }
 

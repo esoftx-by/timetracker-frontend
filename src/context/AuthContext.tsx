@@ -1,4 +1,5 @@
 import {createContext} from "react";
+import {authContextType} from "../types";
 
 function noop() {
 }
@@ -10,4 +11,4 @@ export const AuthContext = createContext({
     login: noop,
     logout: noop,
     isAuthenticated: false
-})
+} as authContextType)

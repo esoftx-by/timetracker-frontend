@@ -123,7 +123,6 @@ const LoginForm = (props) => {
                     )}
                 </Formik>
                 <div className="login__registration">
-                    {/*<NavLink to='/registration'>Sign Up</NavLink>*/}
                     <ToastContainer/>
                 </div>
             </Card>
