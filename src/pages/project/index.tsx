@@ -23,7 +23,7 @@ type TStateProps = {
 type TDispatchProps = {
     setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
     setProjectIdThunk:(id: number) => void
-    setNewTrackThunk:(userId: number, taskId: number, startTime: number, hours: number) => void
+    setNewTrackThunk:(userId: number, taskId: number, startTime: string, hours: number) => void
     setAllTasksProjectThunk:(id: number) => void
     setAllTracksByProjectIdThunk:(id: number) => void
 }
@@ -65,7 +65,7 @@ const Project:FC<PropsType> = (props) => {
                 <FormDialogTask userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}/>
             </div>
             <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk}
-                          allTracks={props.allTracksByProjectId}
+                          allTracksByProjectId={props.allTracksByProjectId}
                           userId={props.userId} AllTaskByProject={props.allTasksProject}/>
 
         </div>

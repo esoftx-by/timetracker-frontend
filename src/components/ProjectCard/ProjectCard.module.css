@@ -11,3 +11,12 @@
 .btn{
     margin: 1rem 0!important;
 }
+
+.btn a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.projectName{
+    word-break: break-all;
+}

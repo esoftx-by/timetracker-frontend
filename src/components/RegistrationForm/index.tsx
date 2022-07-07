@@ -1,6 +1,4 @@
-import React, {useContext} from 'react'
-import Card from "@mui/material/Card";
-import './Login.scss'
+import React, {useState} from 'react'
 import {
     Alert,
     Box,
@@ -8,29 +6,30 @@ import {
     TextField
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import {NavLink, useNavigate} from "react-router-dom";
-import {AuthContext} from "../../context/AuthContext";
+import './Registration.scss'
 import {AuthAPI} from "../../API/api";
-import {ToastContainer, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import {Formik} from "formik";
-import {Helmet} from "react-helmet";
 
-const LoginForm = (props) => {
+const RegistrationForm = () => {
 
-    const auth = useContext(AuthContext)
-    const navigate = useNavigate()
+    const [isSent, setIsSent] = useState<boolean>(false)
+
     return (
-        <div className="login">
-            <Helmet>
-                <title>login</title>
-            </Helmet>
-            <Card sx={{minWidth: 275}}>
-                <h1>Log In</h1>
+        <div className="registration">
+                <h1>Create new user</h1>
                 <Formik
-                    initialValues={{email: '', password: ''}}
+                    initialValues={{firstName: '', lastName: '', email: '', password: ''}}
                     validate={values => {
-                        const errors = {};
+                        const errors: any = {};
+                        if (!values.firstName) {
+                            errors.firstName = 'Required'
+                        }
+                        if (!values.lastName) {
+                            errors.lastName = 'Required'
+                        }
+                        if (!values.lastName) {
+                            errors.lastName = 'Required'
+                        }
                         if (!values.email) {
                             errors.email = 'Required';
                         } else if (
@@ -45,24 +44,13 @@ const LoginForm = (props) => {
                     }}
                     onSubmit={(values, {setSubmitting, resetForm}) => {
                         setTimeout(() => {
-                            AuthAPI.auth((values.email), (values.password))
+                            setSubmitting(false);
+                            AuthAPI.newUser((values.email), (values.firstName), (values.lastName), (values.password))
                                 .then(response => {
-                                    if (response.data.token) {
-                                        auth.login(response.data.token, response.data.user.id, response.data.user.lastName)
-                                        navigate('/')
-                                    } else {
-                                        toast.error(response.data.response.message, {
-                                            position: "top-right",
-                                            autoClose: 5000,
-                                            hideProgressBar: false,
-                                            closeOnClick: true,
-                                            pauseOnHover: true,
-                                            draggable: true,
-                                            progress: undefined,
-                                        });
+                                    if (response.data.success){
+                                        setIsSent(true)
                                     }
                                 })
-                            setSubmitting(false);
                             resetForm()
                         }, 400);
                     }}
@@ -78,12 +66,45 @@ const LoginForm = (props) => {
                           /* and other goodies */
                       }) => (
                         <form onSubmit={handleSubmit}>
+
                             <Box
                                 sx={{
                                     '& > :not(style)': {m: 1, width: '30ch'},
                                 }}>
                                 <TextField
-                                    error={errors.email && touched.email && 'error'}
+                                    error={!!(errors.firstName && touched.firstName)}
+                                    type="text"
+                                    name="firstName"
+                                    label="FirstName"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.firstName}
+                                />
+                            </Box>
+                            <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.firstName && touched.firstName &&
+                                <Alert severity="error">{errors.firstName && touched.firstName && errors.firstName}</Alert>}</div>
+                            <Box
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '30ch'},
+                                }}>
+                                <TextField
+                                    error={!!(errors.lastName && touched.lastName)}
+                                    type="text"
+                                    name="lastName"
+                                    label="LastName"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.lastName}
+                                />
+                            </Box>
+                            <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.lastName && touched.lastName &&
+                                <Alert severity="error">{errors.lastName && touched.lastName && errors.lastName}</Alert>}</div>
+                            <Box
+                                sx={{
+                                    '& > :not(style)': {m: 1, width: '30ch'},
+                                }}>
+                                <TextField
+                                    error={!!(errors.email && touched.email)}
                                     type="email"
                                     name="email"
                                     label="E-mail"
@@ -99,7 +120,7 @@ const LoginForm = (props) => {
                                 '& > :not(style)': {m: 1, width: '30ch'},
                             }}>
                                 <TextField
-                                    error={errors.password && touched.password && 'error'}
+                                    error={!!(errors.password && touched.password)}
                                     type="password"
                                     name="password"
                                     label="Password"
@@ -112,6 +133,7 @@ const LoginForm = (props) => {
                             <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.password && touched.password &&
                                 <Alert
                                     severity="error">{errors.password && touched.password && errors.password}</Alert>}</div>
+
                             <Box sx={{
                                 '& > :not(style)': {m: 1, width: '30ch'},
                             }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
@@ -122,13 +144,9 @@ const LoginForm = (props) => {
                         </form>
                     )}
                 </Formik>
-                <div className="login__registration">
-                    <ToastContainer/>
-                </div>
-            </Card>
+                {isSent &&  <div style={{'width': '30ch', 'margin': '1rem auto'}}><Alert severity="success">User created. Return to login page.</Alert></div>}
         </div>
     )
 }
 
-
-export default LoginForm
+export default RegistrationForm
