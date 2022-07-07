@@ -1,18 +1,20 @@
 import {AuthAPI} from "../../API/api";
+import {userType} from "../../types";
 
 const SET_USER = 'auth/SET_USER'
 const SET_ALL_USERS = 'auth/SET_ALL_USERS'
 const DELETE_USER = 'auth/DELETE_USER'
 
 export type initialStateType = {
-    user: null | object,
-    allUsers: null | object
+    user: userType | null,
+    allUsers: Array<userType> | null
 }
 
 const initialState: initialStateType = {
-    user: [],
+    user: null,
     allUsers: []
 }
+
 
 export const authReducer = (state = initialState, action: any): initialStateType => {
     switch (action.type) {
@@ -24,12 +26,12 @@ export const authReducer = (state = initialState, action: any): initialStateType
         case SET_ALL_USERS:
             return {
                 ...state,
-                allUsers: action.users
+                allUsers: action.allUsers
             }
         case DELETE_USER:
             return {
                 ...state,
-                user: []
+                user: null
             }
         default:
             return state
@@ -38,20 +40,20 @@ export const authReducer = (state = initialState, action: any): initialStateType
 
 type setAllUsersType = {
     type: typeof SET_ALL_USERS,
-    users: object
+    allUsers: Array<userType>
 }
 
 type setUserType = {
     type: typeof SET_USER,
-    user: object
+    user: userType
 }
 
 type deleteUserType = {
     type: typeof DELETE_USER
 }
 
-const setAllUsers = (users: object): setAllUsersType => ({type: SET_ALL_USERS, users})
-const setUser = (user: object): setUserType => ({type: SET_USER, user})
+const setAllUsers = (allUsers: Array<userType>): setAllUsersType => ({type: SET_ALL_USERS, allUsers})
+const setUser = (user: userType): setUserType => ({type: SET_USER, user})
 export const deleteUser = (): deleteUserType => ({type: DELETE_USER})
 
 
@@ -69,7 +71,7 @@ export const setUserData = (id: number) => {
     return (dispatch:any) => {
         AuthAPI.setUserData(id)
             .then(response => {
-                const user = response.data.response
+                const user: userType = response.data.response
                 dispatch(setUser(user))
             })
     }

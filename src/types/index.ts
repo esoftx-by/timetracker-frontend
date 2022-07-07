@@ -40,3 +40,12 @@ export type allTasksProjectType = {
     project: Array<projectType>,
     status: string
 }
+
+export type authContextType = {
+    token: string | null
+    userId: number | null,
+    lastName:string | null,
+    login: (jwtToken: string | null, id: number | null, lastName: string | null) => void,
+    logout: () => void,
+    isAuthenticated: boolean
+}
