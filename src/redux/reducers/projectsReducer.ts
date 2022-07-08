@@ -1,11 +1,12 @@
 import {ProjectAPI} from "../../API/api";
 import {projectType} from "../../types";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType, InferActionTypes} from "../store";
 
 const SET_PROJECTS = 'project/SET_PROJECTS';
 const SET_NEW_PROJECT = 'project/SET__NEW_PROJECT'
 const SET_PROJECT = 'project/SET_PROJECT'
 const SET_PROJECT_BY_USER_ID = 'project/SET_PROJECT_BY_USER_ID'
-
 
 
 export type initialStateType = {
@@ -20,7 +21,7 @@ const initialState: initialStateType = {
     project: null
 }
 
-export const projectReducer = (state = initialState, action: any): initialStateType => {
+export const projectReducer = (state = initialState, action: ActionsType): initialStateType => {
     switch (action.type) {
         case SET_PROJECTS:
             return {
@@ -47,77 +48,56 @@ export const projectReducer = (state = initialState, action: any): initialStateT
     }
 }
 
-type setProjectsType = {
-    type: typeof SET_PROJECTS,
-    allProject: object
-}
 
-type setNewProjectType = {
-    type: typeof SET_NEW_PROJECT,
-    newProject: object
-}
+type ActionsType = InferActionTypes<typeof actions>
+type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
-type setProjectType = {
-    type: typeof SET_PROJECT,
-    project: object
-}
-
-type setProjectByUserIdType = {
-    type: typeof SET_PROJECT_BY_USER_ID,
-    data: object
+const actions = {
+    setProjects: (allProject: Array<projectType>) => ({type: SET_PROJECTS, allProject} as const),
+    setNewProject: (newProject: projectType) => ({type: SET_NEW_PROJECT, newProject} as const),
+    setProject: (project: projectType) => ({type: SET_PROJECT, project} as const),
+    setProjectByUserId: (data: Array<projectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const)
 }
 
 
-
-const setProjects = (allProject: object):setProjectsType => ({type: SET_PROJECTS, allProject})
-const setNewProject = (newProject: object): setNewProjectType => ({type: SET_NEW_PROJECT, newProject})
-const setProject = (project: object):setProjectType => ({type: SET_PROJECT, project})
-const setProjectByUserId = (data: object):setProjectByUserIdType => ({type: SET_PROJECT_BY_USER_ID, data})
-
-export const setProjectThunk = () => {
-    return (dispatch:any) => {
-        ProjectAPI.getAllProject()
-            .then(response => {
-                if (response.data.success) {
-                    let allProject: object = response.data.response
-                    dispatch(setProjects(allProject))
-                }
-            })
+export const setProjectThunk = (): ThunkTypes => {
+    return async dispatch => {
+        let response = await ProjectAPI.getAllProject()
+        if (response.data.success) {
+            let allProject: Array<projectType> = response.data.response
+            dispatch(actions.setProjects(allProject))
+        }
     }
 }
 
-export const setNewProjectThunk = (name: string, description: string, customer: string) => {
-    return (dispatch:any) => {
-        ProjectAPI.newProject(name, description, customer)
-            .then(response => {
-                if (response.data.success) {
-                    let data = response.data.response
-                    dispatch(setNewProject(data))
-                }
-            })
+export const setNewProjectThunk = (name: string, description: string, customer: string): ThunkTypes => {
+    return async dispatch => {
+        let response = await ProjectAPI.newProject(name, description, customer)
+        if (response.data.success) {
+            let data: projectType = response.data.response
+            dispatch(actions.setNewProject(data))
+        }
+
     }
 }
 
-export const setProjectIdThunk = (id: number) => {
-    return (dispatch:any) => {
-        ProjectAPI.getProjectId(id)
-            .then(response => {
-                if (response.data.success) {
-                    const project = response.data.response
-                    dispatch(setProject(project))
-                }
-            })
+export const setProjectIdThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        let response = await ProjectAPI.getProjectId(id)
+        if (response.data.success) {
+            const project: projectType = response.data.response
+            dispatch(actions.setProject(project))
+        }
+
     }
 }
 
-export const setProjectByUserIdThunk = (id: number) => {
-    return (dispatch:any) => {
-        ProjectAPI.getProjectByUserId(id)
-            .then(response => {
-                if (response.data.success) {
-                    const projectByUserId = response.data.response
-                    dispatch(setProjectByUserId(projectByUserId))
-                }
-            })
+export const setProjectByUserIdThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        let response = await ProjectAPI.getProjectByUserId(id)
+        if (response.data.success) {
+            const projectByUserId: Array<projectType> = response.data.response
+            dispatch(actions.setProjectByUserId(projectByUserId))
+        }
     }
 }

@@ -50,8 +50,9 @@ const LoginForm = () => {
                                 .then(response => {
                                     if (response.data.token) {
                                         auth.login(response.data.token, response.data.user.id, response.data.user.lastName)
-                                        navigate('/')
+                                        navigate('/home')
                                     } else {
+                                        // @ts-ignore
                                         toast.error(response.data.response.message, {
                                             position: "top-right",
                                             autoClose: 5000,
