@@ -49,9 +49,9 @@ const RegistrationForm = () => {
                                 .then(response => {
                                     if (response.data.success){
                                         setIsSent(true)
+                                        resetForm()
                                     }
                                 })
-                            resetForm()
                         }, 400);
                     }}
                 >
