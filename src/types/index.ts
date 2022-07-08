@@ -6,6 +6,7 @@ export type userType = {
     applicationRole: string
 }
 
+
 export type projectType = {
     id: number,
     name: string,
@@ -37,7 +38,7 @@ export type allTasksProjectType = {
     description: string,
     estimatedHours: number,
     currentAssignee: userType,
-    project: Array<projectType>,
+    project: projectType,
     status: string
 }
 

@@ -1,5 +1,7 @@
 import {AuthAPI} from "../../API/api";
 import {userType} from "../../types";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType, InferActionTypes} from "../store";
 
 const SET_USER = 'auth/SET_USER'
 const SET_ALL_USERS = 'auth/SET_ALL_USERS'
@@ -16,7 +18,7 @@ const initialState: initialStateType = {
 }
 
 
-export const authReducer = (state = initialState, action: any): initialStateType => {
+export const authReducer = (state = initialState, action: ActionsTypes): initialStateType => {
     switch (action.type) {
         case SET_USER:
             return {
@@ -38,42 +40,35 @@ export const authReducer = (state = initialState, action: any): initialStateType
     }
 }
 
-type setAllUsersType = {
-    type: typeof SET_ALL_USERS,
-    allUsers: Array<userType>
-}
-
-type setUserType = {
-    type: typeof SET_USER,
-    user: userType
-}
 
 type deleteUserType = {
     type: typeof DELETE_USER
 }
 
-const setAllUsers = (allUsers: Array<userType>): setAllUsersType => ({type: SET_ALL_USERS, allUsers})
-const setUser = (user: userType): setUserType => ({type: SET_USER, user})
+type ActionsTypes = InferActionTypes<typeof actions> | deleteUserType
+type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
+const actions = {
+    setAllUsers: (allUsers: Array<userType>)=> ({type: SET_ALL_USERS, allUsers} as const),
+    setUser: (user: userType) => ({type: SET_USER, user} as const)
+}
+
 export const deleteUser = (): deleteUserType => ({type: DELETE_USER})
 
 
-export const setAllUsersThunk = () => {
-    return (dispatch:any) => {
-        AuthAPI.setAllUsers()
-            .then(response => {
-                const allUsers = response.data.response
-                dispatch(setAllUsers(allUsers))
-            })
+export const setAllUsersThunk = (): ThunkTypes => {
+    return async dispatch => {
+        let response = await AuthAPI.setAllUsers()
+        const allUsers: Array<userType> = response.data.response
+        dispatch(actions.setAllUsers(allUsers))
     }
 }
 
-export const setUserData = (id: number) => {
-    return (dispatch:any) => {
-        AuthAPI.setUserData(id)
-            .then(response => {
-                const user: userType = response.data.response
-                dispatch(setUser(user))
-            })
+export const setUserData = (id: number): ThunkTypes => {
+    return async dispatch => {
+        let response = await AuthAPI.setUserData(id)
+        const user: userType = response.data.response
+        dispatch(actions.setUser(user))
     }
 }
 
