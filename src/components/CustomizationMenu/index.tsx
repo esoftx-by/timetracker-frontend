@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {styled, alpha} from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
+import Menu, {MenuProps} from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AddIcon from '@mui/icons-material/Add';
-import Dialog from '@mui/material/Dialog';
+import Dialog, {DialogProps} from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -14,13 +14,15 @@ import Slide from '@mui/material/Slide';
 import {Formik} from 'formik'
 import Select from 'react-select';
 import {ProjectAPI} from "../../API/api";
-import {useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import SendIcon from "@mui/icons-material/Send";
 import {Alert, Box} from "@mui/material";
 import RegistrationForm from "../RegistrationForm";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {projectType, userType} from "../../types";
+import {TransitionProps} from "@mui/material/transitions";
 
-const StyledMenu = styled((props) => (
+const StyledMenu = styled((props: MenuProps) => (
     <Menu
         elevation={0}
         anchorOrigin={{
@@ -33,7 +35,7 @@ const StyledMenu = styled((props) => (
         }}
         {...props}
     />
-))(({theme}) => ({
+))(({ theme }) => ({
     '& .MuiPaper-root': {
         borderRadius: 6,
         marginTop: theme.spacing(1),
@@ -61,10 +63,16 @@ const StyledMenu = styled((props) => (
     },
 }));
 
-export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+type OwnToPropsCustomizedMenus = {
+    project: projectType
+    allUsers: Array<userType> | null
+    setAllUsersThunk: () => void
+}
+
+export const CustomizedMenus:FC<OwnToPropsCustomizedMenus> = ({project, setAllUsersThunk, allUsers}) => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleCloseBtn = () => {
@@ -102,16 +110,24 @@ export default function CustomizedMenus({project, setAllUsersThunk, allUsers}) {
     );
 }
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+export default CustomizedMenus
+
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 
+// @ts-ignore
 const CustomSelect = ({onChange, options, value, className}) => {
 
-    const defaultValue = (options, value) => {
+    const defaultValue = (options: any, value: any) => {
 
-        return options ? options.find(option => option.value === value) : "";
+        return options ? options.find((option: { value: any; }) => option.value === value) : "";
     };
 
 
@@ -128,7 +144,12 @@ const CustomSelect = ({onChange, options, value, className}) => {
     )
 }
 
-const role = [
+type roleType = {
+    role: string
+    label: string
+}
+
+const role: Array<roleType> = [
     {role: 'DEVELOPER', label: 'DEV'},
     {role: 'TEAM_LEAD', label: 'TEAM LEAD'},
     {role: 'PROJECT_MANAGER', label: 'PROJECT MANAGER'},
@@ -136,7 +157,15 @@ const role = [
 ]
 
 
-const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk}) => {
+type OwnToPropsAlertDialogSlide = {
+    project: projectType
+    allUsers: Array<userType> | null
+    handleCloseBtn: (p: any) => void
+    setAllUsersThunk: () => void
+}
+
+
+const AlertDialogSlide:FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, handleCloseBtn, setAllUsersThunk}) => {
     const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
@@ -145,6 +174,7 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
         setOpen(true);
     };
 
+    // @ts-ignore
     let newUsers = allUsers.map(({email, ...n}) => (n.label = email, n))
 
     useEffect(() => {
@@ -155,9 +185,9 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
         setOpen(false);
         handleCloseBtn(null)
     };
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState('sm');
 
+    const [fullWidth, setFullWidth] = React.useState(true);
+    const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('sm');
     return (
         <div>
             <MenuItem onClick={handleClickOpen} disableRipple>
@@ -176,7 +206,7 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
                     setNewUser(false)
                 }}>Back</Button></> :
                 <>
-                    <div style={{'display': 'flex', 'justify-content': 'space-between', 'align-items': 'center'}}>
+                    <div style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
                         <DialogTitle>{"Add a user to the project"}</DialogTitle>
                         <Box sx={{
                             '& > :not(style)': {width: '20ch', 'margin': '0 auto'},
@@ -191,7 +221,7 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
                             <Formik
                                 initialValues={{id: '', role: ''}}
                                 validate={values => {
-                                    const errors = {};
+                                    const errors: any = {};
                                     if (!values.id) {
                                         errors.id = 'Required';
                                     }
@@ -203,7 +233,7 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
                                 onSubmit={(values, {setSubmitting, resetForm}) => {
                                     setTimeout(() => {
                                         setSubmitting(false);
-                                        ProjectAPI.newUserInProject(values.id, project.id, values.role)
+                                        ProjectAPI.newUserInProject(+values.id, project.id, values.role)
 
                                         handleClose()
                                         resetForm()
@@ -220,13 +250,13 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
                                    isSubmitting,
                                    /* and other goodies */
                                }) => (
-                                <form onSubmit={handleSubmit} style={{'min-height': '300px'}}>
+                                <form onSubmit={handleSubmit} style={{'minHeight': '300px'}}>
 
                                     <label htmlFor="id">User name</label>
 
                                     <CustomSelect
                                         className='input'
-                                        onChange={values => setFieldValue('id', values.id)}
+                                        onChange={(values: any) => setFieldValue('id', values.id)}
                                         value={values.id}
                                         options={newUsers}
                                     />
@@ -238,7 +268,7 @@ const AlertDialogSlide = ({project, allUsers, handleCloseBtn, setAllUsersThunk})
 
                                     <CustomSelect
                                         className='input'
-                                        onChange={values => setFieldValue('role', values.role)}
+                                        onChange={(values: any) => setFieldValue('role', values.role)}
                                         value={values.role}
                                         options={role}
                                     />

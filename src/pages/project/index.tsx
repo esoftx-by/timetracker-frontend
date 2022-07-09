@@ -12,6 +12,7 @@ import CircularIndeterminate from "../../components/Loader";
 import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {AppStateType} from "../../redux/store";
+import NotFoundPage from "../notFoundPage";
 
 
 type TStateProps = {
@@ -54,6 +55,10 @@ const Project:FC<PropsType> = (props) => {
 
     if (!loaded) {
         return <div className={style.loader}><CircularIndeterminate/></div>
+    }
+
+    if (!props.project || !props.allTasksProject.length){
+        return <NotFoundPage/>
     }
 
     return (
