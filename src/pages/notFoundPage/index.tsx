@@ -1,9 +1,15 @@
 import React, {FC} from 'react'
-import {NavLink} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Helmet} from "react-helmet-async";
 import { Button } from '@mui/material';
 
+
 const NotFoundPage: FC<{}> = () => {
+    let navigate = useNavigate()
+    let goBack = () => {
+        navigate('/home')
+    }
+
     return (
         <div style={{'width':'300px', 'margin':'20% auto'}}>
             <Helmet>
@@ -11,7 +17,7 @@ const NotFoundPage: FC<{}> = () => {
             </Helmet>
             <div style={{'textAlign':'center'}}>
                 <h1>Page not found</h1>
-                <Button variant="contained"><NavLink style={{'color':'#fff'}} to={'/home'}>Back to main page</NavLink></Button>
+                <Button onClick={goBack} variant="contained">Back to main page</Button>
             </div>
         </div>
     )
