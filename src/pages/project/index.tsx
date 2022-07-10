@@ -19,6 +19,7 @@ type TStateProps = {
     project: projectType | null
     allTasksProject: Array<allTasksProjectType>
     allTracksByProjectId: Array<allTracksByProjectIdType>
+    isFetching: boolean
 }
 
 type TDispatchProps = {
@@ -38,8 +39,6 @@ type PropsType = TStateProps & TDispatchProps & OwnToProps
 
 const Project:FC<PropsType> = (props) => {
 
-    const [loaded, setLoaded] = useState<boolean>(false);
-
     const params = useParams();
     let id:number = Number(params.id)
 
@@ -47,17 +46,14 @@ const Project:FC<PropsType> = (props) => {
         props.setProjectIdThunk(id)
         props.setAllTasksProjectThunk(id)
         props.setAllTracksByProjectIdThunk(id)
-        if (!loaded) {
-            setTimeout(() => setLoaded(true), 600);
-        }
 
     }, [id])
 
-    if (!loaded) {
+    if (props.isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
     }
 
-    if (!props.project || !props.allTasksProject.length){
+    if (!props.project){
         return <NotFoundPage/>
     }
 
@@ -80,7 +76,8 @@ const Project:FC<PropsType> = (props) => {
 const mapStateToProps = (state: AppStateType): TStateProps => ({
     project: state.projectsPage.project,
     allTasksProject: state.tasks.allTasksProject,
-    allTracksByProjectId: state.tracks.allTracksByProjectId
+    allTracksByProjectId: state.tracks.allTracksByProjectId,
+    isFetching: state.projectsPage.isFetching
 })
 
 export default connect(mapStateToProps, {
