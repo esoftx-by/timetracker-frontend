@@ -13,6 +13,8 @@ import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../
 import {Helmet} from "react-helmet-async";
 import {AppStateType} from "../../redux/store";
 import NotFoundPage from "../notFoundPage";
+import {Navigate, Route, Routes} from "react-router-dom";
+import TaskPage from "../taskPage";
 
 
 type TStateProps = {
@@ -24,10 +26,10 @@ type TStateProps = {
 
 type TDispatchProps = {
     setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
-    setProjectIdThunk:(id: number) => void
-    setNewTrackThunk:(userId: number, taskId: number, startTime: string, hours: number) => void
-    setAllTasksProjectThunk:(id: number) => void
-    setAllTracksByProjectIdThunk:(id: number) => void
+    setProjectIdThunk: (id: number) => void
+    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
+    setAllTasksProjectThunk: (id: number) => void
+    setAllTracksByProjectIdThunk: (id: number) => void
 }
 
 type OwnToProps = {
@@ -37,10 +39,10 @@ type OwnToProps = {
 type PropsType = TStateProps & TDispatchProps & OwnToProps
 
 
-const Project:FC<PropsType> = (props) => {
+const ProjectContainer: FC<PropsType> = (props) => {
 
     const params = useParams();
-    let id:number = Number(params.id)
+    let id: number = Number(params.id)
 
     useEffect(() => {
         props.setProjectIdThunk(id)
@@ -53,7 +55,7 @@ const Project:FC<PropsType> = (props) => {
         return <div className={style.loader}><CircularIndeterminate/></div>
     }
 
-    if (!props.project){
+    if (!props.project) {
         return <NotFoundPage/>
     }
 
@@ -68,8 +70,8 @@ const Project:FC<PropsType> = (props) => {
             <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk}
                           allTracksByProjectId={props.allTracksByProjectId}
                           userId={props.userId} AllTaskByProject={props.allTasksProject}/>
-
         </div>
+
     )
 }
 
@@ -86,4 +88,4 @@ export default connect(mapStateToProps, {
     setNewTrackThunk,
     setAllTasksProjectThunk,
     setAllTracksByProjectIdThunk
-})(Project)
+})(ProjectContainer)

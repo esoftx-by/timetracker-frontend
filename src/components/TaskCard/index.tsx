@@ -8,6 +8,8 @@ import {taskType} from "../../types";
 // @ts-ignore
 import style from './TaskCard.module.css'
 import {FC} from "react";
+import Button from "@mui/material/Button";
+import {NavLink} from "react-router-dom";
 
 
 type OwnToProps = {
@@ -17,8 +19,6 @@ type OwnToProps = {
 const OutlinedCard: FC<OwnToProps> = ({data}) => {
 
     return (
-        <Grid item xs={12} md={4}>
-            <Box sx={{maxWidth: 500}}>
                 <Card variant="outlined">
                     <React.Fragment>
                         <CardContent>
@@ -40,8 +40,6 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
                         </CardContent>
                     </React.Fragment>
                 </Card>
-            </Box>
-        </Grid>
     );
 }
 

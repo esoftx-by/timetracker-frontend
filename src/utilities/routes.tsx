@@ -8,6 +8,7 @@ import Project from "../pages/project";
 import {userType} from "../types";
 import CircularIndeterminate from "../components/Loader";
 import NotFoundPage from "../pages/notFoundPage";
+import TaskPage from "../pages/taskPage";
 
 let MainRoutes = lazy(() => import('./mainRoutes/mainRoutes'))
 
@@ -22,6 +23,7 @@ export const useRoutes = (isAuthenticated: boolean, userId: any, userData: userT
                     <Route path={'/home'} element={<MainPage user={userData} userId={userId}/>}/>
                     <Route path={'/projects'} element={<Projects user={userData}/>}/>
                     <Route path={'/projects/:id'} element={<Project userId={userId}/>}/>
+                    <Route path={'/task/:id'} element={<TaskPage/>}/>
                     <Route path="*" element={<NotFoundPage/>}/>
                 </Routes>
             </>

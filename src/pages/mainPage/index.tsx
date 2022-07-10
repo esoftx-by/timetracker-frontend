@@ -9,6 +9,7 @@ import OutlinedCard from "../../components/TaskCard";
 import {AppStateType} from "../../redux/store";
 import {taskType, userType} from "../../types";
 import {Helmet} from "react-helmet-async";
+import {NavLink} from "react-router-dom";
 
 type TStateProps = {
     allTasksUserId: Array<taskType>
@@ -43,8 +44,11 @@ const MainPage: FC<PropsType> = (props) => {
             <h1>List of my tasks:</h1>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <OutlinedCard key={data.id}
-                                                                                                  data={data}/>) :
+                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <Grid item xs={12}
+                                                                                          md={4}><Box
+                            sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
+                            key={data.id}
+                            data={data}/></NavLink></Box></Grid>) :
                         <Grid item xs={12} md={12}><h2>No Tasks</h2></Grid>}
                 </Grid>
             </Box>
