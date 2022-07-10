@@ -7,9 +7,11 @@ import {Alert, Grid} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 import {allTasksProjectType, allTracksByProjectIdType} from "../../types";
+
 // @ts-ignore
 import style from './Task.module.css'
 import {FC} from "react";
+import {NavLink, useLocation} from "react-router-dom";
 
 
 type OwnToProps = {
@@ -22,6 +24,7 @@ type OwnToProps = {
 const OutlinedCardTask:FC<OwnToProps> = ({allTracksByProjectId, tasksProject, setNewTrackThunk, userId}) => {
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === tasksProject.id)
+    const location = useLocation()
 
     return (
         <Grid item xs={12} md={4}>

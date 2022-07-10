@@ -147,6 +147,12 @@ export const TaskAPI = {
             .then(response => {
                 return response
             })
+    },
+    taskById(id: number){
+        return instance.get<Task>(`tasks/${id}`)
+            .then(response => {
+                return response
+            })
     }
 }
 

@@ -11,6 +11,7 @@ import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 import {FC} from "react";
+import {NavLink} from "react-router-dom";
 
 type OwnToProps = {
     userId: number
@@ -35,6 +36,7 @@ const FormDialogTrack: FC<OwnToProps> = ({userId, taskId, setNewTrackThunk}) => 
             <Button style={{margin: '1rem 0 0 0'}} variant="contained" onClick={handleClickOpen}>
                 Add Track
             </Button>
+            <Button style={{margin: '1rem 0 0 1rem'}} variant="outlined"><NavLink style={{'color': '#1976d2', 'textDecoration': 'none'}} to={`/task/${taskId}`}>More...</NavLink></Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>New Track</DialogTitle>
                 <DialogContent>
