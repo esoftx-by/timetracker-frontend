@@ -11,14 +11,21 @@ import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 import {FC} from "react";
+import {ThunkDispatch} from "redux-thunk";
+import {AppStateType} from "../../redux/store";
+import {AnyAction} from "redux";
+import {useDispatch} from "react-redux";
+import {setNewTaskThunk} from "../../redux/reducers/taskReducer";
 
 type OwnToProps = {
-    setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
     userId: number
     projectId: number
 }
 
-const FormDialogTask: FC<OwnToProps> = ({setNewTaskThunk, userId, projectId}) => {
+const FormDialogTask: FC<OwnToProps> = ({ userId, projectId}) => {
+
+    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
+    const dispatch: AppDispatch = useDispatch()
 
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -60,7 +67,7 @@ const FormDialogTask: FC<OwnToProps> = ({setNewTaskThunk, userId, projectId}) =>
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                setNewTaskThunk((values.name), (values.description), (+(values.estimatedHours)), userId, projectId)
+                                dispatch(setNewTaskThunk((values.name), (values.description), (+(values.estimatedHours)), userId, projectId))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

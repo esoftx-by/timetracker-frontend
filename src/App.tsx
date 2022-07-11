@@ -2,36 +2,30 @@ import React, {FC, useEffect} from 'react'
 import {useRoutes} from "./utilities/routes";
 import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
-import {connect} from "react-redux";
-import {deleteUser, setUserData} from "./redux/reducers/authReducer";
-import {userType} from "./types";
+
 import {AppStateType} from "./redux/store";
+import {setUserData} from "./redux/reducers/authReducer";
+import {useDispatch, useSelector} from 'react-redux';
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 
-type TStateProps = {
-    userData: userType | null
-}
-
-type TDispatchProps = {
-    setUserData: (userId: number) => void
-    deleteUser: () => void
-}
-
-type OwnToProps = {}
-
-type PropsType = TStateProps & TDispatchProps & OwnToProps
-
-
-const App: FC<PropsType> = (props) => {
+export const App: FC = () => {
 
     const {token, login, logout, userId, lastName} = useAuth()
+
+    const userData = useSelector((state: AppStateType) => state.auth.user)
+    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
+    const dispatch: AppDispatch = useDispatch()
+
     const isAuthenticated: boolean = !!token
-    const routes = useRoutes(isAuthenticated, userId, props.userData, props.deleteUser)
+    const routes = useRoutes(isAuthenticated, userId, userData)
+
 
     useEffect(() => {
 
         if (userId) {
-            props.setUserData(userId)
+            dispatch(setUserData(userId))
         }
     }, [userId, token])
 
@@ -46,11 +40,3 @@ const App: FC<PropsType> = (props) => {
     );
 }
 
-let mapStateToProps = (state: AppStateType): TStateProps => ({
-    userData: state.auth.user
-})
-
-export default connect<TStateProps, TDispatchProps, OwnToProps, AppStateType>(mapStateToProps, {
-    setUserData,
-    deleteUser
-})(App);

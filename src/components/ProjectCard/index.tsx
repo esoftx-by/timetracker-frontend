@@ -15,12 +15,11 @@ import {FC} from "react";
 type OwnToProps = {
     project: projectType
     role: string
-    setAllUsersThunk: () => void
     allUsers: Array<userType> | null
 }
 
 
-export const ProjectCard: FC<OwnToProps> = ({project, role, setAllUsersThunk, allUsers}) => {
+export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
     return (
         <Grid item xs={12} md={4}>
             <Card sx={{maxWidth: 800}}>
@@ -40,7 +39,7 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, setAllUsersThunk, al
                         </Button>
                     </CardContent>
                     <div className={style.mainProjectCardItem}>
-                        {role === 'ADMIN' && <CustomizedMenus setAllUsersThunk={setAllUsersThunk} allUsers={allUsers}
+                        {role === 'ADMIN' && <CustomizedMenus allUsers={allUsers}
                                                               project={project}/>}
                     </div>
                 </div>

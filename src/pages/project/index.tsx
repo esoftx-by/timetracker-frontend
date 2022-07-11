@@ -1,91 +1,71 @@
-import React, {FC, useEffect, useState} from 'react'
-import {connect} from "react-redux";
+import React, {FC, useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 // @ts-ignore
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
-import {setAllTasksProjectThunk, setNewTaskThunk} from "../../redux/reducers/taskReducer";
+import {setAllTasksProjectThunk} from "../../redux/reducers/taskReducer";
 import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
 import TasksProject from "../../components/TasksProject";
-import {setAllTracksByProjectIdThunk, setNewTrackThunk} from "../../redux/reducers/trackReducer";
+import {setAllTracksByProjectIdThunk} from "../../redux/reducers/trackReducer";
 import CircularIndeterminate from "../../components/Loader";
-import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {AppStateType} from "../../redux/store";
 import NotFoundPage from "../notFoundPage";
-import {Navigate, Route, Routes} from "react-router-dom";
-import TaskPage from "../taskPage";
-
-
-type TStateProps = {
-    project: projectType | null
-    allTasksProject: Array<allTasksProjectType>
-    allTracksByProjectId: Array<allTracksByProjectIdType>
-    isFetching: boolean
-}
-
-type TDispatchProps = {
-    setNewTaskThunk: (name: string, description: string, estimatedHours: number, authorId: number, projectId: number) => void
-    setProjectIdThunk: (id: number) => void
-    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
-    setAllTasksProjectThunk: (id: number) => void
-    setAllTracksByProjectIdThunk: (id: number) => void
-}
+import {ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
 
 type OwnToProps = {
     userId: number
 }
 
-type PropsType = TStateProps & TDispatchProps & OwnToProps
+export const ProjectContainer: FC<OwnToProps> = (props) => {
 
+    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
+    const dispatch: AppDispatch = useDispatch()
 
-const ProjectContainer: FC<PropsType> = (props) => {
+    const isFetching = useSelector((state: AppStateType) => state.projectsPage.isFetching)
+    const project = useSelector((state: AppStateType) => state.projectsPage.project)
+    const allTracksByProjectId = useSelector((state: AppStateType) => state.tracks.allTracksByProjectId)
+    const allTasksProject = useSelector((state: AppStateType) => state.tasks.allTasksProject)
 
     const params = useParams();
     let id: number = Number(params.id)
 
     useEffect(() => {
-        props.setProjectIdThunk(id)
-        props.setAllTasksProjectThunk(id)
-        props.setAllTracksByProjectIdThunk(id)
-
+        dispatch(setProjectIdThunk(id))
     }, [id])
 
-    if (props.isFetching) {
+    useEffect(() => {
+        dispatch(setAllTasksProjectThunk(id))
+    }, [id])
+
+    useEffect(() => {
+        dispatch(setAllTracksByProjectIdThunk(id))
+    }, [id])
+
+
+    if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
     }
 
-    if (!props.project) {
+    if (!project) {
         return <NotFoundPage/>
     }
 
     return (
         <div>
             <Helmet>
-                <title>{props.project && props.project.name}</title>
+                <title>{project && project.name}</title>
             </Helmet>
             <div className={style.project}>
-                <FormDialogTask userId={props.userId} projectId={id} setNewTaskThunk={props.setNewTaskThunk}/>
+                <FormDialogTask userId={props.userId} projectId={id}/>
             </div>
-            <TasksProject project={props.project} setNewTrackThunk={props.setNewTrackThunk}
-                          allTracksByProjectId={props.allTracksByProjectId}
-                          userId={props.userId} AllTaskByProject={props.allTasksProject}/>
+            <TasksProject project={project}
+                          allTracksByProjectId={allTracksByProjectId}
+                          userId={props.userId} AllTaskByProject={allTasksProject}/>
         </div>
 
     )
 }
 
-const mapStateToProps = (state: AppStateType): TStateProps => ({
-    project: state.projectsPage.project,
-    allTasksProject: state.tasks.allTasksProject,
-    allTracksByProjectId: state.tracks.allTracksByProjectId,
-    isFetching: state.projectsPage.isFetching
-})
-
-export default connect(mapStateToProps, {
-    setNewTaskThunk,
-    setProjectIdThunk,
-    setNewTrackThunk,
-    setAllTasksProjectThunk,
-    setAllTracksByProjectIdThunk
-})(ProjectContainer)

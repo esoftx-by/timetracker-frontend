@@ -25,7 +25,6 @@ const settings: Array<string> = ['Logout'];
 
 type OwnToProps = {
     user: userType | null
-    deleteUser: () => void
 }
 
 
@@ -59,7 +58,7 @@ function stringAvatar(name: string) {
 }
 
 
-const ResponsiveAppBar: FC<OwnToProps> = ({user, deleteUser}) => {
+const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
     let fullName: null | string = user && user.firstName + ' ' + user.lastName
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -83,7 +82,6 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user, deleteUser}) => {
     const auth = useContext(AuthContext)
     const logoutHandler = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault()
-        deleteUser()
         auth.logout()
         navigate('/')
     }

@@ -46,7 +46,7 @@ type deleteUserType = {
 }
 
 type ActionsTypes = InferActionTypes<typeof actions> | deleteUserType
-type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 const actions = {
     setAllUsers: (allUsers: Array<userType>)=> ({type: SET_ALL_USERS, allUsers} as const),
@@ -64,7 +64,7 @@ export const setAllUsersThunk = (): ThunkTypes => {
     }
 }
 
-export const setUserData = (id: number): ThunkTypes => {
+export const setUserData = (id: number ): ThunkTypes => {
     return async dispatch => {
         let response = await AuthAPI.setUserData(id)
         const user: userType = response.data.response

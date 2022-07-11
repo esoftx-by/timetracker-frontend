@@ -4,42 +4,33 @@ import FormDialog from "../../components/NewProject";
 import style from './Projects.module.css'
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
-import {connect} from "react-redux";
-import {setNewProjectThunk, setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/projectsReducer";
-
+import {useDispatch, useSelector} from "react-redux";
+import {setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/projectsReducer";
 import ProjectCard from "../../components/ProjectCard";
-import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 import {Helmet} from "react-helmet-async";
-import {projectType, userType} from "../../types";
-import {AppStateType} from "../../redux/store";
+import {userType} from "../../types";
+import {AppDispatch, AppStateType} from "../../redux/store";
 
-type TStateProps = {
-    projects: Array<projectType> | null
-    projectsByUser: Array<projectType> | null
-    allUsers: Array<userType> | null
-}
-
-type TDispatchProps = {
-    setProjectThunk: () => void
-    setProjectByUserIdThunk: (id: number) => void
-    setNewProjectThunk: (name: string, description: string, customer: string) => void
-    setAllUsersThunk: () => void
-}
 
 type OwnToProps = {
     user: userType
 }
 
-type PropsType = TStateProps & TDispatchProps & OwnToProps
 
+export const Projects: FC<OwnToProps> = (props) => {
 
-const Projects: FC<PropsType> = (props) => {
+    const dispatch: AppDispatch = useDispatch()
+
+    const projects = useSelector((state: AppStateType) => state.projectsPage.projects)
+    const allUsers = useSelector((state: AppStateType) => state.auth.allUsers)
+    const projectsByUser = useSelector((state: AppStateType) => state.projectsPage.projectsByUser)
 
     useEffect(() => {
         if (props.user.applicationRole === 'ADMIN') {
-            props.setProjectThunk()
+            dispatch(setProjectThunk())
+        } else {
+            dispatch(setProjectByUserIdThunk(props.user.id))
         }
-        props.setProjectByUserIdThunk(props.user.id)
     }, [props.user.id, props.user.applicationRole])
 
     return (
@@ -49,22 +40,20 @@ const Projects: FC<PropsType> = (props) => {
                     <title>Projects</title>
                 </Helmet>
                 <h1>Projects:</h1>
-                {props.user.applicationRole === "ADMIN" && <FormDialog setNewProjectThunk={props.setNewProjectThunk}/>}
+                {props.user.applicationRole === "ADMIN" && <FormDialog />}
             </div>
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.user.applicationRole === 'ADMIN' ? (props.projects ? props.projects.map(project =>
+                        {props.user.applicationRole === 'ADMIN' ? (projects ? projects.map(project =>
                                 <ProjectCard
-                                    allUsers={props.allUsers}
-                                    setAllUsersThunk={props.setAllUsersThunk}
+                                    allUsers={allUsers}
                                     project={project}
                                     key={project.id} role={props.user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2>
-                            </Grid>) : (props.projectsByUser ? props.projectsByUser.map(project =>
+                            </Grid>) : (projectsByUser ? projectsByUser.map(project =>
                                 <ProjectCard
-                                    allUsers={props.allUsers}
-                                    setAllUsersThunk={props.setAllUsersThunk}
+                                    allUsers={allUsers}
                                     project={project}
                                     key={project.id} role={props.user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2></Grid>)}
@@ -75,16 +64,4 @@ const Projects: FC<PropsType> = (props) => {
     )
 }
 
-const mapStateToProps = (state: AppStateType):TStateProps  => ({
-    projects: state.projectsPage.projects,
-    projectsByUser: state.projectsPage.projectsByUser,
-    allUsers: state.auth.allUsers
-})
 
-
-export default connect<TStateProps, TDispatchProps, OwnToProps, AppStateType>(mapStateToProps, {
-    setProjectThunk,
-    setNewProjectThunk,
-    setProjectByUserIdThunk,
-    setAllUsersThunk
-})(Projects)
