@@ -7,24 +7,20 @@ import {Alert, Grid} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 import {allTasksProjectType, allTracksByProjectIdType} from "../../types";
-
 // @ts-ignore
 import style from './Task.module.css'
 import {FC} from "react";
-import {NavLink, useLocation} from "react-router-dom";
 
 
 type OwnToProps = {
     allTracksByProjectId: Array<allTracksByProjectIdType>
     tasksProject: allTasksProjectType
-    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
     userId: number
 }
 
-const OutlinedCardTask:FC<OwnToProps> = ({allTracksByProjectId, tasksProject, setNewTrackThunk, userId}) => {
+const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === tasksProject.id)
-    const location = useLocation()
 
     return (
         <Grid item xs={12} md={4}>
@@ -47,11 +43,11 @@ const OutlinedCardTask:FC<OwnToProps> = ({allTracksByProjectId, tasksProject, se
                             <Typography variant="body2">
                                 {tasksProject.description}
                             </Typography>
-                            <FormDialogTrack userId={userId} taskId={tasksProject.id}
-                                             setNewTrackThunk={setNewTrackThunk}/>
+                            <FormDialogTrack userId={userId} taskId={tasksProject.id}/>
                         </CardContent>
                     </React.Fragment>
-                    <div className={style.tracks}>{projectTracks && projectTracks.reverse().map(tracks => <VirtualizedList tracks={tracks}/>)}</div>
+                    <div className={style.tracks}>{projectTracks && projectTracks.reverse().map(tracks =>
+                        <VirtualizedList tracks={tracks}/>)}</div>
                 </Card>
             </Box>
         </Grid>

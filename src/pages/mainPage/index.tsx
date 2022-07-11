@@ -3,36 +3,32 @@ import './mainPage.scss'
 import {Grid} from "@mui/material";
 import Box from "@mui/material/Box";
 import CircularIndeterminate from "../../components/Loader";
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import OutlinedCard from "../../components/TaskCard";
-import {AppStateType} from "../../redux/store";
-import {taskType, userType} from "../../types";
+import {AppDispatch, AppStateType} from "../../redux/store";
+import {userType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
 
-type TStateProps = {
-    allTasksUserId: Array<taskType>
-}
 
-type TDispatchProps = {
-    setAllTaskUserIdThunk: (userId: number) => void
-}
 
 type OwnToProps = {
     userId: number
     user: userType | null
 }
 
-type PropsType = TStateProps & TDispatchProps & OwnToProps
+export const MainPage: FC<OwnToProps> = (props) => {
 
-const MainPage: FC<PropsType> = (props) => {
+    const dispatch: AppDispatch = useDispatch()
+
+    const allTasksUserId = useSelector((state: AppStateType) => state.tasks.taskUserId)
 
     useEffect(() => {
-        props.setAllTaskUserIdThunk(props.userId)
+        dispatch(setAllTaskUserIdThunk(props.userId))
     }, [])
 
-    if (!props.allTasksUserId) {
+    if (!allTasksUserId) {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
     }
 
@@ -44,8 +40,8 @@ const MainPage: FC<PropsType> = (props) => {
             <h1>List of my tasks:</h1>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {props.allTasksUserId.length ? props.allTasksUserId.map(data => <Grid item xs={12}
-                                                                                          md={4}><Box
+                    {allTasksUserId.length ? allTasksUserId.map(data => <Grid item xs={12}
+                                                                              md={4}><Box
                             sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
                             key={data.id}
                             data={data}/></NavLink></Box></Grid>) :
@@ -56,11 +52,6 @@ const MainPage: FC<PropsType> = (props) => {
     </div>
 }
 
-let mapStateToProps = (state: AppStateType): TStateProps => ({
-    allTasksUserId: state.tasks.taskUserId,
-})
 
 
-export default connect<TStateProps, TDispatchProps, OwnToProps, AppStateType>(mapStateToProps, {
-    setAllTaskUserIdThunk
-})(MainPage)
+

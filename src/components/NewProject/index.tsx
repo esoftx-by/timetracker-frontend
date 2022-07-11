@@ -11,14 +11,20 @@ import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 import {FC} from "react";
+import {ThunkDispatch} from "redux-thunk";
+import {AppStateType} from "../../redux/store";
+import {AnyAction} from "redux";
+import {useDispatch} from "react-redux";
+import {setNewProjectThunk} from "../../redux/reducers/projectsReducer";
 
 
-type OwnToProps = {
-    setNewProjectThunk: (name: string, description: string, customer: string) => void
-}
 
 
-const FormDialog:FC<OwnToProps> = ({setNewProjectThunk}) => {
+const FormDialog:FC = () => {
+
+    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
+    const dispatch: AppDispatch = useDispatch()
+
     const [open, setOpen] = React.useState<boolean>(false);
 
     const handleClickOpen = () => {
@@ -58,7 +64,7 @@ const FormDialog:FC<OwnToProps> = ({setNewProjectThunk}) => {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                setNewProjectThunk((values.name), (values.description), (values.customer))
+                                dispatch(setNewProjectThunk((values.name), (values.description), (values.customer)))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

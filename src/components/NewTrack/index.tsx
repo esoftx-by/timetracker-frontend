@@ -12,16 +12,23 @@ import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 import {FC} from "react";
 import {NavLink} from "react-router-dom";
+import {ThunkDispatch} from "redux-thunk";
+import {AppStateType} from "../../redux/store";
+import {AnyAction} from "redux";
+import {useDispatch} from "react-redux";
+import {setNewTrackThunk} from "../../redux/reducers/trackReducer";
 
 type OwnToProps = {
     userId: number
     taskId: number
-    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
 }
 
-const FormDialogTrack: FC<OwnToProps> = ({userId, taskId, setNewTrackThunk}) => {
+const FormDialogTrack: FC<OwnToProps> = ({userId, taskId}) => {
 
     const [open, setOpen] = React.useState<boolean>(false);
+
+    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
+    const dispatch: AppDispatch = useDispatch()
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -70,7 +77,7 @@ const FormDialogTrack: FC<OwnToProps> = ({userId, taskId, setNewTrackThunk}) => 
                                 let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
                                 let gmtFirst = gmt.slice(0, 3)
                                 let gmtSecond = gmt.slice(2, 4)
-                                setNewTrackThunk(userId, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours))
+                                dispatch(setNewTrackThunk(userId, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours)))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

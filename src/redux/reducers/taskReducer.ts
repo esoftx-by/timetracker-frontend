@@ -67,7 +67,7 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
 
 
 type ActionsType = InferActionTypes<typeof actions>
-type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
+export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 const actions = {
     setAllTask: (data: Array<taskType>) => ({type: SET_ALL_TASKS, data} as const),

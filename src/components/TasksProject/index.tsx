@@ -10,12 +10,11 @@ type OwnToProps = {
     project: projectType | null
     AllTaskByProject: Array<allTasksProjectType>
     userId: number
-    setNewTrackThunk: (userId: number, taskId: number, startTime: string, hours: number) => void
     allTracksByProjectId: Array<allTracksByProjectIdType>
 }
 
 
-const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, setNewTrackThunk, allTracksByProjectId}) => {
+const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTracksByProjectId}) => {
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
@@ -28,7 +27,6 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, setNew
             <Grid container spacing={3}>
                 {AllTaskByProject ? AllTaskByProject.map(task => <OutlinedCardTask
                         allTracksByProjectId={allTracksByProjectId} key={task.id} userId={userId}
-                        setNewTrackThunk={setNewTrackThunk}
                         tasksProject={task}/>) :
                     <h2>No tasks</h2>}
             </Grid>
