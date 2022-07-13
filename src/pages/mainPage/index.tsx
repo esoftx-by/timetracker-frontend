@@ -10,6 +10,8 @@ import {AppDispatch, AppStateType} from "../../redux/store";
 import {userType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
+// @ts-ignore
+import style from "../project/Project.module.css";
 
 
 
@@ -22,11 +24,16 @@ export const MainPage: FC<OwnToProps> = (props) => {
 
     const dispatch: AppDispatch = useDispatch()
 
+    const isFetching = useSelector((state: AppStateType) => state.tasks.isFetching)
     const allTasksUserId = useSelector((state: AppStateType) => state.tasks.taskUserId)
 
     useEffect(() => {
         dispatch(setAllTaskUserIdThunk(props.userId))
-    }, [])
+    }, [props.userId])
+
+    if (isFetching) {
+        return <div className={style.loader}><CircularIndeterminate/></div>
+    }
 
     if (!allTasksUserId) {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>

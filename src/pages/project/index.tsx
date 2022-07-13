@@ -33,17 +33,14 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
     let id: number = Number(params.id)
 
     useEffect(() => {
-        dispatch(setProjectIdThunk(id))
-    }, [id])
+        if (Number.isFinite(id)){
+            dispatch(setProjectIdThunk(id))
+            dispatch(setAllTasksProjectThunk(id))
+            dispatch(setAllTracksByProjectIdThunk(id))
+        }
 
-    useEffect(() => {
-        dispatch(setAllTasksProjectThunk(id))
     }, [id])
-
-    useEffect(() => {
-        dispatch(setAllTracksByProjectIdThunk(id))
-    }, [id])
-
+    
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>

@@ -36,3 +36,12 @@
 .tasks .customer{
     color: #909090;
 }
+
+.tracksBlock{
+    margin: 1rem 0;
+    border: 1px solid gainsboro;
+}
+
+.tracksBlock h3{
+    margin: 1rem;
+}
