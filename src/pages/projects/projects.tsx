@@ -45,7 +45,7 @@ export const Projects: FC<OwnToProps> = (props) => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.user.applicationRole === 'ADMIN' ? (projects ? projects.map(project =>
+                        {props.user.applicationRole === 'ADMIN' ? (projects.length ? projects.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}

@@ -12,14 +12,14 @@ const SET_ALL_TRACKS_BY_PROJECT_ID = 'tracks/SET_ALL_TRACKS_BY_PROJECT_ID'
 
 type initialStateType = {
     allTracks: null | Array<allTracksByProjectIdType>,
-    allTrackByUserId: null | Array<allTracksByProjectIdType>,
+    // allTrackByUserId: null | Array<allTracksByProjectIdType>,
     tracksByTaskId: null | Array<allTracksByProjectIdType>,
     allTracksByProjectId: Array<allTracksByProjectIdType>
 }
 
 const initialState: initialStateType = {
     allTracks: [],
-    allTrackByUserId: [],
+    // allTrackByUserId: [],
     tracksByTaskId: [],
     allTracksByProjectId: []
 }
@@ -36,11 +36,11 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
                 ...state,
                 allTracks: action.data
             }
-        case SET_ALL_TRACK_BY_USER_ID:
-            return {
-                ...state,
-                allTrackByUserId: action.data
-            }
+        // case SET_ALL_TRACK_BY_USER_ID:
+        //     return {
+        //         ...state,
+        //         allTrackByUserId: action.data
+        //     }
         case SET_TRACKS_BY_TASK_ID:
             return {
                 ...state,

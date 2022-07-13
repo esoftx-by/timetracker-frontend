@@ -19,7 +19,7 @@ export const useRoutes = (isAuthenticated: boolean, userId: any, userData: userT
             <>
                 <ResponsiveAppBar user={userData}/>
                 <Routes>
-                    <Route path={'/'} element={<Navigate to={'/home'}/>}/>
+                    <Route path={`//login`} element={<Navigate to={'/home'}/>}/>
                     <Route path={'/home'} element={<MainPage user={userData} userId={userId}/>}/>
                     <Route path={'/projects'} element={<Projects user={userData}/>}/>
                     <Route path={'/projects/:id'} element={<ProjectContainer userId={userId}/>}/>

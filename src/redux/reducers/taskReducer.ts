@@ -112,11 +112,13 @@ export const setAllTaskThunk = (): ThunkTypes => {
 
 export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
+        dispatch(actionsProject.toggleIsFetching(true))
         let response = await TaskAPI.allTaskUserId(id)
         if (response.data.success) {
             let data: Array<taskType> = response.data.response
             dispatch(actions.setAllTaskUserId(data))
         }
+        dispatch(actionsProject.toggleIsFetching(false))
     }
 }
 
