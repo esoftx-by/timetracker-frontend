@@ -23,6 +23,15 @@ type OwnToProps = {
 export const MainPage: FC<OwnToProps> = (props) => {
 
     const FILTER_STATUSES = ['FINISHED', 'CANCELLED', 'LONG_TERM']
+    const STATUS_ORDER = {
+        LONG_TERM: 0,
+        OPEN: 1,
+        IN_PROGRESS: 2,
+        IN_TESTING: 3,
+        IN_REVIEW: 4,
+        FINISHED: 5,
+        CANCELLED: 6
+    }
 
     const dispatch: AppDispatch = useDispatch()
     const isFetching = useSelector((state: AppStateType) => state.tasks.isFetching)
