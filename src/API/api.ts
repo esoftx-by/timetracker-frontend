@@ -2,7 +2,7 @@ import axios from "axios";
 import {allTracksByProjectIdType, projectType, taskType, userType} from "../types";
 
 
-export let instance = axios.create({
+export const instance = axios.create({
     baseURL: `http://localhost:8080/api/v1/`
 })
 
