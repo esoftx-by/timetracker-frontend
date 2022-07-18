@@ -27,7 +27,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
                                 <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
                                     {data.currentAssignee.firstName + ' ' + data.currentAssignee.lastName}
                                 </Typography>
-                                <div className={data.status}>{data.status}</div>
+                                <div className={data.status}>{data.status.replace('_', ' ')}</div>
                             </div>
                             <Typography variant="h5" component="div">
                                 {data.name}
