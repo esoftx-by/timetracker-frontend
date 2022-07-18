@@ -10,6 +10,7 @@ import {Box, Grid} from "@mui/material";
 import OutlinedCard from "../../components/TaskCard";
 import {setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
 import VirtualizedList from "../../components/Track";
+import AlertDialogSlide from "../../components/NewStatus";
 
 
 export const TaskPage: FC = (props) => {
@@ -41,6 +42,7 @@ export const TaskPage: FC = (props) => {
         <Box sx={{flexGrow: 1}} style={{'padding': '2rem'}}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
+                    <AlertDialogSlide/>
                     <OutlinedCard data={taskById}/>
                     <div className={style.tracksBlock}>
                         <h3>Tracks: </h3>

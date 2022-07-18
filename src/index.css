@@ -12,3 +12,23 @@ code {
     monospace;
 }
 
+.OPEN,
+.LONG_TERM,
+.IN_PROGRESS,
+.IN_REVIEW,
+.IN_TESTING,
+.FINISHED,
+.CANCELLED{
+  padding: .8rem;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+
+.OPEN{background-color: #e5f6fd}
+.LONG_TERM{background-color:#fde5f9}
+.IN_PROGRESS{background-color:#fdf9e5}
+.IN_REVIEW{background-color:#fdf5e5}
+.IN_TESTING{background-color:#fcfde5}
+.FINISHED{background-color:#e5fde9}
+.CANCELLED{background-color:#fde5e5}

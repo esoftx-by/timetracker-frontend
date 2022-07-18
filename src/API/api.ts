@@ -148,8 +148,23 @@ export const TaskAPI = {
                 return response
             })
     },
-    taskById(id: number){
+    taskById(id: number) {
         return instance.get<Task>(`tasks/${id}`)
+            .then(response => {
+                return response
+            })
+    },
+    updateTaskStatus(id: number, name?: string | null, description?: string | null, estimatedHours?: number | null, status?: string | null, currentAssigneeId?: number | null) {
+        return instance.patch('tasks', null, {
+            params: {
+                id: id,
+                name: name,
+                description: description,
+                estimatedHours: estimatedHours,
+                status: status,
+                currentAssigneeId: currentAssigneeId
+            }
+        })
             .then(response => {
                 return response
             })
