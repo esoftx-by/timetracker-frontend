@@ -16,6 +16,18 @@ type OwnToProps = {
 
 const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTracksByProjectId}) => {
 
+    const STATUS_ORDER = {
+        LONG_TERM: 0,
+        OPEN: 1,
+        IN_PROGRESS: 2,
+        IN_TESTING: 3,
+        IN_REVIEW: 4,
+        FINISHED: 5,
+        CANCELLED: 6
+    }
+    // @ts-ignore
+    const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
+
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
             {project && <div>
@@ -25,7 +37,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
             </div>}
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
-                {AllTaskByProject ? AllTaskByProject.map(task => <OutlinedCardTask
+                {AllTaskByProject ? AllTaskByProject.sort(comparator).map(task => <OutlinedCardTask
                         allTracksByProjectId={allTracksByProjectId} key={task.id} userId={userId}
                         tasksProject={task}/>) :
                     <h2>No tasks</h2>}

@@ -32,7 +32,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                 <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
                                     {tasksProject.currentAssignee.firstName + ' ' + tasksProject.currentAssignee.lastName}
                                 </Typography>
-                                <Alert icon={false} severity="info">{tasksProject.status}</Alert>
+                                <div className={tasksProject.status}>{tasksProject.status}</div>
                             </div>
                             <Typography variant="h5" component="div">
                                 {tasksProject.name}

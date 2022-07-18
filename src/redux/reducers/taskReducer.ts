@@ -90,6 +90,16 @@ export const SetTaskByIdThunk = ( id: number): ThunkTypes => {
     }
 }
 
+export const updateTask = (id: number, name?: string | null, description?: string | null, estimatedHours?: number | null, status?: string | null, currentAssigneeId?: number | null):ThunkTypes => {
+    return async dispatch => {
+        let response = await TaskAPI.updateTaskStatus(id, name, description, estimatedHours, status, currentAssigneeId)
+        if (response.data.success){
+            let data: taskType = response.data.response
+            dispatch(actions.setTaskById(data))
+        }
+    }
+}
+
 
 export const setNewTaskThunk = (name: string, description: string, estimatedHours: number, authorId: number, projectId: number): ThunkTypes => {
     return async dispatch => {

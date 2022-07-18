@@ -7,6 +7,8 @@ import {taskType} from "../../types";
 // @ts-ignore
 import style from './TaskCard.module.css'
 import {FC} from "react";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../../redux/store";
 
 
 type OwnToProps = {
@@ -14,6 +16,8 @@ type OwnToProps = {
 }
 
 const OutlinedCard: FC<OwnToProps> = ({data}) => {
+
+
 
     return (
                 <Card variant="outlined">
@@ -23,7 +27,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
                                 <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
                                     {data.currentAssignee.firstName + ' ' + data.currentAssignee.lastName}
                                 </Typography>
-                                <Alert icon={false} severity="info">{data.status}</Alert>
+                                <div className={data.status}>{data.status}</div>
                             </div>
                             <Typography variant="h5" component="div">
                                 {data.name}
