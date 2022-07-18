@@ -20,7 +20,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
 
 
     return (
-                <Card variant="outlined">
+                <Card variant="outlined" style={{borderRadius:"10px" }}>
                     <React.Fragment>
                         <CardContent>
                             <div className={style.taskCard}>
