@@ -25,7 +25,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
     return (
         <Grid item xs={12} md={4}>
             <Box sx={{maxWidth: 500}}>
-                <Card variant="outlined">
+                <Card variant="outlined" style={{borderRadius:"10px" }}>
                     <React.Fragment>
                         <CardContent>
                             <div className={style.cardContent}>

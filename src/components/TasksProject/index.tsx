@@ -29,7 +29,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
     const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     return (
-        <Box sx={{flexGrow: 1}} className={style.tasks}>
+        <Box sx={{flexGrow: 1}} className={style.tasks} >
             {project && <div>
                 <h1>{project.name}</h1>
                 <div className={style.description}>{project.description}</div>

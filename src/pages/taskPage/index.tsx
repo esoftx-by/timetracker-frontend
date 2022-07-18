@@ -44,7 +44,7 @@ export const TaskPage: FC = (props) => {
                 <Grid item xs={12} md={12}>
                     <AlertDialogSlide/>
                     <OutlinedCard data={taskById}/>
-                    <div className={style.tracksBlock}>
+                    <div className={style.tracksBlock} style={{borderRadius:"10px" }}>
                         <h3>Tracks: </h3>
                         {tracksByTaskId ? tracksByTaskId.map(track => <VirtualizedList tracks={track}/>) :
                             <div>No tracks</div>}

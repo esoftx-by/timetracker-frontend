@@ -22,7 +22,7 @@ type OwnToProps = {
 export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
     return (
         <Grid item xs={12} md={4}>
-            <Card sx={{maxWidth: 800}}>
+            <Card sx={{maxWidth: 800}} style={{borderRadius:"10px" }}>
                 <div className={style.mainProjectCard}>
                     <CardContent>
                         <Typography className={style.projectName} variant="h5" component="div">
