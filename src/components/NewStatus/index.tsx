@@ -115,6 +115,7 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
                     <MenuItem value={'IN_TESTING'}>IN TESTING</MenuItem>
                     <MenuItem value={'FINISHED'}>FINISHED</MenuItem>
                     <MenuItem value={'CANCELLED'}>CANCELLED</MenuItem>
+                    <MenuItem value={'LONG_TERM'}>LONG_TERM</MenuItem>
                 </Select>
                 <div>{error && <Alert severity="error">Status has not changed</Alert>}</div>
             </FormControl>
