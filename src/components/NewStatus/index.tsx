@@ -90,9 +90,7 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
             setError(true)
         } else {
             setError(false)
-            // TaskAPI.updateTaskStatus(taskId as number, null, null, null, status, null)
             dispatch(updateTask(taskId as number, null, null, null, status, null))
-            console.log(status)
             // @ts-ignore
             handleClose(false)
         }
@@ -115,7 +113,7 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
                     <MenuItem value={'IN_TESTING'}>IN TESTING</MenuItem>
                     <MenuItem value={'FINISHED'}>FINISHED</MenuItem>
                     <MenuItem value={'CANCELLED'}>CANCELLED</MenuItem>
-                    <MenuItem value={'LONG_TERM'}>LONG_TERM</MenuItem>
+                    <MenuItem value={'LONG_TERM'}>LONG TERM</MenuItem>
                 </Select>
                 <div>{error && <Alert severity="error">Status has not changed</Alert>}</div>
             </FormControl>

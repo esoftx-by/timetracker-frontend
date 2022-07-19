@@ -2,13 +2,10 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {Alert} from "@mui/material";
 import {taskType} from "../../types";
 // @ts-ignore
 import style from './TaskCard.module.css'
 import {FC} from "react";
-import {useSelector} from "react-redux";
-import {AppStateType} from "../../redux/store";
 
 
 type OwnToProps = {
@@ -16,8 +13,6 @@ type OwnToProps = {
 }
 
 const OutlinedCard: FC<OwnToProps> = ({data}) => {
-
-
 
     return (
                 <Card variant="outlined" style={{borderRadius:"10px" }}>
