@@ -4,10 +4,12 @@ import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 
 import {AppStateType} from "./redux/store";
-import {setUserData} from "./redux/reducers/authReducer";
+import {actionsUser, setUserData} from "./redux/reducers/authReducer";
 import {useDispatch, useSelector} from 'react-redux';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import {useNavigate} from "react-router-dom";
+
 
 
 export const App: FC = () => {
@@ -21,6 +23,13 @@ export const App: FC = () => {
     const isAuthenticated: boolean = !!token
     const routes = useRoutes(isAuthenticated, userId, userData)
 
+    const tokenExpired = useSelector((state: AppStateType) => state.auth.errors)
+    const navigate = useNavigate()
+
+    if (tokenExpired) {
+        navigate('/login')
+        dispatch(actionsUser.errors(null))
+    }
 
     useEffect(() => {
 
@@ -28,6 +37,7 @@ export const App: FC = () => {
             dispatch(setUserData(userId))
         }
     }, [userId, token])
+
 
     return (
         <AuthContext.Provider value={{
