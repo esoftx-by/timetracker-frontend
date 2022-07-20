@@ -39,8 +39,8 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
             dispatch(setAllTracksByProjectIdThunk(id))
         }
 
-    }, [id])
-    
+    }, [])
+
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>

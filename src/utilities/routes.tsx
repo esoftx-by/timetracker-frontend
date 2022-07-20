@@ -1,5 +1,5 @@
 import React, {lazy, Suspense} from 'react'
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useNavigate} from "react-router-dom";
 import {MainPage} from "../pages/mainPage";
 import {Container} from "@mui/material";
 import {Projects} from "../pages/projects/projects";
@@ -13,6 +13,8 @@ import {TaskPage} from "../pages/taskPage";
 let MainRoutes = lazy(() => import('./mainRoutes/mainRoutes'))
 
 export const useRoutes = (isAuthenticated: boolean, userId: any, userData: userType | null) => {
+
+
 
     if (isAuthenticated && userData) {
         return (
@@ -29,6 +31,7 @@ export const useRoutes = (isAuthenticated: boolean, userId: any, userData: userT
             </>
         )
     }
+
     return (
         <Container maxWidth="sm">
             <Suspense fallback={<CircularIndeterminate/>}>

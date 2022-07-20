@@ -40,10 +40,9 @@ const FormDialogTrack: FC<OwnToProps> = ({userId, taskId}) => {
 
     return (
         <div>
-            <Button style={{margin: '1rem 0 0 0'}} variant="contained" onClick={handleClickOpen}>
+            <Button variant="contained" onClick={handleClickOpen}>
                 Add Track
             </Button>
-            <Button style={{margin: '1rem 0 0 1rem'}} variant="outlined"><NavLink style={{'color': '#1976d2', 'textDecoration': 'none'}} to={`/task/${taskId}`}>More...</NavLink></Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>New Track</DialogTitle>
                 <DialogContent>

@@ -23,7 +23,7 @@ type OwnToProps = {
 export const MainPage: FC<OwnToProps> = (props) => {
 
     const FILTER_STATUSES = ['FINISHED', 'CANCELLED', 'LONG_TERM']
-    const STATUS_ORDER = {
+    const STATUS_ORDER: any= {
         LONG_TERM: 0,
         OPEN: 1,
         IN_PROGRESS: 2,
@@ -48,7 +48,6 @@ export const MainPage: FC<OwnToProps> = (props) => {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
     }
 
-    // @ts-ignore
     const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     return <div className="mainPage">
