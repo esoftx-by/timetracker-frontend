@@ -92,6 +92,12 @@ export const ProjectAPI = {
             .then(response => {
                 return response
             })
+    },
+    setUsersByTaskId(id: number){
+        return instance.get<AllUsers>(`project-users/project/${id}`)
+            .then(response => {
+                return response
+            })
     }
 }
 

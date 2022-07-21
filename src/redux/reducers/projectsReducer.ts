@@ -1,5 +1,5 @@
 import {ProjectAPI} from "../../API/api";
-import {projectType} from "../../types";
+import {projectType, userType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
 
@@ -7,6 +7,7 @@ const SET_PROJECTS = 'project/SET_PROJECTS';
 const SET_NEW_PROJECT = 'project/SET__NEW_PROJECT'
 const SET_PROJECT = 'project/SET_PROJECT'
 const SET_PROJECT_BY_USER_ID = 'project/SET_PROJECT_BY_USER_ID'
+const SET_ALL_USERS_IN_PROJECT = 'project/SET_ALL_USERS_IN_PROJECT'
 const IS_FETCHING = 'project/IS_FETCHING'
 
 
@@ -15,13 +16,15 @@ export type initialStateType = {
     projectsByUser: Array<projectType> | null,
     project: projectType | null
     isFetching: boolean
+    allUsersInProject: Array<userType>
 }
 
 const initialState: initialStateType = {
     projects: [],
     projectsByUser: [],
     project: null,
-    isFetching: false
+    isFetching: false,
+    allUsersInProject: []
 }
 
 export const projectReducer = (state = initialState, action: ActionsType): initialStateType => {
@@ -51,6 +54,11 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
                 ...state,
                 isFetching: action.isFetching
             }
+        case SET_ALL_USERS_IN_PROJECT:
+            return {
+                ...state,
+                allUsersInProject: action.users
+            }
         default:
             return state
     }
@@ -65,7 +73,8 @@ export const actionsProject = {
     setNewProject: (newProject: projectType) => ({type: SET_NEW_PROJECT, newProject} as const),
     setProject: (project: projectType) => ({type: SET_PROJECT, project} as const),
     setProjectByUserId: (data: Array<projectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const),
-    toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const)
+    toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
+    setAllUsersInProject: (users: Array<userType>) => ({type: SET_ALL_USERS_IN_PROJECT , users} as const)
 }
 
 
@@ -75,6 +84,16 @@ export const setProjectThunk = (): ThunkTypes => {
         if (response.data.success) {
             let allProject: Array<projectType> = response.data.response
             dispatch(actionsProject.setProjects(allProject))
+        }
+    }
+}
+
+export const setAllUsersInProject = (id: number): ThunkTypes => {
+    return async dispatch => {
+        let response = await ProjectAPI.setUsersByTaskId(id)
+        if (response.data.success){
+            let usersInProject: Array<userType> = response.data.response
+            dispatch(actionsProject.setAllUsersInProject(usersInProject))
         }
     }
 }

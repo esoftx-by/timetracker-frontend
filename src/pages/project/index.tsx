@@ -1,6 +1,6 @@
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 // @ts-ignore
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
@@ -14,6 +14,8 @@ import {AppStateType} from "../../redux/store";
 import NotFoundPage from "../notFoundPage";
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Button from "@mui/material/Button";
 
 type OwnToProps = {
     userId: number
@@ -31,6 +33,8 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
 
     const params = useParams();
     let id: number = Number(params.id)
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (Number.isFinite(id)){
@@ -56,6 +60,7 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
                 <title>{project && project.name}</title>
             </Helmet>
             <div className={style.project}>
+                <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
                 <FormDialogTask userId={props.userId} projectId={id}/>
             </div>
             <TasksProject project={project}
