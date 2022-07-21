@@ -10,10 +10,11 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {updateTask} from "../../redux/reducers/taskReducer";
 import MenuItem from "@mui/material/MenuItem";
 import {Select, SelectChangeEvent} from "@mui/material";
+import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -25,6 +26,9 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const TaskOption = () => {
+
+
+
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -44,6 +48,14 @@ const TaskOption = () => {
     const taskEstimatedHours = useSelector((state: AppStateType) => state.tasks.taskById?.estimatedHours)
     const activeCurrentAssignee = useSelector((state: AppStateType) => state.tasks.taskById?.currentAssignee)
     const allUsersInProject = useSelector((state: AppStateType) => state.projectsPage.allUsersInProject)
+
+    const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
+
+    useEffect(() => {
+        if (projectId) {
+            dispatch(setAllUsersInProject(projectId as number))
+        }
+    }, [activeCurrentAssignee])
 
 
     const [name, setName] = useState(taskName)
