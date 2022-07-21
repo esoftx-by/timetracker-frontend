@@ -29,6 +29,7 @@ export const TaskPage: FC = (props) => {
     const tracksByTaskId = useSelector((state: AppStateType) => state.tracks.tracksByTaskId?.reverse())
     const userId = useSelector((state: AppStateType) => state.auth.user?.id)
 
+
     const navigate = useNavigate()
 
     const dispatch: AppDispatch = useDispatch()
@@ -38,10 +39,7 @@ export const TaskPage: FC = (props) => {
             dispatch(SetTaskByIdThunk(id))
             dispatch(setTracksByTaskIdThunk(id))
         }
-        if (projectId) {
-            dispatch(setAllUsersInProject(projectId as number))
-        }
-    }, [id, dispatch, projectId])
+    }, [id, dispatch])
 
 
     useEffect(() => {
