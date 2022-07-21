@@ -54,7 +54,7 @@ const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
                 <div>{tracks.user.firstName + ' ' + tracks.user.lastName}</div>
                 <div>{getTimeFromMins(timeInMinutes)}</div>
             </div>
-            <div>
+
                 <Dialog
                     open={open}
                     onClose={handleClose}
@@ -79,7 +79,6 @@ const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
                         <Button onClick={handleClose}>close</Button>
                     </DialogActions>
                 </Dialog>
-            </div>
         </>
     );
 }

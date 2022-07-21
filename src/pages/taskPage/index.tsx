@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
 import {SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
@@ -13,13 +13,17 @@ import VirtualizedList from "../../components/Track";
 import FormDialogTrack from "../../components/NewTrack";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import TaskOption from "../../components/EditTask";
+import {userType} from "../../types";
+import {ProjectAPI} from "../../API/api";
+import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 
 
 
 export const TaskPage: FC = (props) => {
     const params = useParams();
     let id: number = Number(params.id)
-
+    const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
     const isFetching = useSelector((state: AppStateType) => state.tasks.isFetching)
     const taskById = useSelector((state: AppStateType) => state.tasks.taskById)
     const tracksByTaskId = useSelector((state: AppStateType) => state.tracks.tracksByTaskId?.reverse())
@@ -34,7 +38,19 @@ export const TaskPage: FC = (props) => {
             dispatch(SetTaskByIdThunk(id))
             dispatch(setTracksByTaskIdThunk(id))
         }
-    }, [id, dispatch])
+        if (projectId) {
+            dispatch(setAllUsersInProject(projectId as number))
+        }
+    }, [id, dispatch, projectId])
+
+
+    useEffect(() => {
+        if (projectId) {
+            dispatch(setAllUsersInProject(projectId as number))
+        }
+    }, [])
+
+
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
@@ -46,7 +62,10 @@ export const TaskPage: FC = (props) => {
 
     return (
         <Box sx={{flexGrow: 1}} style={{'padding': '2rem'}}>
-            <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
+            <div className={style.taskHeader}>
+                <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
+                <TaskOption/>
+            </div>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
                     {/*<AlertDialogSlide/>*/}
@@ -58,8 +77,8 @@ export const TaskPage: FC = (props) => {
                             <FormDialogTrack userId={userId as number} taskId={taskById.id}/>
                         </div>
                         <div className={style.tracksBlockItem}>
-                            {tracksByTaskId ? tracksByTaskId.map(track => <VirtualizedList tracks={track}/>) :
-                                <div>No tracks</div>}
+                            {tracksByTaskId && tracksByTaskId.length ? tracksByTaskId.map(track => <VirtualizedList tracks={track}/>) :
+                                <div className={style.tracksBlockNoTracks}>No tracks</div>}
                         </div>
                     </div>
                 </Grid>

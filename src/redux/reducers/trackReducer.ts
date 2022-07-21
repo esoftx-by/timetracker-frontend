@@ -20,7 +20,7 @@ type initialStateType = {
 const initialState: initialStateType = {
     allTracks: [],
     // allTrackByUserId: [],
-    tracksByTaskId: [],
+    tracksByTaskId: null,
     allTracksByProjectId: []
 }
 
