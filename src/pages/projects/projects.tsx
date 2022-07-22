@@ -10,6 +10,8 @@ import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
 import {userType} from "../../types";
 import {AppDispatch, AppStateType} from "../../redux/store";
+import {setProjectsByUserSelector, setProjectsSelector} from "../../redux/selectors/projectSelector";
+import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
 
 
 type OwnToProps = {
@@ -21,9 +23,9 @@ export const Projects: FC<OwnToProps> = (props) => {
 
     const dispatch: AppDispatch = useDispatch()
 
-    const projects = useSelector((state: AppStateType) => state.projectsPage.projects)
-    const allUsers = useSelector((state: AppStateType) => state.auth.allUsers)
-    const projectsByUser = useSelector((state: AppStateType) => state.projectsPage.projectsByUser)
+    const projects = useSelector(setProjectsSelector)
+    const allUsers = useSelector(setAllUsersSelector)
+    const projectsByUser = useSelector(setProjectsByUserSelector)
 
     useEffect(() => {
         if (props.user.applicationRole === 'ADMIN') {

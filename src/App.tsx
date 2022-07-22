@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {useNavigate} from "react-router-dom";
+import {tokenExpiredSelector, userDataSelector} from "./redux/selectors/authSelectors";
 
 
 
@@ -16,14 +17,14 @@ export const App: FC = () => {
 
     const {token, login, logout, userId, lastName} = useAuth()
 
-    const userData = useSelector((state: AppStateType) => state.auth.user)
+    const userData = useSelector(userDataSelector)
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
 
     const isAuthenticated: boolean = !!token
     const routes = useRoutes(isAuthenticated, userId, userData)
 
-    const tokenExpired = useSelector((state: AppStateType) => state.auth.errors)
+    const tokenExpired = useSelector(tokenExpiredSelector)
     const navigate = useNavigate()
 
     if (tokenExpired) {

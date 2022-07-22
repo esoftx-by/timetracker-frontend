@@ -2,14 +2,14 @@ import {TaskAPI} from "../../API/api";
 import {allTasksProjectType, taskType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
-import {actionsProject} from "./projectsReducer";
 
 const SET_NEW_TASK = 'tasks/SET_NEW_TASK'
 const SET_ALL_TASKS = 'tasks/SET_ALL_TASK'
 const SET_ALL_TASKS_PROJECT = 'tasks/SET_ALL_TASKS_PROJECT'
 const SET_ALL_TASKS_USER_ID = 'tasks/SET_ALL_TASK_USER_ID'
 const SET_TASK_BY_ID = 'tasks/SET_TASK_BY_ID'
-const IS_FETCHING = 'project/IS_FETCHING'
+const IS_FETCHING = 'task/IS_FETCHING'
+const DELETE_TASK = 'task/DELETE_TASK'
 
 
 type initialStateType = {
@@ -60,6 +60,11 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
                 ...state,
                 isFetching: action.isFetching
             }
+        case DELETE_TASK:
+            return{
+                ...state,
+                taskById: null
+            }
         default:
             return state
     }
@@ -75,18 +80,19 @@ const actions = {
     setAllTaskUserId: (data: Array<taskType>) => ({type: SET_ALL_TASKS_USER_ID, data} as const),
     setAllTasksProject: (data: Array<taskType>) => ({type: SET_ALL_TASKS_PROJECT, data} as const),
     setTaskById: (taskById: taskType) => ({type: SET_TASK_BY_ID, taskById} as const),
-    toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const)
+    toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
+    deleteTask: () => ({type: DELETE_TASK} as const)
 }
 
 export const SetTaskByIdThunk = ( id: number): ThunkTypes => {
     return async dispatch => {
-        dispatch(actionsProject.toggleIsFetching(true))
+        dispatch(actions.toggleIsFetching(true))
         let response = await TaskAPI.taskById(id)
         if (response.data.success){
             let data: taskType = response.data.response
             dispatch(actions.setTaskById(data))
         }
-        dispatch(actionsProject.toggleIsFetching(false))
+        dispatch(actions.toggleIsFetching(false))
     }
 }
 
@@ -122,13 +128,13 @@ export const setAllTaskThunk = (): ThunkTypes => {
 
 export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        dispatch(actionsProject.toggleIsFetching(true))
+        dispatch(actions.toggleIsFetching(true))
         let response = await TaskAPI.allTaskUserId(id)
         if (response.data.success) {
             let data: Array<taskType> = response.data.response
             dispatch(actions.setAllTaskUserId(data))
         }
-        dispatch(actionsProject.toggleIsFetching(false))
+        dispatch(actions.toggleIsFetching(false))
     }
 }
 
@@ -139,5 +145,18 @@ export const setAllTasksProjectThunk = (projectId: number): ThunkTypes => {
             let data: Array<taskType> = response.data.response
             dispatch(actions.setAllTasksProject(data))
         }
+    }
+}
+
+export const deleteTaskThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        dispatch(actions.toggleIsFetching(true))
+        try {
+            await TaskAPI.deleteTask(id)
+            dispatch(actions.deleteTask())
+        } catch (e: any){
+            console.log(e.message)
+        }
+        dispatch(actions.toggleIsFetching(false))
     }
 }

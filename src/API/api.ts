@@ -142,6 +142,9 @@ export const TaskAPI = {
             })
 
     },
+    deleteTask(id: number) {
+        return instance.delete(`tasks/${id}`)
+    },
     allTaskUserId(id: number) {
         return instance.get<AllTask>(`tasks/user/${id}`)
             .then(response => {

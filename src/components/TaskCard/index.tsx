@@ -26,7 +26,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
     const [localStatus, setLocalStatus] = useState(data.status)
 
     return (
-        <Card variant="outlined" style={{borderRadius: "10px"}}>
+        <Card variant="outlined" style={{borderRadius: "10px", margin:"1rem 0"}}>
             <React.Fragment>
                 <CardContent>
                     <div className={style.taskCard}>

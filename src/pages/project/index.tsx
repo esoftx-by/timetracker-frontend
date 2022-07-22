@@ -16,6 +16,9 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Button from "@mui/material/Button";
+import {setIsFetchingProjectSelector, setProjectSelector} from "../../redux/selectors/projectSelector";
+import {setAllTracksByProjectIdSelector} from "../../redux/selectors/trackSelectors";
+import {setAllTasksProjectSelector} from "../../redux/selectors/taskSelectors";
 
 type OwnToProps = {
     userId: number
@@ -26,10 +29,10 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
 
-    const isFetching = useSelector((state: AppStateType) => state.projectsPage.isFetching)
-    const project = useSelector((state: AppStateType) => state.projectsPage.project)
-    const allTracksByProjectId = useSelector((state: AppStateType) => state.tracks.allTracksByProjectId)
-    const allTasksProject = useSelector((state: AppStateType) => state.tasks.allTasksProject)
+    const isFetching = useSelector(setIsFetchingProjectSelector)
+    const project = useSelector(setProjectSelector)
+    const allTracksByProjectId = useSelector(setAllTracksByProjectIdSelector)
+    const allTasksProject = useSelector(setAllTasksProjectSelector)
 
     const params = useParams();
     let id: number = Number(params.id)
