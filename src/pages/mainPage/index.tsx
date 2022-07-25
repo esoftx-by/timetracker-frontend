@@ -6,13 +6,13 @@ import CircularIndeterminate from "../../components/Loader";
 import {useDispatch, useSelector} from "react-redux";
 import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import OutlinedCard from "../../components/TaskCard";
-import {AppDispatch, AppStateType} from "../../redux/store";
+import {AppDispatch} from "../../redux/store";
 import {allTasksProjectType, userType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
 // @ts-ignore
 import style from "../project/Project.module.css";
-
+import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
 
 
 type OwnToProps = {
@@ -23,7 +23,7 @@ type OwnToProps = {
 export const MainPage: FC<OwnToProps> = (props) => {
 
     const FILTER_STATUSES = ['FINISHED', 'CANCELLED', 'LONG_TERM']
-    const STATUS_ORDER: any= {
+    const STATUS_ORDER: any = {
         LONG_TERM: 0,
         OPEN: 1,
         IN_PROGRESS: 2,
@@ -34,12 +34,13 @@ export const MainPage: FC<OwnToProps> = (props) => {
     }
 
     const dispatch: AppDispatch = useDispatch()
-    const isFetching = useSelector((state: AppStateType) => state.tasks.isFetching)
-    const allTasksUserId = useSelector((state: AppStateType) => state.tasks.taskUserId).filter(task => !FILTER_STATUSES.includes(task.status))
+    const isFetching = useSelector(setIsFetchingTask)
+    const allTasksUserId = useSelector(setTaskUserIdSelector).filter(task => !FILTER_STATUSES.includes(task.status))
 
     useEffect(() => {
         dispatch(setAllTaskUserIdThunk(props.userId))
     }, [props.userId])
+
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
 
@@ -59,7 +60,7 @@ export const MainPage: FC<OwnToProps> = (props) => {
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
                     {allTasksUserId.length ? allTasksUserId.sort(comparator).map(data => <Grid item xs={12}
-                                                                              md={4}><Box
+                                                                                               md={4}><Box
                             sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
                             key={data.id}
                             data={data}/></NavLink></Box></Grid>) :

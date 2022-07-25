@@ -15,6 +15,10 @@
     margin: 1rem 2rem;
 }
 
+.tasks h3{
+    margin: 2rem;
+}
+
 .tasks h1,
 .tasks .description,
 .tasks .customer {
@@ -40,6 +44,7 @@
 .tracksBlock{
     margin: 1rem 0;
     border: 1px solid gainsboro;
+    border-radius: 10px
 
 }
 
@@ -64,4 +69,11 @@
 
 .tracksBlockNoTracks{
     margin: 0 2rem;
+}
+
+@media (min-width: 1240px)  {
+    .tracksBlockItem{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
 }

@@ -11,10 +11,11 @@ import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
 import {useEffect, useState} from "react";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
 import MenuItem from "@mui/material/MenuItem";
 import {Select, SelectChangeEvent} from "@mui/material";
 import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
+import {useNavigate} from "react-router-dom";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -48,6 +49,7 @@ const TaskOption = () => {
     const taskEstimatedHours = useSelector((state: AppStateType) => state.tasks.taskById?.estimatedHours)
     const activeCurrentAssignee = useSelector((state: AppStateType) => state.tasks.taskById?.currentAssignee)
     const allUsersInProject = useSelector((state: AppStateType) => state.projectsPage.allUsersInProject)
+    const navigate = useNavigate()
 
     const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
 
@@ -64,6 +66,8 @@ const TaskOption = () => {
     const [currentAssignee, setCurrentAssigneeId] = React.useState(activeCurrentAssignee && activeCurrentAssignee.id);
 
 
+
+
     const handleChange = (event: SelectChangeEvent) => {
         setCurrentAssigneeId(event.target.value as any);
     };
@@ -73,11 +77,13 @@ const TaskOption = () => {
         handleClose()
     }
 
+
     return (
         <div>
             <Button variant="outlined" onClick={handleClickOpen}>
                 Edit task
             </Button>
+
 
             <Dialog
                 open={open}

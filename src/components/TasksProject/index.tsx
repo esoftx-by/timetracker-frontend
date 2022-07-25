@@ -37,10 +37,10 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
             </div>}
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
-                {AllTaskByProject ? AllTaskByProject.sort(comparator).map(task => <OutlinedCardTask
+                {AllTaskByProject.length ? AllTaskByProject.sort(comparator).map(task => <OutlinedCardTask
                         allTracksByProjectId={allTracksByProjectId} key={task.id} userId={userId}
                         tasksProject={task}/>) :
-                    <h2>No tasks</h2>}
+                    <h3>No tasks</h3>}
             </Grid>
         </Box>
     )

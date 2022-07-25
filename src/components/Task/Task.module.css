@@ -8,3 +8,10 @@
     height: 190px;
     overflow: auto;
 }
+
+@media (min-width: 1240px)  {
+    .tracks{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}

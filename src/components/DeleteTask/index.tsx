@@ -1,0 +1,55 @@
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import {FC} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, AppStateType} from "../../redux/store";
+import {deleteTaskThunk} from "../../redux/reducers/taskReducer";
+import {useNavigate} from "react-router-dom";
+
+type OwnToProps = {
+    open: boolean
+    handleClickOpen: () => void
+    handleClose: () => void
+
+}
+
+export const DeleteTask:FC<OwnToProps> = ({handleClickOpen, open, handleClose}) => {
+
+    const dispatch: AppDispatch = useDispatch()
+    const navigate = useNavigate()
+    const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
+
+    const deleteTask = () => {
+        dispatch(deleteTaskThunk(taskId as number))
+        navigate(-1)
+    }
+
+    return (
+        <div>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure you want to delete the task?"}
+                </DialogTitle>
+                <DialogContent>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>No</Button>
+                    <Button onClick={deleteTask} autoFocus>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
