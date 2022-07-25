@@ -59,11 +59,6 @@ export const TaskPage: FC = () => {
     };
 
 
-    const deleteTask = () => {
-        handleClickOpen()
-    }
-
-
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
     }
@@ -77,7 +72,7 @@ export const TaskPage: FC = () => {
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
                 <div style={{display: 'flex'}}>
-                    <Button style={{marginRight: '1rem'}} variant="contained" onClick={deleteTask}>Delete Task</Button>
+                    <Button style={{marginRight: '1rem'}} variant="contained" onClick={() => handleClickOpen()}>Delete Task</Button>
                     <TaskOption/>
                 </div>
             </div>

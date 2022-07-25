@@ -20,7 +20,7 @@ type initialStateType = {
 const initialState: initialStateType = {
     allTracks: [],
     // allTrackByUserId: [],
-    tracksByTaskId: null,
+    tracksByTaskId: [],
     allTracksByProjectId: []
 }
 
@@ -29,9 +29,9 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
         case SET_NEW_TRACK:
             let stateCopy = {...state}
             stateCopy.allTracksByProjectId = [...state.allTracksByProjectId]
+            stateCopy.allTracksByProjectId.push(action.data)
             stateCopy.tracksByTaskId = [...state.tracksByTaskId as Array<allTracksByProjectIdType>]
             stateCopy.tracksByTaskId.push(action.data)
-            stateCopy.allTracksByProjectId.push(action.data)
             return stateCopy
         case SET_ALL_TRACKS:
             return {
