@@ -19,7 +19,7 @@ type OwnToProps = {
 }
 
 
-export const Projects: FC<OwnToProps> = (props) => {
+export const Projects: FC<OwnToProps> = ({user}) => {
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -28,12 +28,12 @@ export const Projects: FC<OwnToProps> = (props) => {
     const projectsByUser = useSelector(setProjectsByUserSelector)
 
     useEffect(() => {
-        if (props.user.applicationRole === 'ADMIN') {
+        if (user.applicationRole === 'ADMIN') {
             dispatch(setProjectThunk())
         } else {
-            dispatch(setProjectByUserIdThunk(props.user.id))
+            dispatch(setProjectByUserIdThunk(user.id))
         }
-    }, [props.user.id, props.user.applicationRole])
+    }, [user.id, user.applicationRole])
 
     return (
         <>
@@ -42,22 +42,22 @@ export const Projects: FC<OwnToProps> = (props) => {
                     <title>Projects</title>
                 </Helmet>
                 <h1>Projects:</h1>
-                {props.user.applicationRole === "ADMIN" && <FormDialog />}
+                {user.applicationRole === "ADMIN" && <FormDialog />}
             </div>
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {props.user.applicationRole === 'ADMIN' ? (projects.length ? projects.map(project =>
+                        {user.applicationRole === 'ADMIN' ? (projects.length ? projects.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}
-                                    key={project.id} role={props.user.applicationRole}/>) :
+                                    key={project.id} role={user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2>
                             </Grid>) : (projectsByUser ? projectsByUser.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}
-                                    key={project.id} role={props.user.applicationRole}/>) :
+                                    key={project.id} role={user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2></Grid>)}
                     </Grid>
                 </Box>

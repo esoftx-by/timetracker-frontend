@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC, useLayoutEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 // @ts-ignore
@@ -39,14 +39,22 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
 
     const navigate = useNavigate()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
+        dispatch(setAllTasksProjectThunk(id))
+    }, [])
+
+    useLayoutEffect(() => {
         if (Number.isFinite(id)){
             dispatch(setProjectIdThunk(id))
-            dispatch(setAllTasksProjectThunk(id))
-            dispatch(setAllTracksByProjectIdThunk(id))
         }
 
     }, [])
+
+
+    useLayoutEffect(() => {
+        dispatch(setAllTracksByProjectIdThunk(id))
+    }, [])
+
 
 
     if (isFetching) {

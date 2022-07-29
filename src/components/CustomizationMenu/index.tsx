@@ -24,6 +24,7 @@ import {TransitionProps} from "@mui/material/transitions";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import {setAllUsersThunk} from "../../redux/reducers/authReducer";
+import DeleteUserInProject from "../DeleteUserInProject";
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -107,6 +108,7 @@ export const CustomizedMenus:FC<OwnToPropsCustomizedMenus> = ({project, allUsers
                 onClose={handleCloseBtn}
             >
                 <AlertDialogSlide handleCloseBtn={handleCloseBtn} allUsers={allUsers} project={project}/>
+                <DeleteUserInProject handleCloseBtn={handleCloseBtn} project={project}/>
             </StyledMenu>
         </div>
     );

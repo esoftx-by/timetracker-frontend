@@ -15,7 +15,7 @@ const DELETE_TASK = 'task/DELETE_TASK'
 type initialStateType = {
     allTask: Array<taskType> | null,
     taskUserId: Array<taskType>,
-    allTasksProject: Array<allTasksProjectType>
+    allTasksProject: Array<allTasksProjectType> | null
     taskById: taskType | null
     isFetching: boolean
 }
@@ -23,7 +23,7 @@ type initialStateType = {
 const initialState: initialStateType = {
     allTask: null,
     taskUserId: [],
-    allTasksProject: [],
+    allTasksProject: null,
     taskById: null,
     isFetching: false
 }
@@ -37,7 +37,7 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
             }
         case SET_NEW_TASK:
             let stateCopy = {...state}
-            stateCopy.allTasksProject = [...state.allTasksProject]
+            stateCopy.allTasksProject = [...state.allTasksProject as Array<taskType>]
             stateCopy.allTasksProject.push(action.data)
             return stateCopy
         case SET_ALL_TASKS_USER_ID:
@@ -102,6 +102,7 @@ export const updateTask = (id: number, name?: string | null, description?: strin
         if (response.data.success){
             let data: taskType = response.data.response
             dispatch(actions.setTaskById(data))
+            dispatch(setAllTasksProjectThunk(data.project.id))
         }
     }
 }
@@ -128,13 +129,11 @@ export const setAllTaskThunk = (): ThunkTypes => {
 
 export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        dispatch(actions.toggleIsFetching(true))
         let response = await TaskAPI.allTaskUserId(id)
         if (response.data.success) {
             let data: Array<taskType> = response.data.response
             dispatch(actions.setAllTaskUserId(data))
         }
-        dispatch(actions.toggleIsFetching(false))
     }
 }
 

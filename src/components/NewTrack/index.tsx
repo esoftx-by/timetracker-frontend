@@ -11,7 +11,6 @@ import {Alert} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import {Formik} from "formik";
 import {FC} from "react";
-import {NavLink} from "react-router-dom";
 import {ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "../../redux/store";
 import {AnyAction} from "redux";
@@ -19,7 +18,7 @@ import {useDispatch} from "react-redux";
 import {setNewTrackThunk} from "../../redux/reducers/trackReducer";
 
 type OwnToProps = {
-    userId: number
+    userId: number | null
     taskId: number
 }
 
@@ -76,7 +75,7 @@ const FormDialogTrack: FC<OwnToProps> = ({userId, taskId}) => {
                                 let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
                                 let gmtFirst = gmt.slice(0, 3)
                                 let gmtSecond = gmt.slice(2, 4)
-                                dispatch(setNewTrackThunk(userId, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours)))
+                                dispatch(setNewTrackThunk(userId as number, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours)))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

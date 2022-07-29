@@ -130,3 +130,9 @@ export const setProjectByUserIdThunk = (id: number): ThunkTypes => {
         }
     }
 }
+
+export const deleteUserInProjectThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        await ProjectAPI.deleteUser(id)
+    }
+}

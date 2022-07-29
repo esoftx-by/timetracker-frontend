@@ -98,6 +98,9 @@ export const ProjectAPI = {
             .then(response => {
                 return response
             })
+    },
+    deleteUser(id: number){
+        return instance.delete(`project-users/${id}`)
     }
 }
 
@@ -210,5 +213,8 @@ export const TracksAPI = {
             .then(response => {
                 return response
             })
+    },
+    deleteTrack(id: number){
+        return instance.delete(`tracks/${id}`)
     }
 }

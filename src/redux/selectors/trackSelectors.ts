@@ -5,7 +5,7 @@ export const setAllTracksSelector = (state: AppStateType) => {
 }
 
 export const setTracksByTaskIdSelector = (state: AppStateType) => {
-    return state.tracks.tracksByTaskId
+    return state.tracks.tracksByTaskId?.reverse()
 }
 
 export const setAllTracksByProjectIdSelector = (state: AppStateType) => {
