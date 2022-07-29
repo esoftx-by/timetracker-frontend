@@ -17,17 +17,18 @@ import TaskOption from "../../components/EditTask";
 import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 import {DeleteTask} from "../../components/DeleteTask";
 import {setIsFetchingTask, setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
+import {userDataSelector} from "../../redux/selectors/authSelectors";
+import {setTracksByTaskIdSelector} from "../../redux/selectors/trackSelectors";
 
 
 export const TaskPage: FC = () => {
     const params = useParams();
     let id: number = Number(params.id)
 
-    const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
     const isFetching = useSelector(setIsFetchingTask)
     const taskById = useSelector(setTaskByIdSelector)
-    const tracksByTaskId = useSelector((state: AppStateType) => state.tracks.tracksByTaskId?.reverse())
-    const userId = useSelector((state: AppStateType) => state.auth.user?.id)
+    const tracksByTaskId = useSelector(setTracksByTaskIdSelector)
+    const user = useSelector(userDataSelector)
 
     const [open, setOpen] = useState(false);
 
@@ -44,8 +45,8 @@ export const TaskPage: FC = () => {
 
 
     useEffect(() => {
-        if (projectId) {
-            dispatch(setAllUsersInProject(projectId as number))
+        if (taskById) {
+            dispatch(setAllUsersInProject(taskById.id))
         }
     }, [])
 
@@ -72,13 +73,13 @@ export const TaskPage: FC = () => {
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
                 <div style={{display: 'flex'}}>
-                    <Button style={{marginRight: '1rem'}} variant="contained" onClick={() => handleClickOpen()}>Delete Task</Button>
+                    <Button style={{marginRight: '1rem'}} variant="contained" onClick={() => handleClickOpen()}>Delete
+                        Task</Button>
                     <TaskOption/>
                 </div>
             </div>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12}>
-                    {/*<AlertDialogSlide/>*/}
                     <OutlinedCard data={taskById}/>
                     <div className={style.tracksBlock}>
 
@@ -89,11 +90,11 @@ export const TaskPage: FC = () => {
                             alignItems: 'center'
                         }}>
                             <h3>Tracks: </h3>
-                            <FormDialogTrack userId={userId as number} taskId={taskById.id}/>
+                            <FormDialogTrack userId={user && user.id} taskId={taskById.id}/>
                         </div>
                         <div className={style.tracksBlockItem}>
                             {tracksByTaskId && tracksByTaskId.length ? tracksByTaskId.map(track => <VirtualizedList
-                                    tracks={track}/>) :
+                                    key={track.id} tracks={track}/>) :
                                 <div className={style.tracksBlockNoTracks}>No tracks</div>}
                         </div>
                     </div>

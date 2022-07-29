@@ -8,13 +8,14 @@ import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../
 
 type OwnToProps = {
     project: projectType | null
-    AllTaskByProject: Array<allTasksProjectType>
+    AllTaskByProject: Array<allTasksProjectType> | null
     userId: number
     allTracksByProjectId: Array<allTracksByProjectIdType>
 }
 
 
 const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTracksByProjectId}) => {
+
 
     const STATUS_ORDER = {
         LONG_TERM: 0,
@@ -29,7 +30,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
     const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     return (
-        <Box sx={{flexGrow: 1}} className={style.tasks} >
+        <Box sx={{flexGrow: 1}} className={style.tasks}>
             {project && <div>
                 <h1>{project.name}</h1>
                 <div className={style.description}>{project.description}</div>
@@ -37,9 +38,10 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
             </div>}
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
-                {AllTaskByProject.length ? AllTaskByProject.sort(comparator).map(task => <OutlinedCardTask
+                {AllTaskByProject && AllTaskByProject.length ? AllTaskByProject.sort(comparator).map(task =>
+                    <OutlinedCardTask
                         allTracksByProjectId={allTracksByProjectId} key={task.id} userId={userId}
-                        tasksProject={task}/>) :
+                        tasksProject={task}/>) : AllTaskByProject?.length === 0 &&
                     <h3>No tasks</h3>}
             </Grid>
         </Box>

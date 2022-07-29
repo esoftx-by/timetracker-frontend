@@ -80,6 +80,7 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
     };
     const navigate = useNavigate();
     const auth = useContext(AuthContext)
+
     const logoutHandler = (event: React.MouseEvent<HTMLElement>) => {
         event.preventDefault()
         auth.logout()
@@ -205,8 +206,8 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={logoutHandler}>
+                            {settings.map((setting, index) => (
+                                <MenuItem key={index} onClick={logoutHandler}>
                                     <Typography textAlign="center">
                                         {setting}
                                     </Typography>

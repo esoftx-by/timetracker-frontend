@@ -8,6 +8,7 @@ const SET_NEW_TRACK = 'tracks/SET_NEW_TRACK'
 const SET_ALL_TRACK_BY_USER_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_TRACKS_BY_TASK_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_ALL_TRACKS_BY_PROJECT_ID = 'tracks/SET_ALL_TRACKS_BY_PROJECT_ID'
+const DELETE_TRACK = 'tracks/DELETE_TRACK'
 
 
 type initialStateType = {
@@ -53,6 +54,13 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
                 ...state,
                 allTracksByProjectId: action.data
             }
+        case DELETE_TRACK:
+            let copyState = {...state}
+            copyState.allTracksByProjectId = [...state.allTracksByProjectId]
+            copyState.allTracksByProjectId = copyState.allTracksByProjectId.filter(el => el.id !== action.id)
+            copyState.tracksByTaskId = [...state.tracksByTaskId as Array<allTracksByProjectIdType>]
+            copyState.tracksByTaskId = copyState.tracksByTaskId.filter(el => el.id !== action.id)
+            return copyState
         default:
             return state
     }
@@ -63,7 +71,7 @@ type ActionsType = InferActionTypes<typeof actions>
 type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 const actions = {
-    setAllTracks: (data: Array<allTracksByProjectIdType>)=> ({type: SET_ALL_TRACKS, data} as const),
+    setAllTracks: (data: Array<allTracksByProjectIdType>) => ({type: SET_ALL_TRACKS, data} as const),
     setNewTrack: (data: allTracksByProjectIdType) => ({type: SET_NEW_TRACK, data} as const),
     setAllTracksByUserId: (data: Array<allTracksByProjectIdType>) => ({
         type: SET_ALL_TRACK_BY_USER_ID,
@@ -76,11 +84,22 @@ const actions = {
     setAllTracksByProjectId: (data: Array<allTracksByProjectIdType>) => ({
         type: SET_ALL_TRACKS_BY_PROJECT_ID,
         data
-    } as const)
+    } as const),
+    deleteTrack: (id: number) => ({type: DELETE_TRACK, id} as const)
 }
 
 
+export const deleteTrackThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        try {
+            await TracksAPI.deleteTrack(id)
+            dispatch(actions.deleteTrack(id))
 
+        } catch (e: any) {
+            console.log(e.message)
+        }
+    }
+}
 
 export const setAllTracksByProjectIdThunk = (projectId: number): ThunkTypes => {
     return async dispatch => {

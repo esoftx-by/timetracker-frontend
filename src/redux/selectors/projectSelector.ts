@@ -16,6 +16,6 @@ export const setIsFetchingProjectSelector = (state: AppStateType) => {
     return state.projectsPage.isFetching
 }
 
-export const setAllUsersInProject = (state: AppStateType) => {
+export const setAllUsersInProjectSelector = (state: AppStateType) => {
     return state.projectsPage.allUsersInProject
 }

@@ -9,12 +9,17 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
 import {FC} from "react";
+import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../redux/store";
 
 type OwnToProps = {
     tracks: allTracksByProjectIdType
 }
 
 const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
+
+    const dispatch: AppDispatch = useDispatch()
 
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -47,7 +52,10 @@ const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
 
     let timeInMinutes = (endTime - startTime) / 1000 / 60
 
-
+    let deleteTrack = () => {
+        dispatch(deleteTrackThunk(tracks.id))
+        setOpen(false);
+    }
     return (
         <>
             <div onClick={handleClickOpen} className={style.newTrack}>
@@ -74,6 +82,9 @@ const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
                         <DialogContentText id="alert-dialog-description">
                             {tracks.user.firstName + ' ' + tracks.user.lastName}
                         </DialogContentText>
+                        <div style={{textAlign:"center", marginTop:"1rem"}}>
+                            <Button variant="contained" onClick={deleteTrack}>delete track</Button>
+                        </div>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>close</Button>
