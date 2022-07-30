@@ -9,7 +9,7 @@ import {setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/pro
 import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
 import {userType} from "../../types";
-import {AppDispatch, AppStateType} from "../../redux/store";
+import {AppDispatch} from "../../redux/store";
 import {setProjectsByUserSelector, setProjectsSelector} from "../../redux/selectors/projectSelector";
 import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
 
@@ -53,7 +53,7 @@ export const Projects: FC<OwnToProps> = ({user}) => {
                                     project={project}
                                     key={project.id} role={user.applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2>
-                            </Grid>) : (projectsByUser ? projectsByUser.map(project =>
+                            </Grid>) : (projectsByUser?.length ? projectsByUser.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}
