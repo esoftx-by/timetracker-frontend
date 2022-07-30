@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
-import {NavLink, useNavigate} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 // @ts-ignore
 import style from './Navbar.module.css'
 import {FC, useContext} from "react";
@@ -21,7 +21,6 @@ import {Avatar} from "@mui/material";
 
 
 const pages: Array<string> = ['projects'];
-const settings: Array<string> = ['Logout'];
 
 type OwnToProps = {
     user: userType | null
@@ -206,13 +205,18 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting, index) => (
-                                <MenuItem key={index} onClick={logoutHandler}>
-                                    <Typography textAlign="center">
-                                        {setting}
+                            <MenuItem>
+                                <Link to={'/settings'} onClick={handleCloseUserMenu} style={{textDecoration:'none'}}>
+                                    <Typography textAlign="center" color="black">
+                                        Settings
                                     </Typography>
-                                </MenuItem>
-                            ))}
+                                </Link>
+                            </MenuItem>
+                            <MenuItem onClick={logoutHandler}>
+                                <Typography textAlign="center">
+                                    Logout
+                                </Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>

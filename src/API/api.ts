@@ -3,7 +3,7 @@ import {allTracksByProjectIdType, projectType, taskType, userType} from "../type
 
 
 export const instance = axios.create({
-    baseURL: `http://localhost:8080/api/v1/`
+    baseURL: (process.env.NODE_ENV !== 'production') ? 'http://localhost:8080/api/v1/' : 'http://158.160.7.205:8080/api/v1/'
 })
 
 type AllProject = {
@@ -93,13 +93,13 @@ export const ProjectAPI = {
                 return response
             })
     },
-    setUsersByTaskId(id: number){
+    setUsersByTaskId(id: number) {
         return instance.get<AllUsers>(`project-users/project/${id}`)
             .then(response => {
                 return response
             })
     },
-    deleteUser(id: number){
+    deleteUser(id: number) {
         return instance.delete(`project-users/${id}`)
     }
 }
@@ -125,6 +125,20 @@ export const AuthAPI = {
     },
     setAllUsers() {
         return instance.get<AllUsers>('users')
+            .then(response => {
+                return response
+            })
+    },
+    updateProfile(id: number, firstName?: string | null, lastName?: string | null, email?: string | null, password?: string | null) {
+        return instance.patch('users', null, {
+            params: {
+                id: id,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password
+            }
+        })
             .then(response => {
                 return response
             })
@@ -214,7 +228,7 @@ export const TracksAPI = {
                 return response
             })
     },
-    deleteTrack(id: number){
+    deleteTrack(id: number) {
         return instance.delete(`tracks/${id}`)
     }
 }
