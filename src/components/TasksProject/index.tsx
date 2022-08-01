@@ -3,14 +3,14 @@ import React, {FC} from 'react'
 import style from "../../pages/project/Project.module.css";
 import {Box, Grid} from "@mui/material";
 import OutlinedCardTask from "../Task";
-import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
+import {AllTasksProjectType, AllTracksByProjectIdType, ProjectType} from "../../types";
 
 
 type OwnToProps = {
-    project: projectType | null
-    AllTaskByProject: Array<allTasksProjectType> | null
+    project: ProjectType | null
+    AllTaskByProject: Array<AllTasksProjectType> | null
     userId: number
-    allTracksByProjectId: Array<allTracksByProjectIdType>
+    allTracksByProjectId: Array<AllTracksByProjectIdType>
 }
 
 
@@ -27,7 +27,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
         CANCELLED: 6
     }
     // @ts-ignore
-    const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
+    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>

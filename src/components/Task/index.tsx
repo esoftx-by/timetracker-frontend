@@ -6,22 +6,22 @@ import Typography from '@mui/material/Typography';
 import {Grid, Select, SelectChangeEvent} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
-import {allTasksProjectType, allTracksByProjectIdType} from "../../types";
+import {AllTasksProjectType, AllTracksByProjectIdType} from "../../types";
 // @ts-ignore
 import style from './Task.module.css'
-import {FC, useEffect, useState} from "react";
+import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import {setAllTasksProjectThunk, updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/taskReducer";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 
 
 type OwnToProps = {
-    allTracksByProjectId: Array<allTracksByProjectIdType>
-    tasksProject: allTasksProjectType
+    allTracksByProjectId: Array<AllTracksByProjectIdType>
+    tasksProject: AllTasksProjectType
     userId: number
 }
 
@@ -47,10 +47,9 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                 </Typography>
                                 {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                                   onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
-                                    <BasicSelect setLocalStatus={setLocalStatus} activeStatus={localStatus} taskId={tasksProject.id}
+                                    <BasicSelect setLocalStatus={setLocalStatus} activeStatus={localStatus}
+                                                 taskId={tasksProject.id}
                                                  setEditMode={setEditMode}/>}
-
-                                {/*<div className={tasksProject.status}>{tasksProject.status.replace('_', ' ')}</div>*/}
                             </div>
                             <Typography variant="h5" component="div">
                                 {tasksProject.name}
@@ -86,10 +85,7 @@ type OwnPropsType = {
     setLocalStatus: (p: string) => void
 }
 
-const BasicSelect: FC<OwnPropsType> = ({setEditMode, activeStatus,setLocalStatus, taskId}) => {
-    // const activeStatus = useSelector((state: AppStateType) => state.tasks.taskById?.status)
-    // const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
-
+const BasicSelect: FC<OwnPropsType> = ({setEditMode, activeStatus, setLocalStatus, taskId}) => {
 
     const handleChange = (event: SelectChangeEvent) => {
         setLocalStatus(event.target.value as string);

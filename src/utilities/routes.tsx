@@ -5,7 +5,7 @@ import {Container} from "@mui/material";
 import {Projects} from "../pages/projects/projects";
 import ResponsiveAppBar from "../components/Navbar";
 import {ProjectContainer} from "../pages/project";
-import {userType} from "../types";
+import {UserType} from "../types";
 import CircularIndeterminate from "../components/Loader";
 import NotFoundPage from "../pages/notFoundPage";
 import {TaskPage} from "../pages/taskPage";
@@ -13,8 +13,7 @@ import SettingsPage from "../pages/settingsPage";
 
 let MainRoutes = lazy(() => import('./mainRoutes/mainRoutes'))
 
-export const useRoutes = (isAuthenticated: boolean, userId: any, userData: userType | null) => {
-
+export const useRoutes = (isAuthenticated: boolean, userId: any, userData: UserType | null) => {
 
 
     if (isAuthenticated && userData) {

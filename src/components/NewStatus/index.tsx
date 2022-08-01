@@ -6,17 +6,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { TransitionProps } from '@mui/material/transitions';
+import {TransitionProps} from '@mui/material/transitions';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import {FC, useState} from "react";
 import {Alert, Select, SelectChangeEvent} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
-import {TaskAPI} from "../../API/api";
 import {updateTask} from "../../redux/reducers/taskReducer";
 
 const Transition = React.forwardRef(function Transition(
@@ -70,7 +68,7 @@ type OwnPropsType = {
     handleClose: () => void
 }
 
-const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
+const BasicSelect: FC<OwnPropsType> = ({handleClose}) => {
     const activeStatus = useSelector((state: AppStateType) => state.tasks.taskById?.status)
     const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
 
@@ -86,7 +84,7 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
     const dispatch: AppDispatch = useDispatch()
 
     const sendStatus = () => {
-        if (activeStatus === status){
+        if (activeStatus === status) {
             setError(true)
         } else {
             setError(false)
@@ -97,7 +95,7 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
     }
 
     return (
-        <Box sx={{ minWidth: 220, marginTop: 1 }}>
+        <Box sx={{minWidth: 220, marginTop: 1}}>
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Status</InputLabel>
                 <Select
@@ -117,7 +115,8 @@ const BasicSelect:FC<OwnPropsType> = ({handleClose}) => {
                 </Select>
                 <div>{error && <Alert severity="error">Status has not changed</Alert>}</div>
             </FormControl>
-            <div style={{marginTop: 10}}>{viewBtn && <Button size="medium" variant="contained" onClick={sendStatus}>Send</Button>}</div>
+            <div style={{marginTop: 10}}>{viewBtn &&
+                <Button size="medium" variant="contained" onClick={sendStatus}>Send</Button>}</div>
         </Box>
     );
 }

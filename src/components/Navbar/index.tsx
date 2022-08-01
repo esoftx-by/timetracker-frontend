@@ -16,14 +16,14 @@ import {Link, NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
 import {FC, useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import {userType} from "../../types";
+import {UserType} from "../../types";
 import {Avatar} from "@mui/material";
 
 
 const pages: Array<string> = ['projects'];
 
 type OwnToProps = {
-    user: userType | null
+    user: UserType | null
 }
 
 
@@ -206,7 +206,7 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem>
-                                <Link to={'/settings'} onClick={handleCloseUserMenu} style={{textDecoration:'none'}}>
+                                <Link to={'/settings'} onClick={handleCloseUserMenu} style={{textDecoration: 'none'}}>
                                     <Typography textAlign="center" color="black">
                                         Settings
                                     </Typography>

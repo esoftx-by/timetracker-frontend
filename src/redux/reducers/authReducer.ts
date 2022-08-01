@@ -1,5 +1,5 @@
 import {AuthAPI} from "../../API/api";
-import {userType} from "../../types";
+import {UserType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
 
@@ -12,8 +12,8 @@ const IS_SENT = 'auth/IS_SENT'
 
 export type initialStateType = {
     isSent: boolean
-    user: userType | null,
-    allUsers: Array<userType> | null
+    user: UserType | null,
+    allUsers: Array<UserType> | null
     errors: string | null
 }
 
@@ -66,8 +66,8 @@ type ActionsTypes = InferActionTypes<typeof actionsUser> | deleteUserType
 export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const actionsUser = {
-    setAllUsers: (allUsers: Array<userType>) => ({type: SET_ALL_USERS, allUsers} as const),
-    setUser: (user: userType) => ({type: SET_USER, user} as const),
+    setAllUsers: (allUsers: Array<UserType>) => ({type: SET_ALL_USERS, allUsers} as const),
+    setUser: (user: UserType) => ({type: SET_USER, user} as const),
     errors: (error: string | null) => ({type: ERROR_USER, error} as const),
     isSent: (isSent: boolean) => ({type: IS_SENT, isSent} as const)
 }
@@ -78,7 +78,7 @@ export const deleteUser = (): deleteUserType => ({type: DELETE_USER})
 export const setAllUsersThunk = (): ThunkTypes => {
     return async dispatch => {
         let response = await AuthAPI.setAllUsers()
-        const allUsers: Array<userType> = response.data.response
+        const allUsers: Array<UserType> = response.data.response
         dispatch(actionsUser.setAllUsers(allUsers))
     }
 }
@@ -88,7 +88,7 @@ export const setUserData = (id: number): ThunkTypes => {
         try {
             let response = await AuthAPI.setUserData(id)
             if (response.data.success) {
-                const user: userType = response.data.response
+                const user: UserType = response.data.response
                 dispatch(actionsUser.setUser(user))
             }
         } catch (e: any) {
@@ -101,11 +101,11 @@ export const updateProfileThunk = (id: number, firstName?: string | null, lastNa
     return async dispatch => {
         try {
             let response = await AuthAPI.updateProfile(id, firstName, lastName, email, password)
-            if (response.data.success){
+            if (response.data.success) {
                 dispatch(actionsUser.setUser(response.data.response))
                 dispatch(actionsUser.isSent(true))
             }
-        } catch (e: any){
+        } catch (e: any) {
             console.log(e.message)
         }
     }

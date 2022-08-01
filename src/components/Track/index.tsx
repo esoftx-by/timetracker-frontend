@@ -7,17 +7,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import {allTasksProjectType, allTracksByProjectIdType, projectType} from "../../types";
+import {AllTracksByProjectIdType} from "../../types";
 import {FC} from "react";
 import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 
 type OwnToProps = {
-    tracks: allTracksByProjectIdType
+    tracks: AllTracksByProjectIdType
 }
 
-const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
+const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -63,33 +63,33 @@ const VirtualizedList:FC<OwnToProps> = ({tracks}) => {
                 <div>{getTimeFromMins(timeInMinutes)}</div>
             </div>
 
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {"Track information"}
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            {getTimeISO(tracks.startTime)}
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description">
-                            {getTimeFromMins(timeInMinutes)}
-                        </DialogContentText>
-                        <DialogContentText id="alert-dialog-description">
-                            {tracks.user.firstName + ' ' + tracks.user.lastName}
-                        </DialogContentText>
-                        <div style={{textAlign:"center", marginTop:"1rem"}}>
-                            <Button variant="contained" onClick={deleteTrack}>delete track</Button>
-                        </div>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>close</Button>
-                    </DialogActions>
-                </Dialog>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Track information"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {getTimeISO(tracks.startTime)}
+                    </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                        {getTimeFromMins(timeInMinutes)}
+                    </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">
+                        {tracks.user.firstName + ' ' + tracks.user.lastName}
+                    </DialogContentText>
+                    <div style={{textAlign: "center", marginTop: "1rem"}}>
+                        <Button variant="contained" onClick={deleteTrack}>delete track</Button>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>close</Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 }

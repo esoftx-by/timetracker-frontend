@@ -1,4 +1,4 @@
-export type userType = {
+export type UserType = {
     id: number,
     email: string,
     firstName: string,
@@ -7,42 +7,42 @@ export type userType = {
 }
 
 
-export type projectType = {
+export type ProjectType = {
     id: number,
     name: string,
     description: string,
     customer: string
 }
 
-export type taskType = {
+export type TaskType = {
     id: number,
     name: string,
     description: string,
     estimatedHours: number,
-    currentAssignee: userType,
-    project: projectType,
+    currentAssignee: UserType,
+    project: ProjectType,
     status: string
 }
 
-export type allTracksByProjectIdType = {
+export type AllTracksByProjectIdType = {
     id: number,
-    task: taskType,
-    user: userType,
+    task: TaskType,
+    user: UserType,
     startTime: string,
     endTime: string
 }
 
-export type allTasksProjectType = {
+export type AllTasksProjectType = {
     id: number,
     name: string,
     description: string,
     estimatedHours: number,
-    currentAssignee: userType,
-    project: projectType,
+    currentAssignee: UserType,
+    project: ProjectType,
     status: string
 }
 
-export type authContextType = {
+export type AuthContextType = {
     token: string | null
     userId: number | null,
     lastName:string | null,
