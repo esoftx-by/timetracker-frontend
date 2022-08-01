@@ -42,37 +42,28 @@ const TaskOption = () => {
     };
     const dispatch: AppDispatch = useDispatch()
 
-    const taskById = useSelector(setTaskByIdSelector)
-
-    const taskId = taskById && taskById.id
-    const taskName = taskById && taskById.name
-    const taskDescription = taskById && taskById.description
-    const taskEstimatedHours = taskById && taskById.estimatedHours
-    const activeCurrentAssignee = taskById && taskById.currentAssignee
-    const projectId = taskById && taskById.project.id
+    const {name, description, estimatedHours, id, project, currentAssignee} = useSelector(setTaskByIdSelector)
 
     const allUsersInProject = useSelector(setAllUsersInProjectSelector)
 
 
     useEffect(() => {
-        if (projectId) {
-            dispatch(setAllUsersInProject(projectId as number))
-        }
-    }, [activeCurrentAssignee])
+            dispatch(setAllUsersInProject(project.id))
+    }, [currentAssignee])
 
 
-    const [name, setName] = useState(taskName)
-    const [description, setDescription] = useState(taskDescription)
-    const [estimatedHours, setEstimatedHours] = useState(taskEstimatedHours)
-    const [currentAssignee, setCurrentAssigneeId] = React.useState<number | null>(activeCurrentAssignee && activeCurrentAssignee.id);
+    const [taskName, setTaskName] = useState(name)
+    const [taskDescription, setTaskDescription] = useState(description)
+    const [taskEstimatedHours, setTaskEstimatedHours] = useState(estimatedHours)
+    const [activeCurrentAssignee, setActiveCurrentAssigneeId] = React.useState<number | null>(currentAssignee && currentAssignee.id);
 
 
     const handleChange = (event: SelectChangeEvent) => {
-        setCurrentAssigneeId(event.target.value as any);
+        setActiveCurrentAssigneeId(event.target.value as any);
     };
 
     const submitFunction = () => {
-        dispatch(updateTask(taskId as number, name, description, estimatedHours, null, currentAssignee))
+        dispatch(updateTask(id, taskName, taskDescription, taskEstimatedHours, null, activeCurrentAssignee))
         handleClose()
     }
 
@@ -103,8 +94,8 @@ const TaskOption = () => {
                                 label="Name"
                                 defaultValue={name}
                                 variant="outlined"
-                                value={name}
-                                onChange={event => setName(event.target.value)}
+                                value={taskName}
+                                onChange={event => setTaskName(event.target.value)}
                             />
                         </Box>
 
@@ -117,8 +108,8 @@ const TaskOption = () => {
                                 label="Description"
                                 defaultValue={description}
                                 variant="outlined"
-                                value={description}
-                                onChange={event => setDescription(event.target.value)}
+                                value={taskDescription}
+                                onChange={event => setTaskDescription(event.target.value)}
                             />
                         </Box>
 
@@ -131,8 +122,8 @@ const TaskOption = () => {
                                 label="estimatedHours"
                                 defaultValue={estimatedHours}
                                 variant="outlined"
-                                value={estimatedHours}
-                                onChange={event => setEstimatedHours(event.target.value as any)}
+                                value={taskEstimatedHours}
+                                onChange={event => setTaskEstimatedHours(event.target.value as any)}
                             />
                         </Box>
 
@@ -142,10 +133,10 @@ const TaskOption = () => {
                             }}>
                             <Select
                                 displayEmpty
-                                value={currentAssignee as any}
+                                value={activeCurrentAssignee as any}
                                 onChange={handleChange}
                                 inputProps={{'aria-label': 'Without label'}}
-                                defaultValue={activeCurrentAssignee ? activeCurrentAssignee.email : ''}
+                                defaultValue={currentAssignee ? currentAssignee.email : ''}
                             >
                                 {allUsersInProject.map((el) => <MenuItem key={el.id}
                                                                          value={el.id}>{el.email}</MenuItem>)}

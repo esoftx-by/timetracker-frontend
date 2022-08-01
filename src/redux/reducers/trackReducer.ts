@@ -9,18 +9,17 @@ const SET_ALL_TRACK_BY_USER_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_TRACKS_BY_TASK_ID = 'tracks/SET_ALL_TRACK_BY_USER_ID'
 const SET_ALL_TRACKS_BY_PROJECT_ID = 'tracks/SET_ALL_TRACKS_BY_PROJECT_ID'
 const DELETE_TRACK = 'tracks/DELETE_TRACK'
+const UPDATE_TRACK = 'tracks/UPDATE_TRACK'
 
 
 type initialStateType = {
     allTracks: null | Array<AllTracksByProjectIdType>,
-    // allTrackByUserId: null | Array<allTracksByProjectIdType>,
-    tracksByTaskId: null | Array<AllTracksByProjectIdType>,
+    tracksByTaskId: Array<AllTracksByProjectIdType>,
     allTracksByProjectId: Array<AllTracksByProjectIdType>
 }
 
 const initialState: initialStateType = {
     allTracks: [],
-    // allTrackByUserId: [],
     tracksByTaskId: [],
     allTracksByProjectId: []
 }
@@ -39,11 +38,6 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
                 ...state,
                 allTracks: action.data
             }
-        // case SET_ALL_TRACK_BY_USER_ID:
-        //     return {
-        //         ...state,
-        //         allTrackByUserId: action.data
-        //     }
         case SET_TRACKS_BY_TASK_ID:
             return {
                 ...state,
@@ -61,6 +55,12 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
             copyState.tracksByTaskId = [...state.tracksByTaskId as Array<AllTracksByProjectIdType>]
             copyState.tracksByTaskId = copyState.tracksByTaskId.filter(el => el.id !== action.id)
             return copyState
+        case UPDATE_TRACK: {
+            return {
+                ...state,
+                tracksByTaskId: state.tracksByTaskId.map(el => el.id === action.updateTrack.id ? action.updateTrack : el)
+            }
+        }
         default:
             return state
     }
@@ -85,7 +85,8 @@ const actions = {
         type: SET_ALL_TRACKS_BY_PROJECT_ID,
         data
     } as const),
-    deleteTrack: (id: number) => ({type: DELETE_TRACK, id} as const)
+    deleteTrack: (id: number) => ({type: DELETE_TRACK, id} as const),
+    updateTrack: (updateTrack: any) => ({type: UPDATE_TRACK, updateTrack} as const)
 }
 
 
@@ -101,12 +102,27 @@ export const deleteTrackThunk = (id: number): ThunkTypes => {
     }
 }
 
+
+
 export const setAllTracksByProjectIdThunk = (projectId: number): ThunkTypes => {
     return async dispatch => {
         let response = await TracksAPI.setAllTracksByProjectId(projectId)
         if (response.data.success) {
             let allTracksByProjectId: Array<AllTracksByProjectIdType> = response.data.response
             dispatch(actions.setAllTracksByProjectId(allTracksByProjectId))
+        }
+    }
+}
+
+export const updateTrackThunk = (id: number, startTime: string, endTime: string): ThunkTypes => {
+    return async dispatch => {
+        try {
+            let response = await TracksAPI.updateTrack(id, startTime, endTime)
+            if (response.data.success){
+                dispatch(actions.updateTrack(response.data.response))
+            }
+        } catch (e: any){
+            console.log(e.message)
         }
     }
 }
@@ -152,3 +168,4 @@ export const setTracksByTaskIdThunk = (TaskId: number): ThunkTypes => {
         }
     }
 }
+

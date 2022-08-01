@@ -1,4 +1,5 @@
 import {AppStateType} from "../store";
+import {TaskType} from "../../types";
 
 export const setAllTaskSelector = (state: AppStateType) => {
     return state.tasks.allTask
@@ -13,7 +14,7 @@ export const setAllTasksProjectSelector = (state: AppStateType) => {
 }
 
 export const setTaskByIdSelector = (state: AppStateType) => {
-    return state.tasks.taskById
+    return state.tasks.taskById as TaskType
 }
 
 export const setIsFetchingTask = (state: AppStateType) => {

@@ -230,5 +230,17 @@ export const TracksAPI = {
     },
     deleteTrack(id: number) {
         return instance.delete(`tracks/${id}`)
+    },
+    updateTrack(id: number, startTime: string, endTime: string) {
+        return instance.patch('tracks', null, {
+            params: {
+                id: id,
+                startTime: startTime,
+                endTime: endTime
+            }
+        })
+            .then(response => {
+                return response
+            })
     }
 }
