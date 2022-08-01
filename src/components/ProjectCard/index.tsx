@@ -8,21 +8,21 @@ import {NavLink} from "react-router-dom";
 import CustomizedMenus from "../CustomizationMenu";
 // @ts-ignore
 import style from './ProjectCard.module.css'
-import {projectType, userType} from "../../types";
+import {ProjectType, UserType} from "../../types";
 import {FC} from "react";
 
 
 type OwnToProps = {
-    project: projectType
+    project: ProjectType
     role: string
-    allUsers: Array<userType> | null
+    allUsers: Array<UserType> | null
 }
 
 
 export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
     return (
         <Grid item xs={12} md={4}>
-            <Card sx={{maxWidth: 800}} style={{borderRadius:"10px" }}>
+            <Card sx={{maxWidth: 800}} style={{borderRadius: "10px"}}>
                 <div className={style.mainProjectCard}>
                     <CardContent>
                         <Typography className={style.projectName} variant="h5" component="div">

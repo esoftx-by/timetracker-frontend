@@ -1,5 +1,5 @@
 import {TaskAPI} from "../../API/api";
-import {allTasksProjectType, taskType} from "../../types";
+import {AllTasksProjectType, TaskType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
 
@@ -13,10 +13,10 @@ const DELETE_TASK = 'task/DELETE_TASK'
 
 
 type initialStateType = {
-    allTask: Array<taskType> | null,
-    taskUserId: Array<taskType>,
-    allTasksProject: Array<allTasksProjectType> | null
-    taskById: taskType | null
+    allTask: Array<TaskType> | null,
+    taskUserId: Array<TaskType>,
+    allTasksProject: Array<AllTasksProjectType> | null
+    taskById: TaskType | null
     isFetching: boolean
 }
 
@@ -37,7 +37,7 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
             }
         case SET_NEW_TASK:
             let stateCopy = {...state}
-            stateCopy.allTasksProject = [...state.allTasksProject as Array<taskType>]
+            stateCopy.allTasksProject = [...state.allTasksProject as Array<TaskType>]
             stateCopy.allTasksProject.push(action.data)
             return stateCopy
         case SET_ALL_TASKS_USER_ID:
@@ -75,11 +75,11 @@ type ActionsType = InferActionTypes<typeof actions>
 export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 const actions = {
-    setAllTask: (data: Array<taskType>) => ({type: SET_ALL_TASKS, data} as const),
-    setNewTask: (data: taskType) => ({type: SET_NEW_TASK, data} as const),
-    setAllTaskUserId: (data: Array<taskType>) => ({type: SET_ALL_TASKS_USER_ID, data} as const),
-    setAllTasksProject: (data: Array<taskType>) => ({type: SET_ALL_TASKS_PROJECT, data} as const),
-    setTaskById: (taskById: taskType) => ({type: SET_TASK_BY_ID, taskById} as const),
+    setAllTask: (data: Array<TaskType>) => ({type: SET_ALL_TASKS, data} as const),
+    setNewTask: (data: TaskType) => ({type: SET_NEW_TASK, data} as const),
+    setAllTaskUserId: (data: Array<TaskType>) => ({type: SET_ALL_TASKS_USER_ID, data} as const),
+    setAllTasksProject: (data: Array<TaskType>) => ({type: SET_ALL_TASKS_PROJECT, data} as const),
+    setTaskById: (taskById: TaskType) => ({type: SET_TASK_BY_ID, taskById} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
     deleteTask: () => ({type: DELETE_TASK} as const)
 }
@@ -89,7 +89,7 @@ export const SetTaskByIdThunk = ( id: number): ThunkTypes => {
         dispatch(actions.toggleIsFetching(true))
         let response = await TaskAPI.taskById(id)
         if (response.data.success){
-            let data: taskType = response.data.response
+            let data: TaskType = response.data.response
             dispatch(actions.setTaskById(data))
         }
         dispatch(actions.toggleIsFetching(false))
@@ -100,7 +100,7 @@ export const updateTask = (id: number, name?: string | null, description?: strin
     return async dispatch => {
         let response = await TaskAPI.updateTask(id, name, description, estimatedHours, status, currentAssigneeId)
         if (response.data.success){
-            let data: taskType = response.data.response
+            let data: TaskType = response.data.response
             dispatch(actions.setTaskById(data))
             dispatch(setAllTasksProjectThunk(data.project.id))
         }
@@ -121,7 +121,7 @@ export const setNewTaskThunk = (name: string, description: string, estimatedHour
 export const setAllTaskThunk = (): ThunkTypes => {
     return async dispatch => {
         let response = await TaskAPI.allTasks()
-        let tasks: Array<taskType> = response.data.response
+        let tasks: Array<TaskType> = response.data.response
         dispatch(actions.setAllTask(tasks))
     }
 
@@ -131,7 +131,7 @@ export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
         let response = await TaskAPI.allTaskUserId(id)
         if (response.data.success) {
-            let data: Array<taskType> = response.data.response
+            let data: Array<TaskType> = response.data.response
             dispatch(actions.setAllTaskUserId(data))
         }
     }
@@ -141,7 +141,7 @@ export const setAllTasksProjectThunk = (projectId: number): ThunkTypes => {
     return async dispatch => {
         let response = await TaskAPI.allTasksProject(projectId)
         if (response.data.success) {
-            let data: Array<taskType> = response.data.response
+            let data: Array<TaskType> = response.data.response
             dispatch(actions.setAllTasksProject(data))
         }
     }

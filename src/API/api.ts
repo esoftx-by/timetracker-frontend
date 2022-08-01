@@ -1,5 +1,5 @@
 import axios from "axios";
-import {allTracksByProjectIdType, projectType, taskType, userType} from "../types";
+import {AllTracksByProjectIdType, ProjectType, TaskType, UserType} from "../types";
 
 
 export const instance = axios.create({
@@ -8,57 +8,57 @@ export const instance = axios.create({
 
 type AllProject = {
     success: boolean
-    response: Array<projectType>
+    response: Array<ProjectType>
 }
 
 type Project = {
     success: boolean
-    response: projectType
+    response: ProjectType
 }
 
 type NewUserInProject = {
     success: boolean
     response: {
         id: number
-        user: userType
-        project: projectType
+        user: UserType
+        project: ProjectType
         role: string
     }
 }
 
 type User = {
     success: boolean
-    response: userType
+    response: UserType
 }
 
 type AllUsers = {
     success: boolean
-    response: Array<userType>
+    response: Array<UserType>
 }
 
 type Auth = {
     token: string
-    user: userType
+    user: UserType
 }
 
 type AllTask = {
     success: boolean
-    response: Array<taskType>
+    response: Array<TaskType>
 }
 
 type Task = {
     success: boolean
-    response: taskType
+    response: TaskType
 }
 
 type AllTracks = {
     success: boolean
-    response: Array<allTracksByProjectIdType>
+    response: Array<AllTracksByProjectIdType>
 }
 
 type Track = {
     success: boolean
-    response: allTracksByProjectIdType
+    response: AllTracksByProjectIdType
 }
 
 

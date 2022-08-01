@@ -19,7 +19,7 @@ import SendIcon from "@mui/icons-material/Send";
 import {Alert, Box} from "@mui/material";
 import RegistrationForm from "../RegistrationForm";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import {projectType, userType} from "../../types";
+import {ProjectType, UserType} from "../../types";
 import {TransitionProps} from "@mui/material/transitions";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
@@ -39,7 +39,7 @@ const StyledMenu = styled((props: MenuProps) => (
         }}
         {...props}
     />
-))(({ theme }) => ({
+))(({theme}) => ({
     '& .MuiPaper-root': {
         borderRadius: 6,
         marginTop: theme.spacing(1),
@@ -68,11 +68,11 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 type OwnToPropsCustomizedMenus = {
-    project: projectType
-    allUsers: Array<userType> | null
+    project: ProjectType
+    allUsers: Array<UserType> | null
 }
 
-export const CustomizedMenus:FC<OwnToPropsCustomizedMenus> = ({project, allUsers}) => {
+export const CustomizedMenus: FC<OwnToPropsCustomizedMenus> = ({project, allUsers}) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -81,7 +81,6 @@ export const CustomizedMenus:FC<OwnToPropsCustomizedMenus> = ({project, allUsers
     const handleCloseBtn = () => {
         setAnchorEl(null);
     };
-
 
 
     return (
@@ -162,13 +161,13 @@ const role: Array<roleType> = [
 
 
 type OwnToPropsAlertDialogSlide = {
-    project: projectType
-    allUsers: Array<userType> | null
+    project: ProjectType
+    allUsers: Array<UserType> | null
     handleCloseBtn: (p: any) => void
 }
 
 
-const AlertDialogSlide:FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, handleCloseBtn}) => {
+const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, handleCloseBtn}) => {
     const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
@@ -180,7 +179,7 @@ const AlertDialogSlide:FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, han
     // @ts-ignore
     let newUsers = allUsers.map(({email, ...n}) => (n.label = email, n))
 
-   const dispatch: AppDispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setAllUsersThunk())

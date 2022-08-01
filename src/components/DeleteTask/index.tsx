@@ -3,13 +3,13 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {FC} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppStateType} from "../../redux/store";
+import {AppDispatch} from "../../redux/store";
 import {deleteTaskThunk} from "../../redux/reducers/taskReducer";
 import {useNavigate} from "react-router-dom";
+import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 
 type OwnToProps = {
     open: boolean
@@ -18,11 +18,12 @@ type OwnToProps = {
 
 }
 
-export const DeleteTask:FC<OwnToProps> = ({handleClickOpen, open, handleClose}) => {
+export const DeleteTask: FC<OwnToProps> = ({handleClickOpen, open, handleClose}) => {
 
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
-    const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
+    const taskById = useSelector(setTaskByIdSelector)
+    const taskId = taskById && taskById.id
 
     const deleteTask = () => {
         dispatch(deleteTaskThunk(taskId as number))

@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import OutlinedCard from "../../components/TaskCard";
 import {AppDispatch} from "../../redux/store";
-import {allTasksProjectType, userType} from "../../types";
+import {AllTasksProjectType, UserType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
 // @ts-ignore
@@ -17,7 +17,7 @@ import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/ta
 
 type OwnToProps = {
     userId: number
-    user: userType | null
+    user: UserType | null
 }
 
 export const MainPage: FC<OwnToProps> = (props) => {
@@ -49,7 +49,7 @@ export const MainPage: FC<OwnToProps> = (props) => {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
     }
 
-    const comparator = (t1: allTasksProjectType, t2: allTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
+    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     return <div className="mainPage">
         <Helmet>

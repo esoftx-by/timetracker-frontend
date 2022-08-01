@@ -2,7 +2,7 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {taskType} from "../../types";
+import {TaskType} from "../../types";
 // @ts-ignore
 import style from './TaskCard.module.css'
 import {FC, useState} from "react";
@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 
 type OwnToProps = {
-    data: taskType
+    data: TaskType
 }
 
 const OutlinedCard: FC<OwnToProps> = ({data}) => {
@@ -26,7 +26,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
     const [localStatus, setLocalStatus] = useState(data.status)
 
     return (
-        <Card variant="outlined" style={{borderRadius: "10px", margin:"1rem 0"}}>
+        <Card variant="outlined" style={{borderRadius: "10px", margin: "1rem 0"}}>
             <React.Fragment>
                 <CardContent>
                     <div className={style.taskCard}>
@@ -78,8 +78,6 @@ const BasicSelect: FC<OwnPropsType> = ({setEditMode, setLocalStatus}) => {
         setLocalStatus(status as string)
         dispatch(updateTask(taskId as number, null, null, null, status, null))
         setEditMode(false)
-        // @ts-ignore
-        // handleClose(false)
     }
 
     return (

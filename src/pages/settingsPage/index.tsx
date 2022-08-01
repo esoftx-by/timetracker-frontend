@@ -6,8 +6,8 @@ import ContactPageIcon from '@mui/icons-material/ContactPage';
 import {Formik} from "formik";
 import {Helmet} from "react-helmet-async";
 import {useDispatch, useSelector} from "react-redux";
-import {userDataSelector} from "../../redux/selectors/authSelectors";
-import {AppDispatch, AppStateType} from "../../redux/store";
+import {isSentSelector, userDataSelector} from "../../redux/selectors/authSelectors";
+import {AppDispatch} from "../../redux/store";
 import {actionsUser, updateProfileThunk} from "../../redux/reducers/authReducer";
 
 
@@ -16,9 +16,9 @@ const SettingsPage = () => {
     const userData = useSelector(userDataSelector)
     const id = userData && userData.id
     const dispatch: AppDispatch = useDispatch()
-    const isSent = useSelector((state:AppStateType)=> state.auth.isSent)
+    const isSent = useSelector(isSentSelector)
 
-    return(
+    return (
         <div className={style.settingsPage}>
             <Helmet>
                 <title>Settings</title>
@@ -26,10 +26,15 @@ const SettingsPage = () => {
             <h1>Edit profile</h1>
             <p>Here you can change your personal data.</p>
             <Formik
-                initialValues={userData ? {firstName: userData.firstName, lastName: userData.lastName, email: userData.email, password: ''} : {}}
+                initialValues={userData ? {
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    email: userData.email,
+                    password: ''
+                } : {}}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     setTimeout(() => {
-                        dispatch(updateProfileThunk( id as number, values.firstName, values.lastName, values.email, values.password))
+                        dispatch(updateProfileThunk(id as number, values.firstName, values.lastName, values.email, values.password))
                         setSubmitting(false);
                     }, 400);
                 }}
@@ -48,7 +53,7 @@ const SettingsPage = () => {
                         <p><b>First name:</b></p>
                         <Box
                             sx={{
-                                '& > :not(style)': { width: '100%'},
+                                '& > :not(style)': {width: '100%'},
                             }}>
                             <TextField
                                 type="text"
@@ -94,11 +99,14 @@ const SettingsPage = () => {
                                 value={values.password}
                             />
                         </Box>
-                        {isSent && <div style={{'width': '100%', 'margin': '1rem 0'}}><Alert onClose={() => dispatch(actionsUser.isSent(false))} severity="success">Profile updated</Alert></div>}
+                        {isSent && <div style={{'width': '100%', 'margin': '1rem 0'}}><Alert
+                            onClose={() => dispatch(actionsUser.isSent(false))} severity="success">Profile
+                            updated</Alert></div>}
                         <Box sx={{
                             '& > :not(style)': {width: '100%'},
-                        }} style={{margin: '1rem 0'}}><Button endIcon={<ContactPageIcon/>} variant="contained" size="large" type="submit"
-                                   disabled={isSubmitting}>
+                        }} style={{margin: '1rem 0'}}><Button endIcon={<ContactPageIcon/>} variant="contained"
+                                                              size="large" type="submit"
+                                                              disabled={isSubmitting}>
                             Update profile
                         </Button>
                         </Box>

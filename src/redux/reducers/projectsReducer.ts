@@ -1,5 +1,5 @@
 import {ProjectAPI} from "../../API/api";
-import {projectType, userType} from "../../types";
+import {ProjectType, UserType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
 
@@ -12,11 +12,11 @@ const IS_FETCHING = 'project/IS_FETCHING'
 
 
 export type initialStateType = {
-    projects: Array<projectType>,
-    projectsByUser: Array<projectType> | null,
-    project: projectType | null
+    projects: Array<ProjectType>,
+    projectsByUser: Array<ProjectType> | null,
+    project: ProjectType | null
     isFetching: boolean
-    allUsersInProject: Array<userType>
+    allUsersInProject: Array<UserType>
 }
 
 const initialState: initialStateType = {
@@ -69,12 +69,12 @@ type ActionsType = InferActionTypes<typeof actionsProject>
 type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
 export const actionsProject = {
-    setProjects: (allProject: Array<projectType>) => ({type: SET_PROJECTS, allProject} as const),
-    setNewProject: (newProject: projectType) => ({type: SET_NEW_PROJECT, newProject} as const),
-    setProject: (project: projectType) => ({type: SET_PROJECT, project} as const),
-    setProjectByUserId: (data: Array<projectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const),
+    setProjects: (allProject: Array<ProjectType>) => ({type: SET_PROJECTS, allProject} as const),
+    setNewProject: (newProject: ProjectType) => ({type: SET_NEW_PROJECT, newProject} as const),
+    setProject: (project: ProjectType) => ({type: SET_PROJECT, project} as const),
+    setProjectByUserId: (data: Array<ProjectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
-    setAllUsersInProject: (users: Array<userType>) => ({type: SET_ALL_USERS_IN_PROJECT , users} as const)
+    setAllUsersInProject: (users: Array<UserType>) => ({type: SET_ALL_USERS_IN_PROJECT , users} as const)
 }
 
 
@@ -82,7 +82,7 @@ export const setProjectThunk = (): ThunkTypes => {
     return async dispatch => {
         let response = await ProjectAPI.getAllProject()
         if (response.data.success) {
-            let allProject: Array<projectType> = response.data.response
+            let allProject: Array<ProjectType> = response.data.response
             dispatch(actionsProject.setProjects(allProject))
         }
     }
@@ -92,7 +92,7 @@ export const setAllUsersInProject = (id: number): ThunkTypes => {
     return async dispatch => {
         let response = await ProjectAPI.setUsersByTaskId(id)
         if (response.data.success){
-            let usersInProject: Array<userType> = response.data.response
+            let usersInProject: Array<UserType> = response.data.response
             dispatch(actionsProject.setAllUsersInProject(usersInProject))
         }
     }
@@ -102,7 +102,7 @@ export const setNewProjectThunk = (name: string, description: string, customer: 
     return async dispatch => {
         let response = await ProjectAPI.newProject(name, description, customer)
         if (response.data.success) {
-            let data: projectType = response.data.response
+            let data: ProjectType = response.data.response
             dispatch(actionsProject.setNewProject(data))
         }
 
@@ -114,7 +114,7 @@ export const setProjectIdThunk = (id: number): ThunkTypes => {
         dispatch(actionsProject.toggleIsFetching(true))
         let response = await ProjectAPI.getProjectId(id)
         if (response.data.success) {
-            const project: projectType = response.data.response
+            const project: ProjectType = response.data.response
             dispatch(actionsProject.setProject(project))
         }
         dispatch(actionsProject.toggleIsFetching(false))
@@ -125,7 +125,7 @@ export const setProjectByUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
         let response = await ProjectAPI.getProjectByUserId(id)
         if (response.data.success) {
-            const projectByUserId: Array<projectType> = response.data.response
+            const projectByUserId: Array<ProjectType> = response.data.response
             dispatch(actionsProject.setProjectByUserId(projectByUserId))
         }
     }

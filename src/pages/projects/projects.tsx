@@ -8,14 +8,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/projectsReducer";
 import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
-import {userType} from "../../types";
+import {UserType} from "../../types";
 import {AppDispatch} from "../../redux/store";
 import {setProjectsByUserSelector, setProjectsSelector} from "../../redux/selectors/projectSelector";
 import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
 
 
 type OwnToProps = {
-    user: userType
+    user: UserType
 }
 
 
@@ -42,7 +42,7 @@ export const Projects: FC<OwnToProps> = ({user}) => {
                     <title>Projects</title>
                 </Helmet>
                 <h1>Projects:</h1>
-                {user.applicationRole === "ADMIN" && <FormDialog />}
+                {user.applicationRole === "ADMIN" && <FormDialog/>}
             </div>
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>

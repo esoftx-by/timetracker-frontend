@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import MenuItem from "@mui/material/MenuItem";
 import {useDispatch, useSelector} from "react-redux";
-import {projectType} from "../../types";
+import {ProjectType} from "../../types";
 import {FC, useLayoutEffect, useState} from "react";
 import {AppDispatch} from "../../redux/store";
 import {deleteUserInProjectThunk, setAllUsersInProject} from "../../redux/reducers/projectsReducer";
@@ -18,11 +18,11 @@ import InputLabel from "@mui/material/InputLabel";
 
 
 type OwnToProps = {
-    project: projectType
+    project: ProjectType
     handleCloseBtn: (p: any) => void
 }
 
-const DeleteUserInProject: FC<OwnToProps> = ({project,handleCloseBtn}) => {
+const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
 
     const allUsersInProject = useSelector(setAllUsersInProjectSelector)
 
@@ -73,7 +73,7 @@ const DeleteUserInProject: FC<OwnToProps> = ({project,handleCloseBtn}) => {
                 <DialogContent>
 
                     <Box sx={{minWidth: 250}}>
-                        <FormControl fullWidth style={{marginTop:'1rem'}}>
+                        <FormControl fullWidth style={{marginTop: '1rem'}}>
                             <InputLabel id="demo-simple-select-label">User</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"

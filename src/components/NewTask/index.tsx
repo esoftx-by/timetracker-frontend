@@ -22,7 +22,7 @@ type OwnToProps = {
     projectId: number
 }
 
-const FormDialogTask: FC<OwnToProps> = ({ userId, projectId}) => {
+const FormDialogTask: FC<OwnToProps> = ({userId, projectId}) => {
 
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()

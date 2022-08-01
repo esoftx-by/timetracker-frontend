@@ -44,7 +44,7 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
     }, [])
 
     useLayoutEffect(() => {
-        if (Number.isFinite(id)){
+        if (Number.isFinite(id)) {
             dispatch(setProjectIdThunk(id))
         }
 
@@ -54,7 +54,6 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
     useLayoutEffect(() => {
         dispatch(setAllTracksByProjectIdThunk(id))
     }, [])
-
 
 
     if (isFetching) {

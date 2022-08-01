@@ -9,13 +9,14 @@ import {TransitionProps} from '@mui/material/transitions';
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppStateType} from "../../redux/store";
+import {AppDispatch} from "../../redux/store";
 import {useEffect, useState} from "react";
-import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/taskReducer";
 import MenuItem from "@mui/material/MenuItem";
 import {Select, SelectChangeEvent} from "@mui/material";
 import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
-import {useNavigate} from "react-router-dom";
+import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
+import {setAllUsersInProjectSelector} from "../../redux/selectors/projectSelector";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -29,7 +30,6 @@ const Transition = React.forwardRef(function Transition(
 const TaskOption = () => {
 
 
-
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -41,17 +41,18 @@ const TaskOption = () => {
 
     };
     const dispatch: AppDispatch = useDispatch()
-    // const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
-    const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
 
-    const taskName = useSelector((state: AppStateType) => state.tasks.taskById?.name)
-    const taskDescription = useSelector((state: AppStateType) => state.tasks.taskById?.description)
-    const taskEstimatedHours = useSelector((state: AppStateType) => state.tasks.taskById?.estimatedHours)
-    const activeCurrentAssignee = useSelector((state: AppStateType) => state.tasks.taskById?.currentAssignee)
-    const allUsersInProject = useSelector((state: AppStateType) => state.projectsPage.allUsersInProject)
-    const navigate = useNavigate()
+    const taskById = useSelector(setTaskByIdSelector)
 
-    const projectId = useSelector((state: AppStateType) => state.tasks.taskById?.project.id)
+    const taskId = taskById && taskById.id
+    const taskName = taskById && taskById.name
+    const taskDescription = taskById && taskById.description
+    const taskEstimatedHours = taskById && taskById.estimatedHours
+    const activeCurrentAssignee = taskById && taskById.currentAssignee
+    const projectId = taskById && taskById.project.id
+
+    const allUsersInProject = useSelector(setAllUsersInProjectSelector)
+
 
     useEffect(() => {
         if (projectId) {
@@ -63,9 +64,7 @@ const TaskOption = () => {
     const [name, setName] = useState(taskName)
     const [description, setDescription] = useState(taskDescription)
     const [estimatedHours, setEstimatedHours] = useState(taskEstimatedHours)
-    const [currentAssignee, setCurrentAssigneeId] = React.useState(activeCurrentAssignee && activeCurrentAssignee.id);
-
-
+    const [currentAssignee, setCurrentAssigneeId] = React.useState<number | null>(activeCurrentAssignee && activeCurrentAssignee.id);
 
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -146,7 +145,7 @@ const TaskOption = () => {
                                 value={currentAssignee as any}
                                 onChange={handleChange}
                                 inputProps={{'aria-label': 'Without label'}}
-                                defaultValue={activeCurrentAssignee && activeCurrentAssignee.email}
+                                defaultValue={activeCurrentAssignee ? activeCurrentAssignee.email : ''}
                             >
                                 {allUsersInProject.map((el) => <MenuItem key={el.id}
                                                                          value={el.id}>{el.email}</MenuItem>)}
