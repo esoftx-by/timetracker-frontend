@@ -12,6 +12,7 @@ import {FC} from "react";
 import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
+import UpdateTrack from "../EditTrack";
 
 type OwnToProps = {
     tracks: AllTracksByProjectIdType
@@ -82,8 +83,9 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                     <DialogContentText id="alert-dialog-description">
                         {tracks.user.firstName + ' ' + tracks.user.lastName}
                     </DialogContentText>
-                    <div style={{textAlign: "center", marginTop: "1rem"}}>
-                        <Button variant="contained" onClick={deleteTrack}>delete track</Button>
+                    <div style={{display:'flex',justifyContent:'space-between', marginTop: "1rem"}}>
+                        <Button style={{marginRight:'1rem'}} variant="contained" onClick={deleteTrack}>Delete track</Button>
+                        <UpdateTrack id={tracks.id}/>
                     </div>
                 </DialogContent>
                 <DialogActions>

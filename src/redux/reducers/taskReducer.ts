@@ -15,7 +15,7 @@ const DELETE_TASK = 'task/DELETE_TASK'
 type initialStateType = {
     allTask: Array<TaskType> | null,
     taskUserId: Array<TaskType>,
-    allTasksProject: Array<AllTasksProjectType> | null
+    allTasksProject: Array<AllTasksProjectType>
     taskById: TaskType | null
     isFetching: boolean
 }
@@ -23,7 +23,7 @@ type initialStateType = {
 const initialState: initialStateType = {
     allTask: null,
     taskUserId: [],
-    allTasksProject: null,
+    allTasksProject: [],
     taskById: null,
     isFetching: false
 }
@@ -61,9 +61,10 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
                 isFetching: action.isFetching
             }
         case DELETE_TASK:
-            return{
+            return {
                 ...state,
-                taskById: null
+                taskById: null,
+                allTasksProject: state.allTasksProject.filter(el => el.id !== action.id)
             }
         default:
             return state
@@ -81,25 +82,32 @@ const actions = {
     setAllTasksProject: (data: Array<TaskType>) => ({type: SET_ALL_TASKS_PROJECT, data} as const),
     setTaskById: (taskById: TaskType) => ({type: SET_TASK_BY_ID, taskById} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
-    deleteTask: () => ({type: DELETE_TASK} as const)
+    deleteTask: (id: number) => ({type: DELETE_TASK, id} as const)
 }
 
-export const SetTaskByIdThunk = ( id: number): ThunkTypes => {
+export const SetTaskByIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        dispatch(actions.toggleIsFetching(true))
-        let response = await TaskAPI.taskById(id)
-        if (response.data.success){
-            let data: TaskType = response.data.response
-            dispatch(actions.setTaskById(data))
+        try {
+            dispatch(actions.toggleIsFetching(true))
+            let response = await TaskAPI.taskById(id)
+            setTimeout(() => {
+                if (response.data.success) {
+                    let data: TaskType = response.data.response
+                    dispatch(actions.setTaskById(data))
+                }
+                dispatch(actions.toggleIsFetching(false))
+            }, 500)
+
+        } catch (e: any) {
+            console.log(e.message)
         }
-        dispatch(actions.toggleIsFetching(false))
     }
 }
 
-export const updateTask = (id: number, name?: string | null, description?: string | null, estimatedHours?: number | null, status?: string | null, currentAssigneeId?: number | null):ThunkTypes => {
+export const updateTask = (id: number, name?: string | null, description?: string | null, estimatedHours?: number | null, status?: string | null, currentAssigneeId?: number | null): ThunkTypes => {
     return async dispatch => {
         let response = await TaskAPI.updateTask(id, name, description, estimatedHours, status, currentAssigneeId)
-        if (response.data.success){
+        if (response.data.success) {
             let data: TaskType = response.data.response
             dispatch(actions.setTaskById(data))
             dispatch(setAllTasksProjectThunk(data.project.id))
@@ -110,11 +118,21 @@ export const updateTask = (id: number, name?: string | null, description?: strin
 
 export const setNewTaskThunk = (name: string, description: string, estimatedHours: number, authorId: number, projectId: number): ThunkTypes => {
     return async dispatch => {
-        let response = await TaskAPI.newTask(name, description, estimatedHours, authorId, projectId)
-        if (response.data.success) {
-            let data = response.data.response
-            dispatch(actions.setNewTask(data))
+        try {
+            dispatch(actions.toggleIsFetching(true))
+            let response = await TaskAPI.newTask(name, description, estimatedHours, authorId, projectId)
+            setTimeout(() => {
+                if (response.data.success) {
+                    let data = response.data.response
+                    dispatch(actions.setNewTask(data))
+                }
+                dispatch(actions.toggleIsFetching(false))
+            }, 500)
+
+        } catch (e: any) {
+            console.log(e.message)
         }
+
     }
 }
 
@@ -129,10 +147,18 @@ export const setAllTaskThunk = (): ThunkTypes => {
 
 export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        let response = await TaskAPI.allTaskUserId(id)
-        if (response.data.success) {
-            let data: Array<TaskType> = response.data.response
-            dispatch(actions.setAllTaskUserId(data))
+        try {
+            dispatch(actions.toggleIsFetching(true))
+            let response = await TaskAPI.allTaskUserId(id)
+            setTimeout(() => {
+                if (response.data.success) {
+                    let data: Array<TaskType> = response.data.response
+                    dispatch(actions.setAllTaskUserId(data))
+                }
+                dispatch(actions.toggleIsFetching(false))
+            }, 500)
+        } catch (e: any) {
+            console.log(e.message)
         }
     }
 }
@@ -149,13 +175,15 @@ export const setAllTasksProjectThunk = (projectId: number): ThunkTypes => {
 
 export const deleteTaskThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        dispatch(actions.toggleIsFetching(true))
         try {
+            dispatch(actions.toggleIsFetching(true))
             await TaskAPI.deleteTask(id)
-            dispatch(actions.deleteTask())
-        } catch (e: any){
+            setTimeout(() => {
+                dispatch(actions.deleteTask(id))
+                dispatch(actions.toggleIsFetching(false))
+            }, 500)
+        } catch (e: any) {
             console.log(e.message)
         }
-        dispatch(actions.toggleIsFetching(false))
     }
 }

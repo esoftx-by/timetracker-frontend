@@ -22,11 +22,10 @@ export const DeleteTask: FC<OwnToProps> = ({handleClickOpen, open, handleClose})
 
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
-    const taskById = useSelector(setTaskByIdSelector)
-    const taskId = taskById && taskById.id
+    const {id} = useSelector(setTaskByIdSelector)
 
     const deleteTask = () => {
-        dispatch(deleteTaskThunk(taskId as number))
+        dispatch(deleteTaskThunk(id))
         navigate(-1)
     }
 

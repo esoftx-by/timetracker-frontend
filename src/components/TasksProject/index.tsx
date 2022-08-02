@@ -4,6 +4,9 @@ import style from "../../pages/project/Project.module.css";
 import {Box, Grid} from "@mui/material";
 import OutlinedCardTask from "../Task";
 import {AllTasksProjectType, AllTracksByProjectIdType, ProjectType} from "../../types";
+import {useSelector} from "react-redux";
+import {setIsFetchingTask} from "../../redux/selectors/taskSelectors";
+import CircularIndeterminate from "../Loader";
 
 
 type OwnToProps = {
@@ -16,6 +19,7 @@ type OwnToProps = {
 
 const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTracksByProjectId}) => {
 
+    const isFetching = useSelector(setIsFetchingTask)
 
     const STATUS_ORDER = {
         LONG_TERM: 0,
@@ -25,6 +29,10 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
         IN_REVIEW: 4,
         FINISHED: 5,
         CANCELLED: 6
+    }
+
+    if (isFetching){
+        return <div className={style.loader}><CircularIndeterminate/></div>
     }
     // @ts-ignore
     const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];

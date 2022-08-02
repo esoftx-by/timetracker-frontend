@@ -5,12 +5,30 @@
 }
 
 .tracks {
-    height: 190px;
+    height: 140px;
     overflow: auto;
 }
 
-@media (min-width: 1240px)  {
-    .tracks{
+.taskDelete {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 0 .5rem .1rem;
+}
+
+.taskDeleteBtn {
+    background: none;
+    border: none;
+}
+
+.taskDeleteBtn:hover {
+    background: aliceblue;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+@media (min-width: 1240px) {
+    .tracks {
         display: grid;
         grid-template-columns: 1fr 1fr;
     }

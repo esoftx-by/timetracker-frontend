@@ -13,10 +13,11 @@ import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 
 type OwnToProps = {
@@ -27,6 +28,7 @@ type OwnToProps = {
 
 const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
 
+    const dispatch: AppDispatch = useDispatch()
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === tasksProject.id)
 
@@ -42,14 +44,22 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                     <React.Fragment>
                         <CardContent>
                             <div className={style.cardContent}>
-                                <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                    {tasksProject.currentAssignee.firstName + ' ' + tasksProject.currentAssignee.lastName}
-                                </Typography>
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                                        {tasksProject.currentAssignee.firstName + ' ' + tasksProject.currentAssignee.lastName}
+                                    </Typography>
+                                    <div className={style.taskDelete}>
+                                        <button className={style.taskDeleteBtn} onClick={() => {
+                                            dispatch(deleteTaskThunk(tasksProject.id))
+                                        }}><DeleteOutlineOutlinedIcon/></button>
+                                    </div>
+                                </div>
                                 {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                                   onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
                                     <BasicSelect setLocalStatus={setLocalStatus} activeStatus={localStatus}
                                                  taskId={tasksProject.id}
                                                  setEditMode={setEditMode}/>}
+
                             </div>
                             <Typography variant="h5" component="div">
                                 {tasksProject.name}
