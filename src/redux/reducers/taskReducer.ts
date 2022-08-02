@@ -15,7 +15,7 @@ const DELETE_TASK = 'task/DELETE_TASK'
 type initialStateType = {
     allTask: Array<TaskType> | null,
     taskUserId: Array<TaskType>,
-    allTasksProject: Array<AllTasksProjectType> | null
+    allTasksProject: Array<AllTasksProjectType>
     taskById: TaskType | null
     isFetching: boolean
 }
@@ -23,7 +23,7 @@ type initialStateType = {
 const initialState: initialStateType = {
     allTask: null,
     taskUserId: [],
-    allTasksProject: null,
+    allTasksProject: [],
     taskById: null,
     isFetching: false
 }
@@ -63,7 +63,8 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
         case DELETE_TASK:
             return {
                 ...state,
-                taskById: null
+                taskById: null,
+                allTasksProject: state.allTasksProject.filter(el => el.id !== action.id)
             }
         default:
             return state
@@ -81,7 +82,7 @@ const actions = {
     setAllTasksProject: (data: Array<TaskType>) => ({type: SET_ALL_TASKS_PROJECT, data} as const),
     setTaskById: (taskById: TaskType) => ({type: SET_TASK_BY_ID, taskById} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
-    deleteTask: () => ({type: DELETE_TASK} as const)
+    deleteTask: (id: number) => ({type: DELETE_TASK, id} as const)
 }
 
 export const SetTaskByIdThunk = (id: number): ThunkTypes => {
@@ -178,7 +179,7 @@ export const deleteTaskThunk = (id: number): ThunkTypes => {
             dispatch(actions.toggleIsFetching(true))
             await TaskAPI.deleteTask(id)
             setTimeout(() => {
-                dispatch(actions.deleteTask())
+                dispatch(actions.deleteTask(id))
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {

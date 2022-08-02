@@ -1,6 +1,6 @@
-import React, {FC, useEffect} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import './mainPage.scss'
-import {Grid} from "@mui/material";
+import {Grid, Select, SelectChangeEvent} from "@mui/material";
 import Box from "@mui/material/Box";
 import CircularIndeterminate from "../../components/Loader";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,6 +13,10 @@ import {NavLink} from "react-router-dom";
 // @ts-ignore
 import style from "../project/Project.module.css";
 import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
+import {setProjectByUserIdThunk} from "../../redux/reducers/projectsReducer";
+import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 
 
 type OwnToProps = {
@@ -21,6 +25,17 @@ type OwnToProps = {
 }
 
 export const MainPage: FC<OwnToProps> = (props) => {
+
+
+    useEffect(() => {
+        dispatch(setProjectByUserIdThunk(props.userId))
+
+    }, [])
+
+
+    const allProjectsByUser = useSelector(setProjectsByUserSelector)
+    // @ts-ignore
+    const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
 
     const FILTER_STATUSES = ['FINISHED', 'CANCELLED', 'LONG_TERM']
     const STATUS_ORDER: any = {
@@ -32,14 +47,24 @@ export const MainPage: FC<OwnToProps> = (props) => {
         FINISHED: 5,
         CANCELLED: 6
     }
+    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     const dispatch: AppDispatch = useDispatch()
     const isFetching = useSelector(setIsFetchingTask)
-    const allTasksUserId = useSelector(setTaskUserIdSelector).filter(task => !FILTER_STATUSES.includes(task.status))
+    const allTasksUserId = useSelector(setTaskUserIdSelector)
+        .filter(task => !FILTER_STATUSES.includes(task.status))
+        .sort((a, b) => a.project.name.localeCompare(b.project.name))
+        .sort(comparator)
+
 
     useEffect(() => {
         dispatch(setAllTaskUserIdThunk(props.userId))
     }, [props.userId])
+
+
+    const [projectName, setProjectName] = useState<string>('')
+
+    const newAllTasksUserId = allTasksUserId.filter((el) => projectName == '' ? el : el.project.name == projectName)
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
@@ -49,18 +74,37 @@ export const MainPage: FC<OwnToProps> = (props) => {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
     }
 
-    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
+    const handleChange = (event: SelectChangeEvent) => {
+        setProjectName(event.target.value);
+    };
 
     return <div className="mainPage">
         <Helmet>
             <title>{props.user && props.user.firstName + ' ' + props.user.lastName}</title>
         </Helmet>
         <div className="mainPage__item">
-            <h1>List of my tasks:</h1>
+            <div className="mainPage__item_header">
+                <h1>List of my tasks:</h1>
+                <FormControl fullWidth style={{marginTop: '1rem', width: '100px'}}>
+                    <Select
+                        onBlur={() => console.log(projectName)}
+                        displayEmpty
+                        value={projectName}
+                        onChange={handleChange}
+                        inputProps={{'aria-label': 'Without label'}}
+                    >
+                        <MenuItem value="">
+                            <em>All</em>
+                        </MenuItem>
+                        {newArrayProjects.map((el, index) => <MenuItem key={index}
+                                                                       value={el}><em>{el}</em></MenuItem>)}
+                    </Select>
+                </FormControl>
+            </div>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {allTasksUserId.length ? allTasksUserId.sort(comparator).map(data => <Grid item xs={12}
-                                                                                               md={4}><Box
+                    {newAllTasksUserId.length ? newAllTasksUserId.map(data => <Grid item xs={12}
+                                                                                    md={4}><Box
                             sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
                             key={data.id}
                             data={data}/></NavLink></Box></Grid>) :

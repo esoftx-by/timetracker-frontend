@@ -13,3 +13,19 @@
       }
      }
 }
+
+@media (max-width: 768px) {
+  .mainPage{
+    &__item{
+      h1{
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.mainPage__item_header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

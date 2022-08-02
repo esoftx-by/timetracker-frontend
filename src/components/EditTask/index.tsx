@@ -48,22 +48,24 @@ const TaskOption = () => {
 
 
     useEffect(() => {
-            dispatch(setAllUsersInProject(project.id))
+        dispatch(setAllUsersInProject(project.id))
     }, [currentAssignee])
 
 
-    const [taskName, setTaskName] = useState(name)
-    const [taskDescription, setTaskDescription] = useState(description)
-    const [taskEstimatedHours, setTaskEstimatedHours] = useState(estimatedHours)
-    const [activeCurrentAssignee, setActiveCurrentAssigneeId] = React.useState<number | null>(currentAssignee && currentAssignee.id);
+    const [data, setData] = useState({
+        taskName: name,
+        taskDescription: description,
+        taskEstimatedHours: estimatedHours,
+        activeCurrentAssignee: currentAssignee.id
+    })
 
 
     const handleChange = (event: SelectChangeEvent) => {
-        setActiveCurrentAssigneeId(event.target.value as any);
+        setData({...data, activeCurrentAssignee: event.target.value as any});
     };
 
     const submitFunction = () => {
-        dispatch(updateTask(id, taskName, taskDescription, taskEstimatedHours, null, activeCurrentAssignee))
+        dispatch(updateTask(id, data.taskName, data.taskDescription, data.taskEstimatedHours, null, data.activeCurrentAssignee))
         handleClose()
     }
 
@@ -94,8 +96,8 @@ const TaskOption = () => {
                                 label="Name"
                                 defaultValue={name}
                                 variant="outlined"
-                                value={taskName}
-                                onChange={event => setTaskName(event.target.value)}
+                                value={data.taskName}
+                                onChange={event => setData({...data, taskName: event.target.value})}
                             />
                         </Box>
 
@@ -108,8 +110,8 @@ const TaskOption = () => {
                                 label="Description"
                                 defaultValue={description}
                                 variant="outlined"
-                                value={taskDescription}
-                                onChange={event => setTaskDescription(event.target.value)}
+                                value={data.taskDescription}
+                                onChange={event => setData({...data, taskDescription: event.target.value})}
                             />
                         </Box>
 
@@ -122,8 +124,8 @@ const TaskOption = () => {
                                 label="estimatedHours"
                                 defaultValue={estimatedHours}
                                 variant="outlined"
-                                value={taskEstimatedHours}
-                                onChange={event => setTaskEstimatedHours(event.target.value as any)}
+                                value={data.taskEstimatedHours}
+                                onChange={event => setData({...data, taskEstimatedHours: event.target.value as any})}
                             />
                         </Box>
 
@@ -133,7 +135,7 @@ const TaskOption = () => {
                             }}>
                             <Select
                                 displayEmpty
-                                value={activeCurrentAssignee as any}
+                                value={data.activeCurrentAssignee as any}
                                 onChange={handleChange}
                                 inputProps={{'aria-label': 'Without label'}}
                                 defaultValue={currentAssignee ? currentAssignee.email : ''}
