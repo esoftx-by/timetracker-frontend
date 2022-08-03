@@ -12,7 +12,7 @@ const DELETE_TRACK = 'tracks/DELETE_TRACK'
 const UPDATE_TRACK = 'tracks/UPDATE_TRACK'
 
 
-type initialStateType = {
+export type initialStateType = {
     allTracks: null | Array<AllTracksByProjectIdType>,
     tracksByTaskId: Array<AllTracksByProjectIdType>,
     allTracksByProjectId: Array<AllTracksByProjectIdType>
@@ -70,7 +70,7 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
 type ActionsType = InferActionTypes<typeof actions>
 type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
-const actions = {
+export const actions = {
     setAllTracks: (data: Array<AllTracksByProjectIdType>) => ({type: SET_ALL_TRACKS, data} as const),
     setNewTrack: (data: AllTracksByProjectIdType) => ({type: SET_NEW_TRACK, data} as const),
     setAllTracksByUserId: (data: Array<AllTracksByProjectIdType>) => ({

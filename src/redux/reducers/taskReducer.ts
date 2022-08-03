@@ -12,7 +12,7 @@ const IS_FETCHING = 'task/IS_FETCHING'
 const DELETE_TASK = 'task/DELETE_TASK'
 
 
-type initialStateType = {
+export type initialStateType = {
     allTask: Array<TaskType> | null,
     taskUserId: Array<TaskType>,
     allTasksProject: Array<AllTasksProjectType>
@@ -75,7 +75,7 @@ export const taskReducer = (state = initialState, action: ActionsType): initialS
 type ActionsType = InferActionTypes<typeof actions>
 export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
 
-const actions = {
+export const actions = {
     setAllTask: (data: Array<TaskType>) => ({type: SET_ALL_TASKS, data} as const),
     setNewTask: (data: TaskType) => ({type: SET_NEW_TASK, data} as const),
     setAllTaskUserId: (data: Array<TaskType>) => ({type: SET_ALL_TASKS_USER_ID, data} as const),
