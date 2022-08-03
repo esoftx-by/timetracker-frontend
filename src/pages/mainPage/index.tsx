@@ -24,11 +24,11 @@ type OwnToProps = {
     user: UserType | null
 }
 
-export const MainPage: FC<OwnToProps> = (props) => {
+export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
 
     useEffect(() => {
-        dispatch(setProjectByUserIdThunk(props.userId))
+        dispatch(setProjectByUserIdThunk(userId))
 
     }, [])
 
@@ -47,24 +47,23 @@ export const MainPage: FC<OwnToProps> = (props) => {
         FINISHED: 5,
         CANCELLED: 6
     }
-    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
     const dispatch: AppDispatch = useDispatch()
     const isFetching = useSelector(setIsFetchingTask)
     const allTasksUserId = useSelector(setTaskUserIdSelector)
         .filter(task => !FILTER_STATUSES.includes(task.status))
         .sort((a, b) => a.project.name.localeCompare(b.project.name))
-        .sort(comparator)
+        .sort((t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status])
 
 
     useEffect(() => {
-        dispatch(setAllTaskUserIdThunk(props.userId))
-    }, [props.userId])
+        dispatch(setAllTaskUserIdThunk(userId))
+    }, [userId])
 
 
     const [projectName, setProjectName] = useState<string>('')
 
-    const newAllTasksUserId = allTasksUserId.filter((el) => projectName == '' ? el : el.project.name == projectName)
+    const newAllTasksUserId = allTasksUserId.filter((el) => projectName === '' ? el : el.project.name === projectName)
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
@@ -80,14 +79,13 @@ export const MainPage: FC<OwnToProps> = (props) => {
 
     return <div className="mainPage">
         <Helmet>
-            <title>{props.user && props.user.firstName + ' ' + props.user.lastName}</title>
+            <title>{user && user.firstName + ' ' + user.lastName}</title>
         </Helmet>
         <div className="mainPage__item">
             <div className="mainPage__item_header">
                 <h1>List of my tasks:</h1>
                 <FormControl fullWidth style={{marginTop: '1rem', width: '100px'}}>
                     <Select
-                        onBlur={() => console.log(projectName)}
                         displayEmpty
                         value={projectName}
                         onChange={handleChange}

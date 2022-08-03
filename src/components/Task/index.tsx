@@ -48,11 +48,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
                                         {tasksProject.currentAssignee.firstName + ' ' + tasksProject.currentAssignee.lastName}
                                     </Typography>
-                                    <div className={style.taskDelete}>
-                                        <button className={style.taskDeleteBtn} onClick={() => {
-                                            dispatch(deleteTaskThunk(tasksProject.id))
-                                        }}><DeleteOutlineOutlinedIcon/></button>
-                                    </div>
+
                                 </div>
                                 {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                                   onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
@@ -80,6 +76,11 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                     </React.Fragment>
                     <div className={style.tracks}>{projectTracks && projectTracks.reverse().map(tracks =>
                         <VirtualizedList tracks={tracks}/>)}</div>
+                    <div className={style.taskDelete}>
+                        <button className={style.taskDeleteBtn} onClick={() => {
+                            dispatch(deleteTaskThunk(tasksProject.id))
+                        }}><DeleteOutlineOutlinedIcon/></button>
+                    </div>
                 </Card>
             </Box>
         </Grid>
