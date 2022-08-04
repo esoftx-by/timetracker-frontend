@@ -1,5 +1,4 @@
 import React, {FC} from 'react'
-// @ts-ignore
 import style from "../../pages/project/Project.module.css";
 import {Box, Grid} from "@mui/material";
 import OutlinedCardTask from "../Task";

@@ -7,17 +7,17 @@ import {Grid, Select, SelectChangeEvent} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 import {AllTasksProjectType, AllTracksByProjectIdType} from "../../types";
-// @ts-ignore
 import style from './Task.module.css'
 import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/taskReducer";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import {DeleteTask} from "../DeleteTask";
 
 
 type OwnToProps = {
@@ -27,8 +27,6 @@ type OwnToProps = {
 }
 
 const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
-
-    const dispatch: AppDispatch = useDispatch()
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === tasksProject.id)
 
@@ -77,9 +75,9 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                     <div className={style.tracks}>{projectTracks && projectTracks.reverse().map(tracks =>
                         <VirtualizedList tracks={tracks}/>)}</div>
                     <div className={style.taskDelete}>
-                        <button className={style.taskDeleteBtn} onClick={() => {
-                            dispatch(deleteTaskThunk(tasksProject.id))
-                        }}><DeleteOutlineOutlinedIcon/></button>
+                        <DeleteTask id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
+                            <DeleteOutlineOutlinedIcon/>
+                        </DeleteTask>
                     </div>
                 </Card>
             </Box>

@@ -1,6 +1,5 @@
 import React, {FC, useEffect} from 'react'
 import FormDialog from "../../components/NewProject";
-// @ts-ignore
 import style from './Projects.module.css'
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";

@@ -1,9 +1,8 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppStateType} from "../../redux/store";
-import {deleteTaskThunk, SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
+import {AppDispatch} from "../../redux/store";
+import {SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
 import {useNavigate, useParams} from "react-router-dom";
-// @ts-ignore
 import style from "../project/Project.module.css";
 import CircularIndeterminate from "../../components/Loader";
 import {Box, Grid} from "@mui/material";
@@ -15,11 +14,11 @@ import Button from "@mui/material/Button";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TaskOption from "../../components/EditTask";
 import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
-import {DeleteTask} from "../../components/DeleteTask";
 import {setIsFetchingTask, setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 import {setTracksByTaskIdSelector} from "../../redux/selectors/trackSelectors";
-
+import {DeleteTask} from "../../components/DeleteTask";
+import NoTaskPage from "../noTaskPage";
 
 export const TaskPage: FC = () => {
     const params = useParams();
@@ -29,8 +28,6 @@ export const TaskPage: FC = () => {
     const taskById = useSelector(setTaskByIdSelector)
     const tracksByTaskId = useSelector(setTracksByTaskIdSelector)
     const user = useSelector(userDataSelector)
-
-    const [open, setOpen] = useState(false);
 
     const navigate = useNavigate()
 
@@ -51,30 +48,22 @@ export const TaskPage: FC = () => {
     }, [])
 
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
     }
 
     if (!taskById) {
-        return <div>No such task found</div>
+        return <NoTaskPage/>
     }
 
     return (
         <Box sx={{flexGrow: 1}} style={{'padding': '2rem'}}>
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
-                <div style={{display: 'flex'}}>
-                    <Button style={{marginRight: '1rem'}} variant="contained" onClick={() => handleClickOpen()}>Delete
-                        Task</Button>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <DeleteTask id={taskById.id} title={'Are you sure you want to delete the task?'}>
+                        <Button variant="contained">Delete Task</Button>
+                    </DeleteTask>
                     <TaskOption/>
                 </div>
             </div>
@@ -100,7 +89,6 @@ export const TaskPage: FC = () => {
                     </div>
                 </Grid>
             </Grid>
-            <DeleteTask open={open} handleClickOpen={handleClickOpen} handleClose={handleClose}/>
         </Box>
     )
 }

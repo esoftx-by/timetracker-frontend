@@ -1,5 +1,4 @@
 import * as React from 'react';
-// @ts-ignore
 import style from './Track.module.css'
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';

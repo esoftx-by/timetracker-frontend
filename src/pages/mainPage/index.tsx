@@ -10,7 +10,6 @@ import {AppDispatch} from "../../redux/store";
 import {AllTasksProjectType, UserType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
-// @ts-ignore
 import style from "../project/Project.module.css";
 import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
 import {setProjectByUserIdThunk} from "../../redux/reducers/projectsReducer";

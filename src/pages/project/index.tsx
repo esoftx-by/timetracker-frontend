@@ -1,7 +1,6 @@
 import React, {FC, useLayoutEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-// @ts-ignore
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
 import {setAllTasksProjectThunk} from "../../redux/reducers/taskReducer";

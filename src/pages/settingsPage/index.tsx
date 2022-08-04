@@ -1,5 +1,4 @@
 import React from 'react'
-// @ts-ignore
 import style from './settings.module.css'
 import {Alert, Box, Button, TextField} from "@mui/material";
 import ContactPageIcon from '@mui/icons-material/ContactPage';

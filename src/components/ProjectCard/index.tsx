@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import {Grid} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import CustomizedMenus from "../CustomizationMenu";
-// @ts-ignore
 import style from './ProjectCard.module.css'
 import {ProjectType, UserType} from "../../types";
 import {FC} from "react";

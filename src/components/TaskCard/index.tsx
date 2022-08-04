@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {TaskType} from "../../types";
-// @ts-ignore
 import style from './TaskCard.module.css'
 import {FC, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";

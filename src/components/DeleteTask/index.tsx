@@ -10,27 +10,40 @@ import {AppDispatch} from "../../redux/store";
 import {deleteTaskThunk} from "../../redux/reducers/taskReducer";
 import {useNavigate} from "react-router-dom";
 import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 type OwnToProps = {
-    open: boolean
-    handleClickOpen: () => void
-    handleClose: () => void
-
+    title: string
+    id: number
+    children:
+        | JSX.Element
+        | JSX.Element[]
+        | string
+        | string[];
 }
 
-export const DeleteTask: FC<OwnToProps> = ({handleClickOpen, open, handleClose}) => {
+export const DeleteTask: FC<OwnToProps> = ({children, id, title}) => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const dispatch: AppDispatch = useDispatch()
-    const navigate = useNavigate()
-    const {id} = useSelector(setTaskByIdSelector)
+
 
     const deleteTask = () => {
         dispatch(deleteTaskThunk(id))
-        navigate(-1)
+        setOpen(false)
     }
 
     return (
         <div>
+            <Button onClick={handleClickOpen}>{children}</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -38,7 +51,7 @@ export const DeleteTask: FC<OwnToProps> = ({handleClickOpen, open, handleClose})
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Are you sure you want to delete the task?"}
+                    {title}
                 </DialogTitle>
                 <DialogContent>
 

@@ -12,7 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import {Link, NavLink, useNavigate} from "react-router-dom";
-// @ts-ignore
 import style from './Navbar.module.css'
 import {FC, useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
