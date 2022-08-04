@@ -1,9 +1,10 @@
-import {AnyAction, applyMiddleware, combineReducers, createStore} from "redux";
+import {AnyAction, applyMiddleware, combineReducers} from "redux";
 import {projectReducer} from "./reducers/projectsReducer";
 import thunkMiddleware, {ThunkDispatch} from "redux-thunk";
 import {taskReducer} from "./reducers/taskReducer";
 import {trackReducers} from "./reducers/trackReducer";
 import {authReducer} from "./reducers/authReducer";
+import {legacy_createStore as createStore} from 'redux';
 
 
 const Reducers = combineReducers({
