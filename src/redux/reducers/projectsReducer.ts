@@ -66,7 +66,7 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
 
 
 type ActionsType = InferActionTypes<typeof actionsProject>
-type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
+type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 export const actionsProject = {
     setProjects: (allProject: Array<ProjectType>) => ({type: SET_PROJECTS, allProject} as const),

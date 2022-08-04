@@ -68,7 +68,7 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
 
 
 type ActionsType = InferActionTypes<typeof actions>
-type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsType>
+type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 export const actions = {
     setAllTracks: (data: Array<AllTracksByProjectIdType>) => ({type: SET_ALL_TRACKS, data} as const),

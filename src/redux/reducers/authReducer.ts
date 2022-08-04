@@ -63,7 +63,7 @@ type deleteUserType = {
 }
 
 type ActionsTypes = InferActionTypes<typeof actionsUser> | deleteUserType
-export type ThunkTypes = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+export type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsTypes>
 
 export const actionsUser = {
     setAllUsers: (allUsers: Array<UserType>) => ({type: SET_ALL_USERS, allUsers} as const),

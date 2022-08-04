@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react'
+import React, {FC, useEffect, useMemo, useState} from 'react'
 import './mainPage.scss'
 import {Grid, Select, SelectChangeEvent} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -16,6 +16,7 @@ import {setProjectByUserIdThunk} from "../../redux/reducers/projectsReducer";
 import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
 
 
 type OwnToProps = {
@@ -28,7 +29,6 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
     useEffect(() => {
         dispatch(setProjectByUserIdThunk(userId))
-
     }, [])
 
 
@@ -49,11 +49,12 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
     const dispatch: AppDispatch = useDispatch()
     const isFetching = useSelector(setIsFetchingTask)
-    const allTasksUserId = useSelector(setTaskUserIdSelector)
-        .filter(task => !FILTER_STATUSES.includes(task.status))
+    const allTasksUserId = useSelector(setTaskUserIdSelector).filter(task => !FILTER_STATUSES.includes(task.status))
+
+
+    const allTasksUserIdFilter = [...allTasksUserId]
         .sort((a, b) => a.project.name.localeCompare(b.project.name))
         .sort((t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status])
-
 
     useEffect(() => {
         dispatch(setAllTaskUserIdThunk(userId))
@@ -61,8 +62,14 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
 
     const [projectName, setProjectName] = useState<string>('')
+    const [searchQuery, setSearchQuery] = useState<string>('')
 
-    const newAllTasksUserId = allTasksUserId.filter((el) => projectName === '' ? el : el.project.name === projectName)
+
+    const newAllTasksUserId = allTasksUserIdFilter.filter((el) => projectName === '' ? el : el.project.name === projectName)
+
+    const sortedAndSearchedPost = useMemo(() => {
+        return newAllTasksUserId.filter(el => el.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    }, [searchQuery, newAllTasksUserId])
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
@@ -83,25 +90,27 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
         <div className="mainPage__item">
             <div className="mainPage__item_header">
                 <h1>List of my tasks:</h1>
-                <FormControl fullWidth style={{marginTop: '1rem', width: '100px'}}>
-                    <Select
-                        displayEmpty
-                        value={projectName}
-                        onChange={handleChange}
-                        inputProps={{'aria-label': 'Without label'}}
-                    >
-                        <MenuItem value="">
-                            <em>All</em>
-                        </MenuItem>
-                        {newArrayProjects.map((el, index) => <MenuItem key={index}
-                                                                       value={el}><em>{el}</em></MenuItem>)}
-                    </Select>
-                </FormControl>
+                <div className="mainPage__item_filter">
+                    <TextField style={{marginRight:'.5rem'}} id="outlined-basic" label="Task Name" variant="outlined" value={searchQuery}
+                               onChange={event => setSearchQuery(event.target.value)}/>
+                        <Select
+                            displayEmpty
+                            value={projectName}
+                            onChange={handleChange}
+                            inputProps={{'aria-label': 'Without label'}}
+                        >
+                            <MenuItem value="">
+                                <em>All</em>
+                            </MenuItem>
+                            {newArrayProjects.map((el, index) => <MenuItem key={index}
+                                                                           value={el}><em>{el}</em></MenuItem>)}
+                        </Select>
+                </div>
             </div>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {newAllTasksUserId.length ? newAllTasksUserId.map(data => <Grid item xs={12}
-                                                                                    md={4}><Box
+                    {sortedAndSearchedPost.length ? sortedAndSearchedPost.map(data => <Grid item xs={12}
+                                                                                            md={4}><Box
                             sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
                             key={data.id}
                             data={data}/></NavLink></Box></Grid>) :
