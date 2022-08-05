@@ -33,3 +33,22 @@ code {
 .FINISHED{background-color:#e5fde9}
 .CANCELLED{background-color:#fde5e5}
 
+
+.remove-btn {
+  margin-right: 0.5rem;
+}
+
+.tracks-enter {
+  opacity: 0;
+}
+.tracks-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.tracks-exit {
+  opacity: 1;
+}
+.tracks-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}

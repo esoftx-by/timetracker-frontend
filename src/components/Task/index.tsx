@@ -12,12 +12,13 @@ import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {DeleteTask} from "../DeleteTask";
+import {TransitionGroup,  CSSTransition} from "react-transition-group";
 
 
 type OwnToProps = {
@@ -34,6 +35,11 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
 
     const [editMode, setEditMode] = useState(false)
 
+    const dispatch: AppDispatch = useDispatch()
+
+    const deleteTask = () => {
+        dispatch(deleteTaskThunk(tasksProject.id))
+    }
 
     return (
         <Grid item xs={12} md={4}>
@@ -72,10 +78,19 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                             </div>
                         </CardContent>
                     </React.Fragment>
-                    <div className={style.tracks}>{projectTracks && projectTracks.reverse().map(tracks =>
-                        <VirtualizedList tracks={tracks}/>)}</div>
+                    <div className={style.tracks}>
+                    <TransitionGroup className="todo-list">
+                    {projectTracks && projectTracks.reverse().map(tracks =>
+                        <CSSTransition
+                            key={tracks.id}
+                            timeout={500}
+                            classNames="tracks"
+                        >
+                            <VirtualizedList tracks={tracks}/></CSSTransition>)}
+                    </TransitionGroup>
+                        </div>
                     <div className={style.taskDelete}>
-                        <DeleteTask id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
+                        <DeleteTask callback={deleteTask} id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
                             <DeleteOutlineOutlinedIcon/>
                         </DeleteTask>
                     </div>

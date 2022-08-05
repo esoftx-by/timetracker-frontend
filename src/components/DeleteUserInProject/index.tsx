@@ -57,6 +57,7 @@ const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
 
     return (
         <div>
+
             <MenuItem onClick={handleClickOpen} disableRipple>
                 <PersonRemoveIcon/>
                 Delete User
