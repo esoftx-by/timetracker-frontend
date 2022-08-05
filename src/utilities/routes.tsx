@@ -1,4 +1,4 @@
-import React, {lazy, Suspense} from 'react'
+import React from 'react'
 import {Navigate, Route, Routes} from "react-router-dom";
 import {MainPage} from "../pages/mainPage";
 import {Container} from "@mui/material";
@@ -6,12 +6,10 @@ import {Projects} from "../pages/projects/projects";
 import ResponsiveAppBar from "../components/Navbar";
 import {ProjectContainer} from "../pages/project";
 import {UserType} from "../types";
-import CircularIndeterminate from "../components/Loader";
 import NotFoundPage from "../pages/notFoundPage";
 import {TaskPage} from "../pages/taskPage";
 import SettingsPage from "../pages/settingsPage";
-
-let MainRoutes = lazy(() => import('./mainRoutes/mainRoutes'))
+import LoginForm from "../components/LoginForm";
 
 export const useRoutes = (isAuthenticated: boolean, userId: any, userData: UserType | null) => {
 
@@ -33,11 +31,10 @@ export const useRoutes = (isAuthenticated: boolean, userId: any, userData: UserT
     }
 
     return (
-        <Container maxWidth="sm">
-            <Suspense fallback={<CircularIndeterminate/>}>
-                <MainRoutes/>
-            </Suspense>
-        </Container>
+            <Routes>
+                <Route path="/" element={<Navigate to={'/login'} replace/>}/>
+                <Route path="/login" element={<LoginForm/>}/>
+            </Routes>
     )
 
 }

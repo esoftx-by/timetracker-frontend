@@ -9,6 +9,11 @@ import CustomizedMenus from "../CustomizationMenu";
 import style from './ProjectCard.module.css'
 import {ProjectType, UserType} from "../../types";
 import {FC} from "react";
+import {AppDispatch} from "../../redux/store";
+import {useDispatch} from "react-redux";
+import {deleteProjectThunk} from "../../redux/reducers/projectsReducer";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import {DeleteTask} from "../DeleteTask";
 
 
 type OwnToProps = {
@@ -19,6 +24,13 @@ type OwnToProps = {
 
 
 export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
+
+    const dispatch: AppDispatch = useDispatch()
+
+    const deleteProject = () => {
+        dispatch(deleteProjectThunk(project.id))
+    }
+
     return (
         <Grid item xs={12} md={4}>
             <Card sx={{maxWidth: 800}} style={{borderRadius: "10px"}}>
@@ -30,7 +42,7 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
                         <Typography sx={{mb: 1.5}} color="text.secondary">
                             {project.customer}
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2">c
                             {project.description}
                         </Typography>
                         <Button className={style.btn} variant="contained" size="large"><NavLink
@@ -38,8 +50,13 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
                         </Button>
                     </CardContent>
                     <div className={style.mainProjectCardItem}>
-                        {role === 'ADMIN' && <CustomizedMenus allUsers={allUsers}
-                                                              project={project}/>}
+                        {role === 'ADMIN' && <>
+                            <DeleteTask callback={deleteProject} title={'Are you sure you want to delete the project?'} id={project.id}>
+                                <DeleteOutlineOutlinedIcon/>
+                            </DeleteTask>
+                            <CustomizedMenus allUsers={allUsers}
+                                             project={project}/>
+                        </>}
                     </div>
                 </div>
             </Card>

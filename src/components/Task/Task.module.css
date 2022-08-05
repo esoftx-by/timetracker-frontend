@@ -5,7 +5,7 @@
 }
 
 .tracks {
-    height: 140px;
+    height: 190px;
     overflow: auto;
 }
 
@@ -26,9 +26,9 @@
     cursor: pointer;
 }
 
-@media (min-width: 1240px) {
-    .tracks {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-}
+/*@media (min-width: 1240px) {*/
+/*    .tracks {*/
+/*        display: grid;*/
+/*        grid-template-columns: 1fr 1fr;*/
+/*    }*/
+/*}*/

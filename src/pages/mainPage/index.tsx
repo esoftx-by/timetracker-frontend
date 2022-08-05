@@ -91,7 +91,7 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
         <div className="mainPage__item">
             <div className="mainPage__item_header">
                 <h1>List of my tasks:</h1>
-                <div className="mainPage__item_filter">
+                {allTasksUserId.length ? <div className="mainPage__item_filter">
                     <TextField style={{marginRight: '.5rem'}} id="outlined-basic" label="Task Name" variant="outlined"
                                value={searchQuery}
                                onChange={event => setSearchQuery(event.target.value)}/>
@@ -107,7 +107,7 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
                         {newArrayProjects.map((el, index) => <MenuItem key={index}
                                                                        value={el}><em>{el}</em></MenuItem>)}
                     </Select>
-                </div>
+                </div> : ''}
             </div>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>

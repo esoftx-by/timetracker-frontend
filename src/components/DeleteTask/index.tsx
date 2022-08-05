@@ -13,6 +13,7 @@ import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 type OwnToProps = {
+    callback: () => void
     title: string
     id: number
     children:
@@ -22,7 +23,7 @@ type OwnToProps = {
         | string[];
 }
 
-export const DeleteTask: FC<OwnToProps> = ({children, id, title}) => {
+export const DeleteTask: FC<OwnToProps> = ({children, id, title, callback}) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -34,12 +35,6 @@ export const DeleteTask: FC<OwnToProps> = ({children, id, title}) => {
     };
 
     const dispatch: AppDispatch = useDispatch()
-
-
-    const deleteTask = () => {
-        dispatch(deleteTaskThunk(id))
-        setOpen(false)
-    }
 
     return (
         <div>
@@ -58,7 +53,7 @@ export const DeleteTask: FC<OwnToProps> = ({children, id, title}) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>No</Button>
-                    <Button onClick={deleteTask} autoFocus>
+                    <Button onClick={callback} autoFocus>
                         Yes
                     </Button>
                 </DialogActions>

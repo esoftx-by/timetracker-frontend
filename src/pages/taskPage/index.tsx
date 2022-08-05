@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import {SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
 import {useNavigate, useParams} from "react-router-dom";
 import style from "../project/Project.module.css";
 import CircularIndeterminate from "../../components/Loader";
@@ -47,6 +47,9 @@ export const TaskPage: FC = () => {
         }
     }, [])
 
+    const deleteTask = () => {
+        dispatch(deleteTaskThunk(taskById.id))
+    }
 
     if (isFetching) {
         return <div className={style.loader}><CircularIndeterminate/></div>
@@ -61,7 +64,7 @@ export const TaskPage: FC = () => {
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
                 <div style={{display: 'flex', alignItems: 'center'}}>
-                    <DeleteTask id={taskById.id} title={'Are you sure you want to delete the task?'}>
+                    <DeleteTask callback={deleteTask} id={taskById.id} title={'Are you sure you want to delete the task?'}>
                         <Button variant="contained">Delete Task</Button>
                     </DeleteTask>
                     <TaskOption/>

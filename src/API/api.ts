@@ -101,6 +101,9 @@ export const ProjectAPI = {
     },
     deleteUser(id: number) {
         return instance.delete(`project-users/${id}`)
+    },
+    deleteProject(id: number){
+        return instance.delete(`projects/${id}`)
     }
 }
 
