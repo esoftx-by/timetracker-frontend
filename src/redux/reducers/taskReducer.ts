@@ -1,7 +1,7 @@
-import {TaskAPI} from "../../API/api";
 import {AllTasksProjectType, TaskType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
+import TaskAPI from "../../API/taskAPI";
 
 const SET_NEW_TASK = 'tasks/SET_NEW_TASK'
 const SET_ALL_TASKS = 'tasks/SET_ALL_TASK'

@@ -10,11 +10,11 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import {useNavigate} from "react-router-dom";
 import {AuthContext} from "../../context/AuthContext";
-import {AuthAPI} from "../../API/api";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {Formik} from "formik";
 import {Helmet} from "react-helmet-async";
+import AuthAPI from "../../API/authAPI";
 
 
 const LoginForm = () => {

@@ -1,7 +1,7 @@
-import {AuthAPI} from "../../API/api";
 import {UserType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
+import AuthAPI from "../../API/authAPI";
 
 const SET_USER = 'auth/SET_USER'
 const SET_ALL_USERS = 'auth/SET_ALL_USERS'
