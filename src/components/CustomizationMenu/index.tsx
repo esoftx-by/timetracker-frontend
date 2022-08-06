@@ -13,7 +13,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import {Formik} from 'formik'
 import Select from 'react-select';
-import {ProjectAPI} from "../../API/api";
 import {FC, useEffect, useState} from "react";
 import SendIcon from "@mui/icons-material/Send";
 import {Alert, Box} from "@mui/material";
@@ -25,6 +24,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 import DeleteUserInProject from "../DeleteUserInProject";
+import ProjectAPI from "../../API/projectAPI";
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -238,7 +238,6 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
                                     setTimeout(() => {
                                         setSubmitting(false);
                                         ProjectAPI.newUserInProject(+values.id, project.id, values.role)
-
                                         handleClose()
                                         resetForm()
                                     }, 400);

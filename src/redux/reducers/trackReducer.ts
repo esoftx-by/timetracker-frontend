@@ -1,7 +1,7 @@
-import {TracksAPI} from "../../API/api";
 import {AllTracksByProjectIdType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
+import TracksAPI from "../../API/trackAPI";
 
 const SET_ALL_TRACKS = 'tracks/SET_ALL_TRACKS'
 const SET_NEW_TRACK = 'tracks/SET_NEW_TRACK'

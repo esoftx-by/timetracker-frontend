@@ -42,7 +42,7 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
                         <Typography sx={{mb: 1.5}} color="text.secondary">
                             {project.customer}
                         </Typography>
-                        <Typography variant="body2">c
+                        <Typography variant="body2">
                             {project.description}
                         </Typography>
                         <Button className={style.btn} variant="contained" size="large"><NavLink
@@ -51,7 +51,8 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
                     </CardContent>
                     <div className={style.mainProjectCardItem}>
                         {role === 'ADMIN' && <>
-                            <DeleteTask callback={deleteProject} title={'Are you sure you want to delete the project?'} id={project.id}>
+                            <DeleteTask callback={deleteProject} title={'Are you sure you want to delete the project?'}
+                                        id={project.id}>
                                 <DeleteOutlineOutlinedIcon/>
                             </DeleteTask>
                             <CustomizedMenus allUsers={allUsers}

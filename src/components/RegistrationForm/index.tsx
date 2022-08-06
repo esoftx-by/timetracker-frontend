@@ -7,8 +7,8 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import './Registration.scss'
-import {AuthAPI} from "../../API/api";
 import {Formik} from "formik";
+import AuthAPI from "../../API/authAPI";
 
 const RegistrationForm = () => {
 
