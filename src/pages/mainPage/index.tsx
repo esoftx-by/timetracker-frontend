@@ -7,28 +7,26 @@ import {useDispatch, useSelector} from "react-redux";
 import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
 import OutlinedCard from "../../components/TaskCard";
 import {AppDispatch} from "../../redux/store";
-import {AllTasksProjectType, UserType} from "../../types";
+import {AllTasksProjectType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
 import style from "../project/Project.module.css";
 import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
-import {setProjectByUserIdThunk} from "../../redux/reducers/projectsReducer";
+import {setProjectsByUserIdThunk} from "../../redux/reducers/projectsReducer";
 import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import {userDataSelector} from "../../redux/selectors/authSelectors";
 
 
 
-type OwnToProps = {
-    userId: number
-    user: UserType | null
-}
 
-export const MainPage: FC<OwnToProps> = ({user, userId}) => {
+export const MainPage: FC = () => {
 
+    const {id, firstName, lastName} = useSelector(userDataSelector)
 
     useEffect(() => {
-        dispatch(setProjectByUserIdThunk(userId))
+        dispatch(setProjectsByUserIdThunk(id))
     }, [])
 
 
@@ -63,8 +61,8 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
 
     useEffect(() => {
-        dispatch(setAllTaskUserIdThunk(userId))
-    }, [userId])
+        dispatch(setAllTaskUserIdThunk(id))
+    }, [id])
 
 
     const newAllTasksUserId = allTasksUserIdFilter.filter((el) => projectName === '' ? el : el.project.name === projectName)
@@ -87,7 +85,7 @@ export const MainPage: FC<OwnToProps> = ({user, userId}) => {
 
     return <div className="mainPage">
         <Helmet>
-            <title>{user && user.firstName + ' ' + user.lastName}</title>
+            <title>{firstName + ' ' + lastName}</title>
         </Helmet>
         <div className="mainPage__item">
             <div className="mainPage__item_header">

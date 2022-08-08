@@ -18,40 +18,39 @@ import Button from "@mui/material/Button";
 import {setIsFetchingProjectSelector, setProjectSelector} from "../../redux/selectors/projectSelector";
 import {setAllTracksByProjectIdSelector} from "../../redux/selectors/trackSelectors";
 import {setAllTasksProjectSelector} from "../../redux/selectors/taskSelectors";
+import {userDataSelector} from "../../redux/selectors/authSelectors";
 
-type OwnToProps = {
-    userId: number
-}
 
-export const ProjectContainer: FC<OwnToProps> = (props) => {
+export const ProjectContainer: FC = () => {
 
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
-
+    const {id} = useSelector(userDataSelector)
+    debugger
     const isFetching = useSelector(setIsFetchingProjectSelector)
     const project = useSelector(setProjectSelector)
     const allTracksByProjectId = useSelector(setAllTracksByProjectIdSelector)
     const allTasksProject = useSelector(setAllTasksProjectSelector)
 
     const params = useParams();
-    let id: number = Number(params.id)
+    let projectId: number = Number(params.id)
 
     const navigate = useNavigate()
 
     useLayoutEffect(() => {
-        dispatch(setAllTasksProjectThunk(id))
+        dispatch(setAllTasksProjectThunk(projectId))
     }, [])
 
     useLayoutEffect(() => {
-        if (Number.isFinite(id)) {
-            dispatch(setProjectIdThunk(id))
+        if (Number.isFinite(projectId)) {
+            dispatch(setProjectIdThunk(projectId))
         }
 
     }, [])
 
 
     useLayoutEffect(() => {
-        dispatch(setAllTracksByProjectIdThunk(id))
+        dispatch(setAllTracksByProjectIdThunk(projectId))
     }, [])
 
 
@@ -70,11 +69,11 @@ export const ProjectContainer: FC<OwnToProps> = (props) => {
             </Helmet>
             <div className={style.project}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
-                <FormDialogTask userId={props.userId} projectId={id}/>
+                <FormDialogTask userId={id} projectId={projectId}/>
             </div>
             <TasksProject project={project}
                           allTracksByProjectId={allTracksByProjectId}
-                          userId={props.userId} AllTaskByProject={allTasksProject}/>
+                          userId={id} AllTaskByProject={allTasksProject}/>
         </div>
 
     )

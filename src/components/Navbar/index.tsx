@@ -17,14 +17,11 @@ import {FC, useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
 import {UserType} from "../../types";
 import {Avatar} from "@mui/material";
+import {useSelector} from "react-redux";
+import {userDataSelector} from "../../redux/selectors/authSelectors";
 
 
 const pages: Array<string> = ['projects'];
-
-type OwnToProps = {
-    user: UserType | null
-}
-
 
 function stringToColor(string: string) {
     let hash = 0;
@@ -56,8 +53,9 @@ function stringAvatar(name: string) {
 }
 
 
-const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
-    let fullName: null | string = user && user.firstName + ' ' + user.lastName
+const ResponsiveAppBar: FC = () => {
+    const {firstName, lastName} = useSelector(userDataSelector)
+    let fullName = firstName + ' ' + lastName
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -181,11 +179,11 @@ const ResponsiveAppBar: FC<OwnToProps> = ({user}) => {
                             </NavLink>
                         ))}
                     </Box>
-                    <div className={style.name}>{user && (user.firstName + ' ' + user.lastName)}</div>
+                    <div className={style.name}>{firstName + ' ' + lastName}</div>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                {user && <Avatar {...stringAvatar(fullName as string)} />}
+                                <Avatar {...stringAvatar(fullName as string)} />
                             </IconButton>
                         </Tooltip>
                         <Menu

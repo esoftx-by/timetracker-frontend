@@ -122,12 +122,18 @@ export const newUserInProject = (userId: number,projectId: number,  role: string
     }
 }
 
-export const setProjectThunk = (): ThunkTypes => {
+export const setProjectsThunk = (): ThunkTypes => {
     return async dispatch => {
-        let response = await ProjectAPI.getAllProject()
-        if (response.data.success) {
-            let allProject: Array<ProjectType> = response.data.response
-            dispatch(actionsProject.setProjects(allProject))
+        try {
+            dispatch(actionsProject.toggleIsFetching(true))
+            let response = await ProjectAPI.getAllProject()
+            if (response.data.success) {
+                let allProject: Array<ProjectType> = response.data.response
+                dispatch(actionsProject.setProjects(allProject))
+            }
+            dispatch(actionsProject.toggleIsFetching(false))
+        } catch (e: any){
+
         }
     }
 }
@@ -179,13 +185,20 @@ export const setProjectIdThunk = (id: number): ThunkTypes => {
     }
 }
 
-export const setProjectByUserIdThunk = (id: number): ThunkTypes => {
+export const setProjectsByUserIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        let response = await ProjectAPI.getProjectByUserId(id)
-        if (response.data.success) {
-            const projectByUserId: Array<ProjectType> = response.data.response
-            dispatch(actionsProject.setProjectByUserId(projectByUserId))
+        try {
+            dispatch(actionsProject.toggleIsFetching(true))
+            let response = await ProjectAPI.getProjectByUserId(id)
+            if (response.data.success) {
+                const projectByUserId: Array<ProjectType> = response.data.response
+                dispatch(actionsProject.setProjectByUserId(projectByUserId))
+            }
+            dispatch(actionsProject.toggleIsFetching(false))
+        } catch (e: any){
+            console.log(e.message)
         }
+
     }
 }
 

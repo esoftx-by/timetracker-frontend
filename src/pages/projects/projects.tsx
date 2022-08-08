@@ -4,41 +4,38 @@ import style from './Projects.module.css'
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {setProjectByUserIdThunk, setProjectThunk} from "../../redux/reducers/projectsReducer";
+import {setProjectsByUserIdThunk, setProjectsThunk} from "../../redux/reducers/projectsReducer";
 import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
-import {UserType} from "../../types";
 import {AppDispatch} from "../../redux/store";
 import {
     setIsFetchingProjectSelector,
     setProjectsByUserSelector,
     setProjectsSelector
 } from "../../redux/selectors/projectSelector";
-import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
+import {setAllUsersSelector, userDataSelector} from "../../redux/selectors/authSelectors";
 import CircularIndeterminate from '../../components/Loader';
 
 
-type OwnToProps = {
-    user: UserType
-}
-
-
-export const Projects: FC<OwnToProps> = ({user}) => {
+export const Projects: FC = () => {
 
     const dispatch: AppDispatch = useDispatch()
 
+
+    const {id, applicationRole} = useSelector(userDataSelector)
     const projects = useSelector(setProjectsSelector)
     const allUsers = useSelector(setAllUsersSelector)
     const projectsByUser = useSelector(setProjectsByUserSelector)
     const isFetching = useSelector(setIsFetchingProjectSelector)
 
     useEffect(() => {
-        if (user.applicationRole === 'ADMIN') {
-            dispatch(setProjectThunk())
+        if (applicationRole === 'ADMIN') {
+            dispatch(setProjectsThunk())
         } else {
-            dispatch(setProjectByUserIdThunk(user.id))
+            dispatch(setProjectsByUserIdThunk(id))
         }
-    }, [user.id, user.applicationRole])
+    }, [id, applicationRole])
+
 
     return (
         <>
@@ -47,22 +44,22 @@ export const Projects: FC<OwnToProps> = ({user}) => {
                     <title>Projects</title>
                 </Helmet>
                 <h1>Projects:</h1>
-                {user.applicationRole === "ADMIN" && <FormDialog/>}
+                {applicationRole === "ADMIN" && <FormDialog/>}
             </div>
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {user.applicationRole === 'ADMIN' ? (isFetching ?  <CircularIndeterminate/> : projects.length ? projects.map(project =>
+                        {applicationRole === 'ADMIN' ? (isFetching ?  <CircularIndeterminate/> : projects.length ? projects.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}
-                                    key={project.id} role={user.applicationRole}/>) :
+                                    key={project.id} role={applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2>
-                            </Grid>) : (projectsByUser?.length ? projectsByUser.map(project =>
+                            </Grid>) : (isFetching ?  <CircularIndeterminate/> : projectsByUser?.length ? projectsByUser.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}
-                                    key={project.id} role={user.applicationRole}/>) :
+                                    key={project.id} role={applicationRole}/>) :
                             <Grid item xs={12} md={12}><h2>No projects</h2></Grid>)}
                     </Grid>
                 </Box>
