@@ -5,12 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {FC} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch} from "../../redux/store";
-import {deleteTaskThunk} from "../../redux/reducers/taskReducer";
-import {useNavigate} from "react-router-dom";
-import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+
 
 type OwnToProps = {
     callback: () => void
@@ -34,7 +29,6 @@ export const DeleteTask: FC<OwnToProps> = ({children, id, title, callback}) => {
         setOpen(false);
     };
 
-    const dispatch: AppDispatch = useDispatch()
 
     return (
         <div>

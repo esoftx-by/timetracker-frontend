@@ -6,7 +6,8 @@ const state: initialStateType = {
     projectsByUser: [],
     project: null,
     isFetching: false,
-    allUsersInProject: []
+    allUsersInProject: [],
+    success: false
 }
 
 test('NewProject', () => {

@@ -1,14 +1,14 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
@@ -18,37 +18,102 @@ code {
 .IN_REVIEW,
 .IN_TESTING,
 .FINISHED,
-.CANCELLED{
-  padding: .8rem;
-  font-weight: 500;
-  border-radius: 10px;
+.CANCELLED {
+    padding: .8rem;
+    font-weight: 500;
+    border-radius: 10px;
 }
 
 
-.OPEN{background-color: #e5f6fd}
-.LONG_TERM{background-color:#fde5f9}
-.IN_PROGRESS{background-color:#fdf9e5}
-.IN_REVIEW{background-color:#fdf5e5}
-.IN_TESTING{background-color:#fcfde5}
-.FINISHED{background-color:#e5fde9}
-.CANCELLED{background-color:#fde5e5}
+.OPEN {
+    background-color: #e5f6fd
+}
+
+.LONG_TERM {
+    background-color: #fde5f9
+}
+
+.IN_PROGRESS {
+    background-color: #fdf9e5
+}
+
+.IN_REVIEW {
+    background-color: #fdf5e5
+}
+
+.IN_TESTING {
+    background-color: #fcfde5
+}
+
+.FINISHED {
+    background-color: #e5fde9
+}
+
+.CANCELLED {
+    background-color: #fde5e5
+}
 
 
 .remove-btn {
-  margin-right: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .tracks-enter {
-  opacity: 0;
+    opacity: 0;
 }
+
 .tracks-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
+    opacity: 1;
+    transition: opacity 500ms ease-in;
 }
+
 .tracks-exit {
-  opacity: 1;
+    opacity: 1;
 }
+
 .tracks-exit-active {
-  opacity: 0;
-  transition: opacity 500ms ease-in;
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+
+.alert-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.alert-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.alert-exit {
+    opacity: 1;
+}
+
+.alert-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.newUserBtn {
+    margin: 0 1rem !important;
+}
+
+.modalUser {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+@media (max-width: 768px) {
+    .newUserBtn {
+        margin: 0 1.5rem !important;
+    }
+  .modalUser{
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

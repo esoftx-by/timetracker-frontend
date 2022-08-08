@@ -20,3 +20,7 @@ export const setIsFetchingProjectSelector = (state: AppStateType) => {
 export const setAllUsersInProjectSelector = (state: AppStateType) => {
     return state.projectsPage.allUsersInProject
 }
+
+export const successMessageSelector = (state: AppStateType) => {
+    return state.projectsPage.success
+}
