@@ -9,8 +9,13 @@ import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
 import {UserType} from "../../types";
 import {AppDispatch} from "../../redux/store";
-import {setProjectsByUserSelector, setProjectsSelector} from "../../redux/selectors/projectSelector";
+import {
+    setIsFetchingProjectSelector,
+    setProjectsByUserSelector,
+    setProjectsSelector
+} from "../../redux/selectors/projectSelector";
 import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
+import CircularIndeterminate from '../../components/Loader';
 
 
 type OwnToProps = {
@@ -25,6 +30,7 @@ export const Projects: FC<OwnToProps> = ({user}) => {
     const projects = useSelector(setProjectsSelector)
     const allUsers = useSelector(setAllUsersSelector)
     const projectsByUser = useSelector(setProjectsByUserSelector)
+    const isFetching = useSelector(setIsFetchingProjectSelector)
 
     useEffect(() => {
         if (user.applicationRole === 'ADMIN') {
@@ -46,7 +52,7 @@ export const Projects: FC<OwnToProps> = ({user}) => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {user.applicationRole === 'ADMIN' ? (projects.length ? projects.map(project =>
+                        {user.applicationRole === 'ADMIN' ? (isFetching ?  <CircularIndeterminate/> : projects.length ? projects.map(project =>
                                 <ProjectCard
                                     allUsers={allUsers}
                                     project={project}

@@ -11,20 +11,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import {Formik} from 'formik'
-import Select from 'react-select';
-import {FC, useEffect, useState} from "react";
-import SendIcon from "@mui/icons-material/Send";
-import {Alert, Box} from "@mui/material";
+import {FC, useState} from "react";
+import {Box} from "@mui/material";
 import RegistrationForm from "../RegistrationForm";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import {ProjectType, UserType} from "../../types";
 import {TransitionProps} from "@mui/material/transitions";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../redux/store";
-import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 import DeleteUserInProject from "../DeleteUserInProject";
-import ProjectAPI from "../../API/projectAPI";
+import NewUser from "../NewUser";
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -125,41 +119,6 @@ const Transition = React.forwardRef(function Transition(
 });
 
 
-// @ts-ignore
-const CustomSelect = ({onChange, options, value, className}) => {
-
-    const defaultValue = (options: any, value: any) => {
-
-        return options ? options.find((option: { value: any; }) => option.value === value) : "";
-    };
-
-
-    return (
-        <div className={className}>
-            <Select
-                value={defaultValue(options, value)}
-                onChange={value => {
-                    onChange(value)
-
-                }} options={options}/>
-        </div>
-
-    )
-}
-
-type roleType = {
-    role: string
-    label: string
-}
-
-const role: Array<roleType> = [
-    {role: 'DEVELOPER', label: 'DEV'},
-    {role: 'TEAM_LEAD', label: 'TEAM LEAD'},
-    {role: 'PROJECT_MANAGER', label: 'PROJECT MANAGER'},
-    {role: 'ACCOUNTANT', label: 'ACCOUNTANT'}
-]
-
-
 type OwnToPropsAlertDialogSlide = {
     project: ProjectType
     allUsers: Array<UserType> | null
@@ -175,15 +134,6 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    // @ts-ignore
-    let newUsers = allUsers.map(({email, ...n}) => (n.label = email, n))
-
-    const dispatch: AppDispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setAllUsersThunk())
-    }, [newUser])
 
     const handleClose = () => {
         setOpen(false);
@@ -210,11 +160,11 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
                     setNewUser(false)
                 }}>Back</Button></> :
                 <>
-                    <div style={{'display': 'flex', 'justifyContent': 'space-between', 'alignItems': 'center'}}>
+                    <div className="modalUser">
                         <DialogTitle>{"Add a user to the project"}</DialogTitle>
                         <Box sx={{
                             '& > :not(style)': {width: '20ch', 'margin': '0 auto'},
-                        }}><Button style={{'margin': '0 1rem'}} onClick={() => setNewUser(true)}
+                        }}><Button className="newUserBtn" onClick={() => setNewUser(true)}
                                    endIcon={<PersonAddIcon/>} variant="contained" size="small" type="submit">
                             New User
                         </Button>
@@ -222,75 +172,7 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
                     </div>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            <Formik
-                                initialValues={{id: '', role: ''}}
-                                validate={values => {
-                                    const errors: any = {};
-                                    if (!values.id) {
-                                        errors.id = 'Required';
-                                    }
-                                    if (!values.role) {
-                                        errors.role = 'Required'
-                                    }
-                                    return errors;
-                                }}
-                                onSubmit={(values, {setSubmitting, resetForm}) => {
-                                    setTimeout(() => {
-                                        setSubmitting(false);
-                                        ProjectAPI.newUserInProject(+values.id, project.id, values.role)
-                                        handleClose()
-                                        resetForm()
-                                    }, 400);
-                                }}
-                            >{({
-                                   values,
-                                   errors,
-                                   touched,
-                                   handleChange,
-                                   handleBlur,
-                                   handleSubmit,
-                                   setFieldValue,
-                                   isSubmitting,
-                                   /* and other goodies */
-                               }) => (
-                                <form onSubmit={handleSubmit} style={{'minHeight': '300px'}}>
-
-                                    <label htmlFor="id">User name</label>
-
-                                    <CustomSelect
-                                        className='input'
-                                        onChange={(values: any) => setFieldValue('id', values.id)}
-                                        value={values.id}
-                                        options={newUsers}
-                                    />
-
-                                    <div style={{'margin': '1rem auto'}}>{errors.id && touched.id &&
-                                        <Alert severity="error">{errors.id && touched.id && errors.id}</Alert>}</div>
-
-                                    <label htmlFor="role">Role</label>
-
-                                    <CustomSelect
-                                        className='input'
-                                        onChange={(values: any) => setFieldValue('role', values.role)}
-                                        value={values.role}
-                                        options={role}
-                                    />
-
-                                    <div style={{'margin': '1rem auto'}}>{errors.role && touched.role &&
-                                        <Alert
-                                            severity="error">{errors.role && touched.role && errors.role}</Alert>}</div>
-
-
-                                    <Box sx={{
-                                        '& > :not(style)': {width: '100%', 'margin': '1rem auto'},
-                                    }}><Button endIcon={<SendIcon/>} variant="contained" size="medium" type="submit"
-                                               disabled={isSubmitting}>
-                                        Send
-                                    </Button>
-                                    </Box>
-
-                                </form>)}
-                            </Formik>
+                            <NewUser projectId={project.id} newUser={newUser}/>
                         </DialogContentText>
                     </DialogContent>
                 </>

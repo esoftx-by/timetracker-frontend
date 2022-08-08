@@ -27,9 +27,6 @@ const RegistrationForm = () => {
                     if (!values.lastName) {
                         errors.lastName = 'Required'
                     }
-                    if (!values.lastName) {
-                        errors.lastName = 'Required'
-                    }
                     if (!values.email) {
                         errors.email = 'Required';
                     } else if (
@@ -69,7 +66,7 @@ const RegistrationForm = () => {
 
                         <Box
                             sx={{
-                                '& > :not(style)': {m: 1, width: '30ch'},
+                                '& > :not(style)': {m: 1, width: '90%'},
                             }}>
                             <TextField
                                 error={!!(errors.firstName && touched.firstName)}
@@ -81,12 +78,12 @@ const RegistrationForm = () => {
                                 value={values.firstName}
                             />
                         </Box>
-                        <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.firstName && touched.firstName &&
+                        <div style={{'width': '90%', 'margin': '0 auto'}}>{errors.firstName && touched.firstName &&
                             <Alert
                                 severity="error">{errors.firstName && touched.firstName && errors.firstName}</Alert>}</div>
                         <Box
                             sx={{
-                                '& > :not(style)': {m: 1, width: '30ch'},
+                                '& > :not(style)': {m: 1, width: '90%'},
                             }}>
                             <TextField
                                 error={!!(errors.lastName && touched.lastName)}
@@ -98,12 +95,12 @@ const RegistrationForm = () => {
                                 value={values.lastName}
                             />
                         </Box>
-                        <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.lastName && touched.lastName &&
+                        <div style={{'width': '90%', 'margin': '0 auto'}}>{errors.lastName && touched.lastName &&
                             <Alert
                                 severity="error">{errors.lastName && touched.lastName && errors.lastName}</Alert>}</div>
                         <Box
                             sx={{
-                                '& > :not(style)': {m: 1, width: '30ch'},
+                                '& > :not(style)': {m: 1, width: '90%'},
                             }}>
                             <TextField
                                 error={!!(errors.email && touched.email)}
@@ -116,10 +113,10 @@ const RegistrationForm = () => {
                             />
                         </Box>
 
-                        <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.email && touched.email &&
+                        <div style={{'width': '90%', 'margin': '0 auto'}}>{errors.email && touched.email &&
                             <Alert severity="error">{errors.email && touched.email && errors.email}</Alert>}</div>
                         <Box sx={{
-                            '& > :not(style)': {m: 1, width: '30ch'},
+                            '& > :not(style)': {m: 1, width: '90%'},
                         }}>
                             <TextField
                                 error={!!(errors.password && touched.password)}
@@ -132,12 +129,12 @@ const RegistrationForm = () => {
                             />
                         </Box>
 
-                        <div style={{'width': '30ch', 'margin': '0 auto'}}>{errors.password && touched.password &&
+                        <div style={{'width': '90%', 'margin': '0 auto'}}>{errors.password && touched.password &&
                             <Alert
                                 severity="error">{errors.password && touched.password && errors.password}</Alert>}</div>
 
                         <Box sx={{
-                            '& > :not(style)': {m: 1, width: '30ch'},
+                            '& > :not(style)': {m: 1, width: '90%'},
                         }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
                                    disabled={isSubmitting}>
                             Send
@@ -147,7 +144,7 @@ const RegistrationForm = () => {
                 )}
             </Formik>
             {isSent &&
-                <div style={{'width': '30ch', 'margin': '1rem auto'}}><Alert severity="success">User created. Return to
+                <div style={{'width': '55ch', 'margin': '1rem auto'}}><Alert severity="success">User created. Return to
                     login page.</Alert></div>}
         </div>
     )

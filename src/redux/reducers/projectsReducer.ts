@@ -9,6 +9,7 @@ const SET_PROJECT = 'project/SET_PROJECT'
 const SET_PROJECT_BY_USER_ID = 'project/SET_PROJECT_BY_USER_ID'
 const SET_ALL_USERS_IN_PROJECT = 'project/SET_ALL_USERS_IN_PROJECT'
 const DELETE_PROJECT = 'project/DELETE_PROJECT'
+const SUCCESS = 'project/SUCCESS'
 const IS_FETCHING = 'project/IS_FETCHING'
 
 
@@ -18,6 +19,7 @@ export type initialStateType = {
     project: ProjectType | null
     isFetching: boolean
     allUsersInProject: Array<UserType>
+    success: boolean
 }
 
 const initialState: initialStateType = {
@@ -25,7 +27,8 @@ const initialState: initialStateType = {
     projectsByUser: [],
     project: null,
     isFetching: false,
-    allUsersInProject: []
+    allUsersInProject: [],
+    success: false
 }
 
 export const projectReducer = (state = initialState, action: ActionsType): initialStateType => {
@@ -65,6 +68,11 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
                 ...state,
                 projects: state.projects.filter(el => el.id !== action.id)
             }
+        case SUCCESS:
+            return {
+                ...state,
+                success: action.success
+            }
         default:
             return state
     }
@@ -81,6 +89,7 @@ export const actionsProject = {
     setProjectByUserId: (data: Array<ProjectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
     setAllUsersInProject: (users: Array<UserType>) => ({type: SET_ALL_USERS_IN_PROJECT , users} as const),
+    successMessage: (success: boolean) => ({type: SUCCESS, success} as const),
     deleteProject: (id: number) => ({type: DELETE_PROJECT, id} as const)
 }
 
@@ -88,8 +97,25 @@ export const actionsProject = {
 export const deleteProjectThunk = (id: number): ThunkTypes => {
     return async dispatch => {
         try {
+            dispatch(actionsProject.toggleIsFetching(true))
             await ProjectAPI.deleteProject(id)
-            dispatch(actionsProject.deleteProject(id))
+            setTimeout(() => {
+                dispatch(actionsProject.deleteProject(id))
+                dispatch(actionsProject.toggleIsFetching(false))
+            }, 500)
+        } catch (e: any){
+            console.log(e.message)
+        }
+    }
+}
+
+export const newUserInProject = (userId: number,projectId: number,  role: string): ThunkTypes => {
+    return async dispatch => {
+        try {
+            let response = await ProjectAPI.newUserInProject(userId, projectId, role)
+            if (response.data.success){
+                dispatch(actionsProject.successMessage(true))
+            }
         } catch (e: any){
             console.log(e.message)
         }
@@ -118,12 +144,19 @@ export const setAllUsersInProject = (id: number): ThunkTypes => {
 
 export const setNewProjectThunk = (name: string, description: string, customer: string): ThunkTypes => {
     return async dispatch => {
-        let response = await ProjectAPI.newProject(name, description, customer)
-        if (response.data.success) {
-            let data: ProjectType = response.data.response
-            dispatch(actionsProject.setNewProject(data))
+        try {
+            dispatch(actionsProject.toggleIsFetching(true))
+            let response = await ProjectAPI.newProject(name, description, customer)
+            setTimeout(() => {
+                if (response.data.success) {
+                    let data: ProjectType = response.data.response
+                    dispatch(actionsProject.setNewProject(data))
+                }
+                dispatch(actionsProject.toggleIsFetching(false))
+            }, 500)
+        } catch (e: any){
+            console.log(e.message)
         }
-
     }
 }
 

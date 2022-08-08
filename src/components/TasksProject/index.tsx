@@ -29,10 +29,6 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
         FINISHED: 5,
         CANCELLED: 6
     }
-
-    if (isFetching){
-        return <div className={style.loader}><CircularIndeterminate/></div>
-    }
     // @ts-ignore
     const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
 
@@ -45,11 +41,14 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
             </div>}
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
-                {AllTaskByProject && AllTaskByProject.length ? AllTaskByProject.sort(comparator).map(task =>
-                    <OutlinedCardTask
-                        allTracksByProjectId={allTracksByProjectId} key={task.id} userId={userId}
-                        tasksProject={task}/>) : AllTaskByProject?.length === 0 &&
-                    <h3>No tasks</h3>}
+                {isFetching ? <CircularIndeterminate/> :
+                    AllTaskByProject && AllTaskByProject.length ? [...AllTaskByProject].sort(comparator).map(task =>
+                        <OutlinedCardTask
+                            key={task.id}
+                            allTracksByProjectId={allTracksByProjectId} userId={userId}
+                            tasksProject={task}/>
+                    ) : AllTaskByProject?.length === 0 &&
+                        <h3>No tasks</h3>}
             </Grid>
         </Box>
     )
