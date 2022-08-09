@@ -12,6 +12,8 @@ import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import UpdateTrack from "../EditTrack";
+import {DeleteModal} from "../DeleteModal";
+import Utilities from "../../utilities";
 
 type OwnToProps = {
     tracks: AllTracksByProjectIdType
@@ -29,17 +31,6 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
 
     const handleClose = () => {
         setOpen(false);
-    };
-
-    function getTimeFromMins(mins: number) {
-        let hours = Math.trunc(mins / 60);
-        let minutes = mins % 60;
-        if (!minutes) {
-            return hours + 'h '
-        } else if (!hours) {
-            return minutes + 'm'
-        }
-        return hours + 'h ' + minutes + 'm';
     };
 
     function getTimeISO(date: string) {
@@ -60,7 +51,7 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
         <>
             <div onClick={handleClickOpen} className={style.newTrack}>
                 <div>{tracks.user.firstName + ' ' + tracks.user.lastName}</div>
-                <div>{getTimeFromMins(timeInMinutes)}</div>
+                <div>{Utilities.getTimeFromMins(timeInMinutes)}</div>
             </div>
 
             <Dialog
@@ -77,14 +68,16 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                         {getTimeISO(tracks.startTime)}
                     </DialogContentText>
                     <DialogContentText id="alert-dialog-description">
-                        {getTimeFromMins(timeInMinutes)}
+                        {Utilities.getTimeFromMins(timeInMinutes)}
                     </DialogContentText>
                     <DialogContentText id="alert-dialog-description">
                         {tracks.user.firstName + ' ' + tracks.user.lastName}
                     </DialogContentText>
-                    <div style={{display:'flex',justifyContent:'space-between', marginTop: "1rem"}}>
-                        <Button style={{marginRight:'1rem'}} variant="contained" onClick={deleteTrack}>Delete track</Button>
+                    <div style={{display:'flex',justifyContent:'space-between', alignItems: 'center', marginTop: "1rem"}}>
                         <UpdateTrack id={tracks.id}/>
+                        <DeleteModal callback={deleteTrack} title={'Are you sure you want to delete the track?'}>
+                            <Button variant="contained">Delete track</Button>
+                        </DeleteModal>
                     </div>
                 </DialogContent>
                 <DialogActions>

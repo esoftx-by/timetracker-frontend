@@ -10,19 +10,23 @@ export const useRoutes = (isAuthenticated: boolean, userId: any, userData: UserT
         return (
             <>
                 <ResponsiveAppBar/>
-                <Routes>
-                    {privateRoutes.map(el => <Route path={el.path} element={<el.element/>}/>)}
-                    <Route path={`//login`} element={<Navigate to={'/home'}/>}/>
-                </Routes>
+                <div className="content">
+                    <Routes>
+                        {privateRoutes.map(el => <Route path={el.path} element={<el.element/>}/>)}
+                        <Route path={`//login`} element={<Navigate to={'/home'}/>}/>
+                    </Routes>
+                </div>
             </>
         )
     }
 
     return (
-        <Routes>
-            {publicRoutes.map(el => <Route path={el.path} element={<el.element/>}/>)}
-            <Route path="/" element={<Navigate to={'/login'} replace/>}/>
-        </Routes>
+        <>
+            <Routes>
+                {publicRoutes.map(el => <Route path={el.path} element={<el.element/>}/>)}
+                <Route path="/" element={<Navigate to={'/login'} replace/>}/>
+            </Routes>
+        </>
     )
 
 }

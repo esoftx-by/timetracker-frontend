@@ -8,12 +8,12 @@ import {NavLink} from "react-router-dom";
 import CustomizedMenus from "../CustomizationMenu";
 import style from './ProjectCard.module.css'
 import {ProjectType, UserType} from "../../types";
-import {FC} from "react";
+import {FC, memo} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import {deleteProjectThunk} from "../../redux/reducers/projectsReducer";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import {DeleteTask} from "../DeleteTask";
+import {DeleteModal} from "../DeleteModal";
 
 
 type OwnToProps = {
@@ -23,7 +23,7 @@ type OwnToProps = {
 }
 
 
-export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
+export const ProjectCard: FC<OwnToProps> = memo(({project, role, allUsers}) => {
 
     const dispatch: AppDispatch = useDispatch()
 
@@ -51,10 +51,10 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
                     </CardContent>
                     <div className={style.mainProjectCardItem}>
                         {role === 'ADMIN' && <>
-                            <DeleteTask callback={deleteProject} title={'Are you sure you want to delete the project?'}
+                            <DeleteModal callback={deleteProject} title={'Are you sure you want to delete the project?'}
                                         id={project.id}>
                                 <DeleteOutlineOutlinedIcon/>
-                            </DeleteTask>
+                            </DeleteModal>
                             <CustomizedMenus allUsers={allUsers}
                                              project={project}/>
                         </>}
@@ -63,5 +63,5 @@ export const ProjectCard: FC<OwnToProps> = ({project, role, allUsers}) => {
             </Card>
         </Grid>
     );
-}
+})
 export default ProjectCard

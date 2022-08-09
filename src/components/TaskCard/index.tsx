@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import {TaskType} from "../../types";
 import style from './TaskCard.module.css'
-import {FC, useState} from "react";
+import {FC, memo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
 import {Select, SelectChangeEvent} from "@mui/material";
@@ -12,13 +12,14 @@ import {updateTask} from "../../redux/reducers/taskReducer";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
+import Utilities from "../../utilities";
 
 
 type OwnToProps = {
     data: TaskType
 }
 
-const OutlinedCard: FC<OwnToProps> = ({data}) => {
+const OutlinedCard: FC<OwnToProps> = memo(({data}) => {
 
     const [editMode, setEditMode] = useState(false)
 
@@ -40,7 +41,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
                         {data.name}
                     </Typography>
                     <Typography sx={{mb: 1.5}} color="text.secondary">
-                        {'Estimated time: ' + data.estimatedHours + ' hours'}
+                        Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(data.estimatedHours * 60)}</em>
                     </Typography>
                     <Typography variant="body2">
                         {data.description}
@@ -49,7 +50,7 @@ const OutlinedCard: FC<OwnToProps> = ({data}) => {
             </React.Fragment>
         </Card>
     );
-}
+})
 
 export default OutlinedCard
 

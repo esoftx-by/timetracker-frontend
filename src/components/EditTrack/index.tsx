@@ -65,7 +65,7 @@ const UpdateTrack: FC<OwnToProps> = ({id}) => {
                                 let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
                                 let gmtFirst = gmt.slice(0, 3)
                                 let gmtSecond = gmt.slice(3, 5)
-                                dispatch(updateTrackThunk(id, values.dateStart + gmtFirst + ':' + gmtSecond, values.dateEnd + gmtFirst + ':' + gmtSecond))
+                                dispatch(updateTrackThunk(id, values.dateStart + ':00' + gmtFirst + ':' + gmtSecond, values.dateEnd +':00' + gmtFirst + ':' + gmtSecond))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

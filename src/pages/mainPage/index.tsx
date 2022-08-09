@@ -19,8 +19,6 @@ import TextField from "@mui/material/TextField";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 
 
-
-
 export const MainPage: FC = () => {
 
     const {id, firstName, lastName} = useSelector(userDataSelector)

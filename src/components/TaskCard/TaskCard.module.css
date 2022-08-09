@@ -3,3 +3,8 @@
     align-items: center;
     justify-content: space-between;
 }
+
+.time{
+    font-size: 16px;
+    color: #000
+}
