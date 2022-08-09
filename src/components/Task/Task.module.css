@@ -26,6 +26,10 @@
     cursor: pointer;
 }
 
+.time{
+    font-size: 16px;
+    color: #000
+}
 /*@media (min-width: 1240px) {*/
 /*    .tracks {*/
 /*        display: grid;*/

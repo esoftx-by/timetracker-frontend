@@ -26,7 +26,6 @@ export const ProjectContainer: FC = () => {
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
     const {id} = useSelector(userDataSelector)
-    debugger
     const isFetching = useSelector(setIsFetchingProjectSelector)
     const project = useSelector(setProjectSelector)
     const allTracksByProjectId = useSelector(setAllTracksByProjectIdSelector)

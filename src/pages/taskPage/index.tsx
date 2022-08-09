@@ -17,7 +17,7 @@ import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 import {setIsFetchingTask, setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 import {setTracksByTaskIdSelector} from "../../redux/selectors/trackSelectors";
-import {DeleteTask} from "../../components/DeleteTask";
+import {DeleteModal} from "../../components/DeleteModal";
 import NoTaskPage from "../noTaskPage";
 
 export const TaskPage: FC = () => {
@@ -64,9 +64,9 @@ export const TaskPage: FC = () => {
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
                 <div style={{display: 'flex', alignItems: 'center'}}>
-                    <DeleteTask callback={deleteTask} id={taskById.id} title={'Are you sure you want to delete the task?'}>
+                    <DeleteModal callback={deleteTask} id={taskById.id} title={'Are you sure you want to delete the task?'}>
                         <Button variant="contained">Delete Task</Button>
-                    </DeleteTask>
+                    </DeleteModal>
                     <TaskOption/>
                 </div>
             </div>

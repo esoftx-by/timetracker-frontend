@@ -17,8 +17,9 @@ import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import {DeleteTask} from "../DeleteTask";
+import {DeleteModal} from "../DeleteModal";
 import {TransitionGroup,  CSSTransition} from "react-transition-group";
+import Utilities from "../../utilities";
 
 
 type OwnToProps = {
@@ -40,6 +41,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
     const deleteTask = () => {
         dispatch(deleteTaskThunk(tasksProject.id))
     }
+
 
     return (
         <Grid item xs={12} md={4}>
@@ -65,7 +67,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                 {tasksProject.name}
                             </Typography>
                             <Typography sx={{mb: 1.5}} color="text.secondary">
-                                {'Estimated time: ' + tasksProject.estimatedHours + ' hours'}
+                                Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(tasksProject.estimatedHours * 60)}</em>
                             </Typography>
                             <Typography variant="body2">
                                 {tasksProject.description}
@@ -90,9 +92,9 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                     </TransitionGroup>
                         </div>
                     <div className={style.taskDelete}>
-                        <DeleteTask callback={deleteTask} id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
+                        <DeleteModal callback={deleteTask} id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
                             <DeleteOutlineOutlinedIcon/>
-                        </DeleteTask>
+                        </DeleteModal>
                     </div>
                 </Card>
             </Box>

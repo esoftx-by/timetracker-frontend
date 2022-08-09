@@ -10,7 +10,7 @@ import {FC} from "react";
 type OwnToProps = {
     callback: () => void
     title: string
-    id: number
+    id?: number
     children:
         | JSX.Element
         | JSX.Element[]
@@ -18,7 +18,7 @@ type OwnToProps = {
         | string[];
 }
 
-export const DeleteTask: FC<OwnToProps> = ({children, id, title, callback}) => {
+export const DeleteModal: FC<OwnToProps> = ({children, id, title, callback}) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
