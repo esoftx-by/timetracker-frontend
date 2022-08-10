@@ -11,9 +11,9 @@ import {ProjectType, UserType} from "../../types";
 import {FC, memo} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
-import {deleteProjectThunk} from "../../redux/reducers/projectsReducer";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {DeleteModal} from "../DeleteModal";
+import {deleteProjectThunk} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 type OwnToProps = {

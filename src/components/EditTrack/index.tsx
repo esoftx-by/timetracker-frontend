@@ -13,7 +13,7 @@ import {Formik} from "formik";
 import {FC} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
-import {updateTrackThunk} from "../../redux/reducers/trackReducer";
+import {updateTrackThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 
 type OwnToProps = {
     id: number

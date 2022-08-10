@@ -15,7 +15,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {AppStateType} from "../../redux/store";
 import {AnyAction} from "redux";
 import {useDispatch} from "react-redux";
-import {setNewTrackThunk} from "../../redux/reducers/trackReducer";
+import {setNewTrackThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 
 type OwnToProps = {
     userId: number | null

@@ -39,10 +39,10 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
                 projects: action.allProject
             }
         case SET_NEW_PROJECT:
-            let stateCopy = {...state}
-            stateCopy.projects = [...state.projects]
-            stateCopy.projects.push(action.newProject)
-            return stateCopy
+            return {
+                ...state,
+                projects: [...state.projects, action.newProject]
+            }
         case SET_PROJECT_BY_USER_ID:
             return {
                 ...state,
@@ -80,7 +80,7 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
 
 
 type ActionsType = InferActionTypes<typeof actionsProject>
-type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
+export type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 export const actionsProject = {
     setProjects: (allProject: Array<ProjectType>) => ({type: SET_PROJECTS, allProject} as const),
@@ -88,122 +88,9 @@ export const actionsProject = {
     setProject: (project: ProjectType) => ({type: SET_PROJECT, project} as const),
     setProjectByUserId: (data: Array<ProjectType>) => ({type: SET_PROJECT_BY_USER_ID, data} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
-    setAllUsersInProject: (users: Array<UserType>) => ({type: SET_ALL_USERS_IN_PROJECT , users} as const),
+    setAllUsersInProject: (users: Array<UserType>) => ({type: SET_ALL_USERS_IN_PROJECT, users} as const),
     successMessage: (success: boolean) => ({type: SUCCESS, success} as const),
     deleteProject: (id: number) => ({type: DELETE_PROJECT, id} as const)
 }
 
 
-export const deleteProjectThunk = (id: number): ThunkTypes => {
-    return async dispatch => {
-        try {
-            dispatch(actionsProject.toggleIsFetching(true))
-            await ProjectAPI.deleteProject(id)
-            setTimeout(() => {
-                dispatch(actionsProject.deleteProject(id))
-                dispatch(actionsProject.toggleIsFetching(false))
-            }, 500)
-        } catch (e: any){
-            console.log(e.message)
-        }
-    }
-}
-
-export const newUserInProject = (userId: number,projectId: number,  role: string): ThunkTypes => {
-    return async dispatch => {
-        try {
-            let response = await ProjectAPI.newUserInProject(userId, projectId, role)
-            if (response.data.success){
-                dispatch(actionsProject.successMessage(true))
-            }
-        } catch (e: any){
-            console.log(e.message)
-        }
-    }
-}
-
-export const setProjectsThunk = (): ThunkTypes => {
-    return async dispatch => {
-        try {
-            dispatch(actionsProject.toggleIsFetching(true))
-            let response = await ProjectAPI.getAllProject()
-            if (response.data.success) {
-                let allProject: Array<ProjectType> = response.data.response
-                dispatch(actionsProject.setProjects(allProject))
-            }
-            dispatch(actionsProject.toggleIsFetching(false))
-        } catch (e: any){
-
-        }
-    }
-}
-
-export const setAllUsersInProject = (id: number): ThunkTypes => {
-    return async dispatch => {
-        let response = await ProjectAPI.setUsersByTaskId(id)
-        if (response.data.success){
-            let usersInProject: Array<UserType> = response.data.response
-            dispatch(actionsProject.setAllUsersInProject(usersInProject))
-        }
-    }
-}
-
-export const setNewProjectThunk = (name: string, description: string, customer: string): ThunkTypes => {
-    return async dispatch => {
-        try {
-            dispatch(actionsProject.toggleIsFetching(true))
-            let response = await ProjectAPI.newProject(name, description, customer)
-            setTimeout(() => {
-                if (response.data.success) {
-                    let data: ProjectType = response.data.response
-                    dispatch(actionsProject.setNewProject(data))
-                }
-                dispatch(actionsProject.toggleIsFetching(false))
-            }, 500)
-        } catch (e: any){
-            console.log(e.message)
-        }
-    }
-}
-
-export const setProjectIdThunk = (id: number): ThunkTypes => {
-    return async dispatch => {
-        try {
-            dispatch(actionsProject.toggleIsFetching(true))
-            let response = await ProjectAPI.getProjectId(id)
-            setTimeout(() => {
-                if (response.data.success) {
-                    const project: ProjectType = response.data.response
-                    dispatch(actionsProject.setProject(project))
-                }
-                dispatch(actionsProject.toggleIsFetching(false))
-            }, 500)
-        } catch (e: any){
-            console.log(e.message)
-        }
-
-    }
-}
-
-export const setProjectsByUserIdThunk = (id: number): ThunkTypes => {
-    return async dispatch => {
-        try {
-            dispatch(actionsProject.toggleIsFetching(true))
-            let response = await ProjectAPI.getProjectByUserId(id)
-            if (response.data.success) {
-                const projectByUserId: Array<ProjectType> = response.data.response
-                dispatch(actionsProject.setProjectByUserId(projectByUserId))
-            }
-            dispatch(actionsProject.toggleIsFetching(false))
-        } catch (e: any){
-            console.log(e.message)
-        }
-
-    }
-}
-
-export const deleteUserInProjectThunk = (id: number): ThunkTypes => {
-    return async dispatch => {
-        await ProjectAPI.deleteUser(id)
-    }
-}

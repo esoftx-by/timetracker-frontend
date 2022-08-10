@@ -1,7 +1,6 @@
 import {AllTracksByProjectIdType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
-import TracksAPI from "../../API/trackAPI";
 
 const SET_ALL_TRACKS = 'tracks/SET_ALL_TRACKS'
 const SET_NEW_TRACK = 'tracks/SET_NEW_TRACK'
@@ -27,12 +26,11 @@ const initialState: initialStateType = {
 export const trackReducers = (state = initialState, action: ActionsType): initialStateType => {
     switch (action.type) {
         case SET_NEW_TRACK:
-            let stateCopy = {...state}
-            stateCopy.allTracksByProjectId = [...state.allTracksByProjectId]
-            stateCopy.allTracksByProjectId.push(action.data)
-            stateCopy.tracksByTaskId = [...state.tracksByTaskId as Array<AllTracksByProjectIdType>]
-            stateCopy.tracksByTaskId.push(action.data)
-            return stateCopy
+            return {
+                ...state,
+                allTracksByProjectId: [...state.allTracksByProjectId, action.data],
+                tracksByTaskId: [...state.tracksByTaskId, action.data]
+            }
         case SET_ALL_TRACKS:
             return {
                 ...state,
@@ -49,12 +47,11 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
                 allTracksByProjectId: action.data
             }
         case DELETE_TRACK:
-            let copyState = {...state}
-            copyState.allTracksByProjectId = [...state.allTracksByProjectId]
-            copyState.allTracksByProjectId = copyState.allTracksByProjectId.filter(el => el.id !== action.id)
-            copyState.tracksByTaskId = [...state.tracksByTaskId as Array<AllTracksByProjectIdType>]
-            copyState.tracksByTaskId = copyState.tracksByTaskId.filter(el => el.id !== action.id)
-            return copyState
+            return {
+                ...state,
+                allTracksByProjectId: state.allTracksByProjectId.filter(el => el.id !== action.id),
+                tracksByTaskId: state.tracksByTaskId.filter(el => el.id !== action.id)
+            }
         case UPDATE_TRACK: {
             return {
                 ...state,
@@ -68,7 +65,7 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
 
 
 type ActionsType = InferActionTypes<typeof actions>
-type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
+export type ThunkTypes = ThunkAction<void, AppStateType, unknown, ActionsType>
 
 export const actions = {
     setAllTracks: (data: Array<AllTracksByProjectIdType>) => ({type: SET_ALL_TRACKS, data} as const),
@@ -90,82 +87,5 @@ export const actions = {
 }
 
 
-export const deleteTrackThunk = (id: number): ThunkTypes => {
-    return async dispatch => {
-        try {
-            await TracksAPI.deleteTrack(id)
-            dispatch(actions.deleteTrack(id))
 
-        } catch (e: any) {
-            console.log(e.message)
-        }
-    }
-}
-
-
-
-export const setAllTracksByProjectIdThunk = (projectId: number): ThunkTypes => {
-    return async dispatch => {
-        let response = await TracksAPI.setAllTracksByProjectId(projectId)
-        if (response.data.success) {
-            let allTracksByProjectId: Array<AllTracksByProjectIdType> = response.data.response
-            dispatch(actions.setAllTracksByProjectId(allTracksByProjectId))
-        }
-    }
-}
-
-export const updateTrackThunk = (id: number, startTime: string, endTime: string): ThunkTypes => {
-    return async dispatch => {
-        try {
-            let response = await TracksAPI.updateTrack(id, startTime, endTime)
-            if (response.data.success){
-                dispatch(actions.updateTrack(response.data.response))
-            }
-        } catch (e: any){
-            console.log(e.message)
-        }
-    }
-}
-
-
-export const setNewTrackThunk = (userId: number, taskId: number, startTime: string, hours: number): ThunkTypes => {
-    return async dispatch => {
-        TracksAPI.newTrack(userId, taskId, startTime, hours)
-            .then(response => {
-                if (response.data.success) {
-                    let newTrack = response.data.response
-                    dispatch(actions.setNewTrack(newTrack))
-                }
-            })
-    }
-}
-
-export const SetAllTracksThunks = (): ThunkTypes => {
-    return async dispatch => {
-        let response = await TracksAPI.setAllTracks()
-        if (response.data.success) {
-            let allTracks: Array<AllTracksByProjectIdType> = response.data.response
-            dispatch(actions.setAllTracks(allTracks))
-        }
-    }
-}
-
-export const setAllTracksByUserIdThunk = (userId: number): ThunkTypes => {
-    return async dispatch => {
-        let response = await TracksAPI.setAllTracksByUserId(userId)
-        if (response.data.success) {
-            let allTracksByUser: Array<AllTracksByProjectIdType> = response.data.response
-            dispatch(actions.setAllTracksByUserId(allTracksByUser))
-        }
-    }
-}
-export const setTracksByTaskIdThunk = (TaskId: number): ThunkTypes => {
-    return async dispatch => {
-        let response = await TracksAPI.setTracksByTaskId(TaskId)
-        if (response.data.success) {
-            let allTracksByTask: Array<AllTracksByProjectIdType> = response.data.response
-            dispatch(actions.setTracksByTaskId(allTracksByTask))
-        }
-    }
-}
 

@@ -12,7 +12,7 @@ import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import {deleteTaskThunk, updateTask} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import MenuItem from "@mui/material/MenuItem";

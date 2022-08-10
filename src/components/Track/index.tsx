@@ -8,7 +8,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {AllTracksByProjectIdType} from "../../types";
 import {FC} from "react";
-import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
+import {deleteTrackThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import UpdateTrack from "../EditTrack";

@@ -3,10 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import style from './Project.module.css'
 import FormDialogTask from "../../components/NewTask";
-import {setAllTasksProjectThunk} from "../../redux/reducers/taskReducer";
-import {setProjectIdThunk} from "../../redux/reducers/projectsReducer";
+import {setAllTasksProjectThunk} from "../../redux/reducers/thunk-creators/taskThunk";
 import TasksProject from "../../components/TasksProject";
-import {setAllTracksByProjectIdThunk} from "../../redux/reducers/trackReducer";
+import {setAllTracksByProjectIdThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 import CircularIndeterminate from "../../components/Loader";
 import {Helmet} from "react-helmet-async";
 import {AppStateType} from "../../redux/store";
@@ -19,6 +18,7 @@ import {setIsFetchingProjectSelector, setProjectSelector} from "../../redux/sele
 import {setAllTracksByProjectIdSelector} from "../../redux/selectors/trackSelectors";
 import {setAllTasksProjectSelector} from "../../redux/selectors/taskSelectors";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
+import {setProjectIdThunk} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 export const ProjectContainer: FC = () => {
