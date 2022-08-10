@@ -8,8 +8,8 @@ import {Formik} from "formik";
 import {FC} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
-import {setNewProjectThunk} from "../../redux/reducers/projectsReducer";
 import ModalWindow from "../Modal";
+import {setNewProjectThunk} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 const FormDialog: FC = () => {

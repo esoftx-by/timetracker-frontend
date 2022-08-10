@@ -7,7 +7,8 @@ import {Helmet} from "react-helmet-async";
 import {useDispatch, useSelector} from "react-redux";
 import {isSentSelector, userDataSelector} from "../../redux/selectors/authSelectors";
 import {AppDispatch} from "../../redux/store";
-import {actionsUser, updateProfileThunk} from "../../redux/reducers/authReducer";
+import {actionsUser} from "../../redux/reducers/authReducer";
+import {updateProfileThunk} from "../../redux/reducers/thunk-creators/authThunk";
 
 
 const SettingsPage = () => {

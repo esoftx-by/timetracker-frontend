@@ -1,6 +1,7 @@
 .newTrack{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 16px;
     margin: .5rem;
     background-color: rgb(28 196 209);

@@ -4,7 +4,6 @@ import style from './Projects.module.css'
 import Box from '@mui/material/Box';
 import {Grid} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {setProjectsByUserIdThunk, setProjectsThunk} from "../../redux/reducers/projectsReducer";
 import ProjectCard from "../../components/ProjectCard";
 import {Helmet} from "react-helmet-async";
 import {AppDispatch} from "../../redux/store";
@@ -15,6 +14,7 @@ import {
 } from "../../redux/selectors/projectSelector";
 import {setAllUsersSelector, userDataSelector} from "../../redux/selectors/authSelectors";
 import CircularIndeterminate from '../../components/Loader';
+import {setProjectsByUserIdThunk, setProjectsThunk} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 export const Projects: FC = () => {

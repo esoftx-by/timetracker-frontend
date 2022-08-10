@@ -8,7 +8,7 @@ import {Formik} from "formik";
 import {FC} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
-import {setNewTaskThunk} from "../../redux/reducers/taskReducer";
+import {setNewTaskThunk} from "../../redux/reducers/thunk-creators/taskThunk";
 import ModalWindow from "../Modal";
 
 type OwnToProps = {

@@ -7,13 +7,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {AllTracksByProjectIdType} from "../../types";
-import {FC} from "react";
-import {deleteTrackThunk} from "../../redux/reducers/trackReducer";
+import {FC, useState} from "react";
+import {deleteTrackThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import UpdateTrack from "../EditTrack";
 import {DeleteModal} from "../DeleteModal";
 import Utilities from "../../utilities";
+import ModalWindow from "../Modal";
+import {DateTimeValidation} from "../EditTrack/index";
 
 type OwnToProps = {
     tracks: AllTracksByProjectIdType
@@ -24,6 +25,7 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
     const dispatch: AppDispatch = useDispatch()
 
     const [open, setOpen] = React.useState<boolean>(false);
+    const [openModal, setOpenModal] = useState<boolean>(false)
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -73,8 +75,16 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                     <DialogContentText id="alert-dialog-description">
                         {tracks.user.firstName + ' ' + tracks.user.lastName}
                     </DialogContentText>
-                    <div style={{display:'flex',justifyContent:'space-between', alignItems: 'center', marginTop: "1rem"}}>
-                        <UpdateTrack id={tracks.id}/>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: "1rem"
+                    }}>
+                        <ModalWindow title="Edit track. Please indicate the time." btnName="Edit Track"
+                                     btnType="outlined" open={openModal} setOpen={setOpenModal}>
+                            <DateTimeValidation id={tracks.id}/>
+                        </ModalWindow>
                         <DeleteModal callback={deleteTrack} title={'Are you sure you want to delete the track?'}>
                             <Button variant="contained">Delete track</Button>
                         </DeleteModal>

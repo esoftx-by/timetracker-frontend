@@ -11,12 +11,12 @@ import TextField from "@mui/material/TextField";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
 import {useEffect, useState} from "react";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
 import MenuItem from "@mui/material/MenuItem";
 import {Select, SelectChangeEvent} from "@mui/material";
-import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 import {setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 import {setAllUsersInProjectSelector} from "../../redux/selectors/projectSelector";
+import {setAllUsersInProject} from "../../redux/reducers/thunk-creators/projectThunk";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {

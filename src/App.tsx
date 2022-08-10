@@ -4,12 +4,13 @@ import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 
 import {AppStateType} from "./redux/store";
-import {actionsUser, setUserData} from "./redux/reducers/authReducer";
+import {actionsUser} from "./redux/reducers/authReducer";
 import {useDispatch, useSelector} from 'react-redux';
 import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {useNavigate} from "react-router-dom";
 import {tokenExpiredSelector, userDataSelector} from "./redux/selectors/authSelectors";
+import { setUserData } from './redux/reducers/thunk-creators/authThunk';
 
 
 

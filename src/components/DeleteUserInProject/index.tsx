@@ -10,11 +10,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {ProjectType} from "../../types";
 import {FC, useLayoutEffect, useState} from "react";
 import {AppDispatch} from "../../redux/store";
-import {deleteUserInProjectThunk, setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 import {setAllUsersInProjectSelector} from "../../redux/selectors/projectSelector";
 import FormControl from "@mui/material/FormControl";
 import {Box, Select, SelectChangeEvent} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
+import {deleteUserInProjectThunk, setAllUsersInProject} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 type OwnToProps = {

@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setAllUsersSelector} from "../../redux/selectors/authSelectors";
-import {setAllUsersThunk} from "../../redux/reducers/authReducer";
 import {AppDispatch} from "../../redux/store";
 import InputLabel from "@mui/material/InputLabel";
 import {Alert, Fade, Select} from "@mui/material";
@@ -9,8 +8,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import {successMessageSelector} from "../../redux/selectors/projectSelector";
-import {actionsProject, newUserInProject} from "../../redux/reducers/projectsReducer";
-import Box from "@mui/material/Box";
+import {actionsProject} from "../../redux/reducers/projectsReducer";
+import {setAllUsersThunk} from "../../redux/reducers/thunk-creators/authThunk";
+import {newUserInProject} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 type OwnToProps = {

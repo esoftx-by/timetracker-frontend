@@ -1,24 +1,24 @@
 import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../redux/store";
-import {deleteTaskThunk, SetTaskByIdThunk} from "../../redux/reducers/taskReducer";
+import {deleteTaskThunk, SetTaskByIdThunk} from "../../redux/reducers/thunk-creators/taskThunk";
 import {useNavigate, useParams} from "react-router-dom";
 import style from "../project/Project.module.css";
 import CircularIndeterminate from "../../components/Loader";
 import {Box, Grid} from "@mui/material";
 import OutlinedCard from "../../components/TaskCard";
-import {setTracksByTaskIdThunk} from "../../redux/reducers/trackReducer";
+import {setTracksByTaskIdThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 import VirtualizedList from "../../components/Track";
 import FormDialogTrack from "../../components/NewTrack";
 import Button from "@mui/material/Button";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import TaskOption from "../../components/EditTask";
-import {setAllUsersInProject} from "../../redux/reducers/projectsReducer";
 import {setIsFetchingTask, setTaskByIdSelector} from "../../redux/selectors/taskSelectors";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 import {setTracksByTaskIdSelector} from "../../redux/selectors/trackSelectors";
 import {DeleteModal} from "../../components/DeleteModal";
 import NoTaskPage from "../noTaskPage";
+import {setAllUsersInProject} from "../../redux/reducers/thunk-creators/projectThunk";
 
 export const TaskPage: FC = () => {
     const params = useParams();

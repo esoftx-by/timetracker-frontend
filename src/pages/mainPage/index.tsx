@@ -4,7 +4,7 @@ import {Grid, Select, SelectChangeEvent} from "@mui/material";
 import Box from "@mui/material/Box";
 import CircularIndeterminate from "../../components/Loader";
 import {useDispatch, useSelector} from "react-redux";
-import {setAllTaskUserIdThunk} from "../../redux/reducers/taskReducer";
+import {setAllTaskUserIdThunk} from "../../redux/reducers/thunk-creators/taskThunk";
 import OutlinedCard from "../../components/TaskCard";
 import {AppDispatch} from "../../redux/store";
 import {AllTasksProjectType} from "../../types";
@@ -12,11 +12,11 @@ import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
 import style from "../project/Project.module.css";
 import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
-import {setProjectsByUserIdThunk} from "../../redux/reducers/projectsReducer";
 import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
+import {setProjectsByUserIdThunk} from "../../redux/reducers/thunk-creators/projectThunk";
 
 
 export const MainPage: FC = () => {

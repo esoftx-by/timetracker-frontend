@@ -15,7 +15,7 @@ import {Alert, Select, SelectChangeEvent} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {

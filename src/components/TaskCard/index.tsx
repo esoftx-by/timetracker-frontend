@@ -8,7 +8,7 @@ import {FC, memo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppStateType} from "../../redux/store";
 import {Select, SelectChangeEvent} from "@mui/material";
-import {updateTask} from "../../redux/reducers/taskReducer";
+import {updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
