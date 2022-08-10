@@ -16,6 +16,7 @@ import {AppStateType} from "../../redux/store";
 import {AnyAction} from "redux";
 import {useDispatch} from "react-redux";
 import {setNewTrackThunk} from "../../redux/reducers/thunk-creators/trackThunk";
+import Utilities from "../../utilities";
 
 type OwnToProps = {
     userId: number | null
@@ -71,11 +72,7 @@ const FormDialogTrack: FC<OwnToProps> = ({userId, taskId}) => {
                         onSubmit={(values, {setSubmitting, resetForm}) => {
                             setTimeout(() => {
                                 setSubmitting(false);
-                                // @ts-ignore
-                                let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
-                                let gmtFirst = gmt.slice(0, 3)
-                                let gmtSecond = gmt.slice(3, 5)
-                                dispatch(setNewTrackThunk(userId as number, taskId, values.date + gmtFirst + ':' + gmtSecond, Number(values.hours)))
+                                dispatch(setNewTrackThunk(userId as number, taskId, Utilities.formatDateTime(values.date), Number(values.hours)))
                                 resetForm()
                                 setOpen(false)
                             }, 400);

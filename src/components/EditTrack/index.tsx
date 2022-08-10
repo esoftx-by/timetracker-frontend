@@ -1,15 +1,12 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Box from "@mui/material/Box";
-import {Alert} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import {Formik} from "formik";
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker';
+import Stack from '@mui/material/Stack';
+import Utilities from "../../utilities";
+import {Button} from '@mui/material';
+import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 import {FC} from "react";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
@@ -19,134 +16,40 @@ type OwnToProps = {
     id: number
 }
 
-const UpdateTrack: FC<OwnToProps> = ({id}) => {
-
-    const [open, setOpen] = React.useState<boolean>(false);
-
+export const DateTimeValidation: FC<OwnToProps> = ({id}) => {
+    const [firstValue, setFirstValue] = React.useState<Date | null>(new Date());
+    const [secondValue, setSecondValue] = React.useState<Date | null>(null);
     const dispatch: AppDispatch = useDispatch()
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const sendDate = () => {
+        if (firstValue && secondValue) {
+            dispatch(updateTrackThunk(id, Utilities.formatDateTime(firstValue), Utilities.formatDateTime(secondValue)))
+        }
+    }
 
     return (
-        <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Edit Track
-            </Button>
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Edit track</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Edit track. Please indicate the time.
-                    </DialogContentText><br/>
-                    <Formik
-                        initialValues={{dateStart: '', dateEnd: ''}}
-                        validate={values => {
-
-                            const errors: any = {};
-                            if (!values.dateStart) {
-                                errors.dateStart = 'Required';
-                            }
-                            if (!values.dateEnd) {
-                                errors.dateEnd = 'Required';
-                            }
-
-                            return errors;
-                        }}
-                        onSubmit={(values, {setSubmitting, resetForm}) => {
-                            setTimeout(() => {
-                                setSubmitting(false);
-                                // @ts-ignore
-                                let gmt = new Date().toString().match(/([-\+][0-9]+)\s/)[1]
-                                let gmtFirst = gmt.slice(0, 3)
-                                let gmtSecond = gmt.slice(3, 5)
-                                dispatch(updateTrackThunk(id, values.dateStart + ':00' + gmtFirst + ':' + gmtSecond, values.dateEnd +':00' + gmtFirst + ':' + gmtSecond))
-                                resetForm()
-                                setOpen(false)
-                            }, 400);
-                        }}
-                    >
-                        {({
-                              values,
-                              errors,
-                              touched,
-                              handleChange,
-                              handleBlur,
-                              handleSubmit,
-                              isSubmitting,
-                              /* and other goodies */
-                          }) => (
-                            <form onSubmit={handleSubmit}>
-
-                                <Box sx={{
-                                    '& > :not(style)': {width: '100%'},
-                                }}>
-                                    <TextField
-                                        error={!!(errors.dateStart && touched.dateStart)}
-                                        id="datetime-local"
-                                        label="Next appointment"
-                                        type="datetime-local"
-                                        name="dateStart"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        sx={{width: 250}}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </Box>
-                                <div style={{
-                                    'width': '100%',
-                                    'margin': ' 1rem auto'
-                                }}>{errors.dateStart && touched.dateStart &&
-                                    <Alert
-                                        severity="error">{errors.dateStart && touched.dateStart && errors.dateStart}</Alert>}</div>
-
-                                <Box sx={{
-                                    '& > :not(style)': {width: '100%'},
-                                }}>
-                                    <TextField
-                                        error={!!(errors.dateEnd && touched.dateEnd)}
-                                        id="datetime-local"
-                                        label="Next appointment"
-                                        type="datetime-local"
-                                        name="dateEnd"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        sx={{width: 250}}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                        }}
-                                    />
-                                </Box>
-                                <div style={{
-                                    'width': '100%',
-                                    'margin': ' 1rem auto'
-                                }}>{errors.dateEnd && touched.dateEnd &&
-                                    <Alert
-                                        severity="error">{errors.dateEnd && touched.dateEnd && errors.dateEnd}</Alert>}</div>
-                                <Box sx={{
-                                    '& > :not(style)': {width: '100%'},
-                                }}><Button endIcon={<SendIcon/>} variant="contained" size="large" type="submit"
-                                           disabled={isSubmitting}>
-                                    Create
-                                </Button>
-                                </Box>
-                            </form>
-                        )}
-                    </Formik>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Stack spacing={3} style={{marginTop: '.5rem'}}>
+                <DateTimePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    label="Enter date"
+                    value={firstValue}
+                    onChange={(newValue) => {
+                        setFirstValue(newValue);
+                    }}
+                />
+                <DateTimePicker
+                    renderInput={(params) => <TextField {...params} />}
+                    label="Enter date"
+                    value={secondValue}
+                    onChange={(newValue) => {
+                        setSecondValue(newValue)
+                    }}
+                    minDateTime={firstValue}
+                />
+            </Stack>
+            <div style={{marginTop: '1rem'}}>
+                <Button endIcon={<ScheduleSendIcon/>} variant="contained" onClick={sendDate}>Send</Button>
+            </div>
+        </LocalizationProvider>
     );
 }
-
-export default UpdateTrack

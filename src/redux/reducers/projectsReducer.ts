@@ -1,7 +1,6 @@
 import {ProjectType, UserType} from "../../types";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType, InferActionTypes} from "../store";
-import ProjectAPI from "../../API/projectAPI";
 
 const SET_PROJECTS = 'project/SET_PROJECTS';
 const SET_NEW_PROJECT = 'project/SET__NEW_PROJECT'
