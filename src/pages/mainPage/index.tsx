@@ -70,7 +70,7 @@ export const MainPage: FC = () => {
     }, [searchQuery, allTasksUserIdFilter])
 
     if (isFetching) {
-        return <div className={style.loader}><CircularIndeterminate/></div>
+        return <CircularIndeterminate/>
 
     }
     if (!allTasksUserId) {

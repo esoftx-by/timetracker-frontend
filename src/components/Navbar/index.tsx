@@ -21,7 +21,7 @@ import {useSelector} from "react-redux";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 
 
-const pages: Array<string> = ['projects'];
+const pages: Array<string> = ['projects', 'calendar'];
 
 function stringToColor(string: string) {
     let hash = 0;

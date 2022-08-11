@@ -5,8 +5,10 @@ import style from './preloader.module.css'
 
 export default function CircularIndeterminate() {
     return (
-        <Box className={style.preloader} sx={{'display': 'flex'}}>
-            <CircularProgress />
-        </Box>
+        <div className={style.loader}>
+            <Box className={style.preloader} sx={{'display': 'flex'}}>
+                <CircularProgress/>
+            </Box>
+        </div>
     );
 }

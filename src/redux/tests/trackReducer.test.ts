@@ -10,7 +10,9 @@ const state: initialStateType = {
     allTracksByProjectId: [
         {id: 1, task: {} as TaskType, user: {} as UserType, startTime: '', endTime: ''},
         {id: 2, task: {} as TaskType, user: {} as UserType, startTime: '', endTime: ''}
-    ]
+    ],
+    allTracksByUserId: [],
+    isFetching: false
 }
 
 test('newTrack', () => {

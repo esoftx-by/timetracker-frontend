@@ -1,13 +1,11 @@
 import {AppStateType} from "../store";
 
-export const setAllTracksSelector = (state: AppStateType) => {
-    return state.tracks.allTracks
-}
+export const setAllTracksSelector = (state: AppStateType) => state.tracks.allTracks
 
-export const setTracksByTaskIdSelector = (state: AppStateType) => {
-    return state.tracks.tracksByTaskId?.reverse()
-}
+export const setTracksByTaskIdSelector = (state: AppStateType) => state.tracks.tracksByTaskId?.reverse()
 
-export const setAllTracksByProjectIdSelector = (state: AppStateType) => {
-    return state.tracks.allTracksByProjectId
-}
+export const setAllTracksByProjectIdSelector = (state: AppStateType) => state.tracks.allTracksByProjectId
+
+export const allTracksByUserIdSelector = (state: AppStateType) => state.tracks.allTracksByUserId
+
+export const isFetchingTrackSelector = (state: AppStateType) => state.tracks.isFetching
