@@ -5,6 +5,7 @@ import {ProjectContainer} from "../pages/project";
 import {TaskPage} from "../pages/taskPage";
 import SettingsPage from "../pages/settingsPage";
 import NotFoundPage from "../pages/notFoundPage";
+import CalendarPage from "../pages/calendarPage";
 
 
 export const privateRoutes = [
@@ -13,7 +14,8 @@ export const privateRoutes = [
     {path: '/projects/:id', element: ProjectContainer},
     {path: '/task/:id', element: TaskPage},
     {path: '/settings', element: SettingsPage},
-    {path: '*', element: NotFoundPage}
+    {path: '*', element: NotFoundPage},
+    {path: '/calendar', element: CalendarPage}
 ]
 
 export const publicRoutes = [

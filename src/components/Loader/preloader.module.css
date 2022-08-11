@@ -6,3 +6,10 @@
     justify-content: center;
     margin:auto;
 }
+
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10% auto;
+}

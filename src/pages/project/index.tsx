@@ -54,7 +54,7 @@ export const ProjectContainer: FC = () => {
 
 
     if (isFetching) {
-        return <div className={style.loader}><CircularIndeterminate/></div>
+        return <CircularIndeterminate/>
     }
 
     if (!project) {
