@@ -41,12 +41,10 @@ export default class TracksAPI {
     }
 
     static updateTrack(id: number, startTime: string, endTime: string) {
-        return instance.patch('tracks', null, {
-            params: {
-                id: id,
-                startTime: startTime,
-                endTime: endTime
-            }
+        return instance.patch('tracks', {
+            id: id,
+            startTime: startTime,
+            endTime: endTime
         })
             .then(response => {
                 return response

@@ -30,14 +30,12 @@ export default class AuthAPI {
     }
 
     static updateProfile(id: number, firstName?: string | null, lastName?: string | null, email?: string | null, password?: string | null) {
-        return instance.patch('users', null, {
-            params: {
-                id: id,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password
-            }
+        return instance.patch('users', {
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: password
         })
             .then(response => {
                 return response

@@ -42,15 +42,13 @@ export default class TaskAPI {
     }
 
     static updateTask(id: number, name?: string | null, description?: string | null, estimatedHours?: number | null, status?: string | null, currentAssigneeId?: number | null) {
-        return instance.patch('tasks', null, {
-            params: {
-                id: id,
-                name: name,
-                description: description,
-                estimatedHours: estimatedHours,
-                status: status,
-                currentAssigneeId: currentAssigneeId
-            }
+        return instance.patch('tasks', {
+            id: id,
+            name: name,
+            description: description,
+            estimatedHours: estimatedHours,
+            status: status,
+            currentAssigneeId: currentAssigneeId
         })
             .then(response => {
                 return response
