@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -11,6 +11,10 @@ import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
 import style from './CalendarPage.module.css'
 import CircularIndeterminate from "../../components/Loader";
 import {AppDispatch} from "../../redux/store";
+import {setProjectsByUserIdThunk} from "../../redux/reducers/thunk-creators/projectThunk";
+import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
+import MenuItem from "@mui/material/MenuItem";
+import {Select} from "@mui/material";
 
 const CalendarPage = () => {
 
@@ -18,13 +22,27 @@ const CalendarPage = () => {
     const {id} = useSelector(userDataSelector)
     const isFetching = useSelector(isFetchingTrackSelector)
 
+
+    useEffect(() => {
+        dispatch(setProjectsByUserIdThunk(id))
+    }, [])
+
+
+    const allProjectsByUser = useSelector(setProjectsByUserSelector)
+    // @ts-ignore
+    const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
+
+    const [projectName, setProjectName] = useState<string>('')
+
     useEffect(() => {
         dispatch(setAllTracksByUserIdThunk(id))
-    }, [])
+    }, [projectName])
 
     const allTracksByUserId = useSelector(allTracksByUserIdSelector)
 
-    const events: Array<object> = allTracksByUserId.map(function (obj) {
+    const newAllTracksUserId = allTracksByUserId.filter((el) => projectName === '' ? el : el.task.project.name === projectName)
+
+    const events: Array<object> = newAllTracksUserId.map(function (obj) {
         return {'id': obj.id, 'title': obj.task.name, 'start': new Date(obj.startTime).setMilliseconds(3 * 60 * 60 * 1000), 'end': new Date(obj.endTime).setMilliseconds(3 * 60 * 60 * 1000)}
     })
 
@@ -34,8 +52,23 @@ const CalendarPage = () => {
 
     return (
         <div className={style.calendarPage}>
-
+            <div className={style.select}>
+                <Select
+                    displayEmpty
+                    value={projectName}
+                    onChange={(event) => {
+                        setProjectName(event.target.value)}}
+                    inputProps={{'aria-label': 'Without label'}}
+                >
+                    <MenuItem value="">
+                        <em>All</em>
+                    </MenuItem>
+                    {newArrayProjects.map((el, index) => <MenuItem key={index}
+                                                                   value={el}><em>{el}</em></MenuItem>)}
+                </Select>
+            </div>
             <FullCalendar
+                schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                 headerToolbar={{
                     left: "prev,next today",
                     center: "title",

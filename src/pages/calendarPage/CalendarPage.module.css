@@ -1,3 +1,10 @@
 .calendarPage{
     margin: 1rem;
 }
+
+.select{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}

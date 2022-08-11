@@ -64,15 +64,11 @@ export const SetAllTracksThunks = (): ThunkTypes => {
 export const setAllTracksByUserIdThunk = (userId: number): ThunkTypes => {
     return async dispatch => {
         try {
-            dispatch(actions.isFetchingTrack(true))
             let response = await TracksAPI.setAllTracksByUserId(userId)
-            setTimeout(() => {
                 if (response.data.success) {
                     let allTracksByUser: Array<AllTracksByProjectIdType> = response.data.response
                     dispatch(actions.setAllTracksByUserId(allTracksByUser))
                 }
-                dispatch(actions.isFetchingTrack(false))
-            }, 500)
         } catch (e: any){
             console.log(e.message)
         }
