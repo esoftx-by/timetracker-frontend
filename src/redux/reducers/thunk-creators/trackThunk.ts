@@ -65,11 +65,11 @@ export const setAllTracksByUserIdThunk = (userId: number): ThunkTypes => {
     return async dispatch => {
         try {
             let response = await TracksAPI.setAllTracksByUserId(userId)
-                if (response.data.success) {
-                    let allTracksByUser: Array<AllTracksByProjectIdType> = response.data.response
-                    dispatch(actions.setAllTracksByUserId(allTracksByUser))
-                }
-        } catch (e: any){
+            if (response.data.success) {
+                let allTracksByUser: Array<AllTracksByProjectIdType> = response.data.response
+                dispatch(actions.setAllTracksByUserId(allTracksByUser))
+            }
+        } catch (e: any) {
             console.log(e.message)
         }
     }
@@ -78,16 +78,12 @@ export const setAllTracksByUserIdThunk = (userId: number): ThunkTypes => {
 export const setTracksByTaskIdThunk = (TaskId: number): ThunkTypes => {
     return async dispatch => {
         try {
-            dispatch(actions.isFetchingTrack(true))
             let response = await TracksAPI.setTracksByTaskId(TaskId)
-            setTimeout(() => {
-                if (response.data.success) {
-                    let allTracksByTask: Array<AllTracksByProjectIdType> = response.data.response
-                    dispatch(actions.setTracksByTaskId(allTracksByTask))
-                }
-                dispatch(actions.isFetchingTrack(false))
-            }, 5500)
-        } catch (e: any){
+            if (response.data.success) {
+                let allTracksByTask: Array<AllTracksByProjectIdType> = response.data.response
+                dispatch(actions.setTracksByTaskId(allTracksByTask))
+            }
+        } catch (e: any) {
             console.log(e.message)
         }
     }

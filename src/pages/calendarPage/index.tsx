@@ -15,6 +15,7 @@ import {setProjectsByUserIdThunk} from "../../redux/reducers/thunk-creators/proj
 import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import {Select} from "@mui/material";
+import {Helmet} from "react-helmet-async";
 
 const CalendarPage = () => {
 
@@ -43,21 +44,30 @@ const CalendarPage = () => {
     const newAllTracksUserId = allTracksByUserId.filter((el) => projectName === '' ? el : el.task.project.name === projectName)
 
     const events: Array<object> = newAllTracksUserId.map(function (obj) {
-        return {'id': obj.id, 'title': obj.task.name, 'start': new Date(obj.startTime).setMilliseconds(3 * 60 * 60 * 1000), 'end': new Date(obj.endTime).setMilliseconds(3 * 60 * 60 * 1000)}
+        return {
+            'id': obj.id,
+            'title': obj.task.name,
+            'start': new Date(obj.startTime).setMilliseconds(3 * 60 * 60 * 1000),
+            'end': new Date(obj.endTime).setMilliseconds(3 * 60 * 60 * 1000)
+        }
     })
 
-    if (isFetching){
+    if (isFetching) {
         return <CircularIndeterminate/>
     }
 
     return (
         <div className={style.calendarPage}>
+            <Helmet>
+                <title>Calendar</title>
+            </Helmet>
             <div className={style.select}>
                 <Select
                     displayEmpty
                     value={projectName}
                     onChange={(event) => {
-                        setProjectName(event.target.value)}}
+                        setProjectName(event.target.value)
+                    }}
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="">
