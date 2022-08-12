@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {Select} from "@mui/material";
 import {Helmet} from "react-helmet-async";
 import Utilities from "../../utilities";
+import {useNavigate} from "react-router-dom";
 
 const CalendarPage = () => {
 
@@ -35,6 +36,7 @@ const CalendarPage = () => {
     // @ts-ignore
     const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
 
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(setAllTracksByUserIdThunk(id))
@@ -44,12 +46,24 @@ const CalendarPage = () => {
 
     const newAllTracksUserId = allTracksByUserId.filter((el) => projectName === '' ? el : el.task.project.name === projectName)
 
+    const eventClick = (info: any) => {
+        info.jsEvent.preventDefault();
+
+        if (info.event.url) {
+            navigate(`/${info.event.url}`);
+        }
+    }
+
+
+
     const events: Array<object> = newAllTracksUserId.map(function (obj) {
         return {
             'id': obj.id,
             'title': obj.task.name,
             'start': Utilities.timeZone(obj.startTime),
             'end': Utilities.timeZone(obj.endTime),
+            'url': `task/${obj.task.id}`,
+            'backgroundColor': Utilities.stringToColor(obj.task.name)
         }
     })
 
@@ -79,6 +93,7 @@ const CalendarPage = () => {
                 </Select>
             </div>
             <FullCalendar
+                eventClick={eventClick}
                 schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                 initialView="timeGridWeek"
                 headerToolbar={{
