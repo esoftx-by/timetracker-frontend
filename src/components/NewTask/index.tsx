@@ -25,7 +25,8 @@ const FormDialogTask: FC<OwnToProps> = ({userId, projectId}) => {
     return (
         <div>
             <ModalWindow open={open} setOpen={setOpen} btnName={'New Task'}
-                         title={'Create a new task. Please indicate the name of the task, description and estimated hours.'}
+                         description={'Create a new task. Please indicate the name of the task, description and estimated hours.'}
+                         title={'New task'}
                          btnType={'contained'}>
                 <Formik
                     initialValues={{name: '', description: '', estimatedHours: ''}}

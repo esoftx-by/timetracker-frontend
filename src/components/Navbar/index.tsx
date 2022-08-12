@@ -15,38 +15,18 @@ import {Link, NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
 import {FC, useContext} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import {UserType} from "../../types";
 import {Avatar} from "@mui/material";
 import {useSelector} from "react-redux";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
+import Utilities from "../../utilities";
 
 
 const pages: Array<string> = ['projects', 'calendar'];
 
-function stringToColor(string: string) {
-    let hash = 0;
-    let i;
-
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-        hash = string.charCodeAt(i) + ((hash << 3) - hash);
-    }
-
-    let color = '#';
-
-    for (i = 0; i < 3; i += 1) {
-        const value = (hash >> (i * 8)) & 0xff;
-        color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-
-    return color;
-}
-
 function stringAvatar(name: string) {
     return {
         sx: {
-            bgcolor: stringToColor(name),
+            bgcolor: Utilities.stringToColor(name),
         },
         children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
     };

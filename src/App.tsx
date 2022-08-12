@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react'
-import {useRoutes} from "./utilities/routes";
+import {useRoutes} from "./Routes/routes";
 import {useAuth} from "./Hooks/auth.hook";
 import {AuthContext} from "./context/AuthContext";
 
