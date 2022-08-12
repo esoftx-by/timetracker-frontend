@@ -27,13 +27,13 @@ export default class Utilities {
 
         /* eslint-disable no-bitwise */
         for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 3) - hash);
+            hash = string.charCodeAt(i) + ((hash << 10) - hash);
         }
 
         let color = '#';
 
         for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
+            const value = ((hash >> (i * 8)) & 0xff) << 2;
             color += `00${value.toString(16)}`.slice(-2);
         }
         /* eslint-enable no-bitwise */
