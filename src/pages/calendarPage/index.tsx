@@ -55,7 +55,6 @@ const CalendarPage = () => {
     }
 
 
-
     const events: Array<object> = newAllTracksUserId.map(function (obj) {
         return {
             'id': obj.id,
@@ -93,6 +92,7 @@ const CalendarPage = () => {
                 </Select>
             </div>
             <FullCalendar
+                height={700}
                 eventClick={eventClick}
                 schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                 initialView="timeGridWeek"

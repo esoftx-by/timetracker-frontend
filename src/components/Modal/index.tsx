@@ -32,9 +32,10 @@ type OwnToProps = {
     open: boolean
     setOpen: (p: boolean) => void
     buttonComponent?: ReactJSXElement
+    description?: string
 }
 
-const ModalWindow: FC<OwnToProps> = ({title, btnName, children, open, setOpen, btnType, buttonComponent}) => {
+const ModalWindow: FC<OwnToProps> = ({title, description, btnName, children, open, setOpen, btnType, buttonComponent}) => {
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -59,8 +60,9 @@ const ModalWindow: FC<OwnToProps> = ({title, btnName, children, open, setOpen, b
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
-                        {children}
+                        {description && description}
                     </DialogContentText>
+                    {children}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

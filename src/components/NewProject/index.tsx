@@ -21,7 +21,8 @@ const FormDialog: FC = () => {
     return (
         <div>
             <ModalWindow btnName={'New Project'}
-                         title={'Create a new project. Please indicate the name of the project, description and customer.'}
+                         description={'Create a new project. Please indicate the name of the project, description and customer.'}
+                         title={'New Project'}
                          btnType={'contained'}
                          open={open}
                          setOpen={setOpen}
@@ -63,7 +64,7 @@ const FormDialog: FC = () => {
                         <form onSubmit={handleSubmit}>
                             <Box
                                 sx={{
-                                    '& > :not(style)': {width: '100%', margin:'.5rem 0 0'},
+                                    '& > :not(style)': {width: '100%', margin: '.5rem 0 0'},
                                 }}>
                                 <TextField
                                     error={!!(errors.name && touched.name)}
