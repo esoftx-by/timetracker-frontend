@@ -10,7 +10,8 @@ import {ThunkDispatch} from "redux-thunk";
 import {AnyAction} from "redux";
 import {useNavigate} from "react-router-dom";
 import {tokenExpiredSelector, userDataSelector} from "./redux/selectors/authSelectors";
-import { setUserData } from './redux/reducers/thunk-creators/authThunk';
+import {appErrorThunk, setUserData} from './redux/reducers/thunk-creators/authThunk';
+import {toast, ToastContainer} from "react-toastify";
 
 
 
@@ -19,6 +20,7 @@ export const App: FC = () => {
     const {token, login, logout, userId, lastName} = useAuth()
 
     const userData = useSelector(userDataSelector)
+    const errorApp = useSelector((state: AppStateType) => state.auth.errorApp)
     type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
 
@@ -31,6 +33,19 @@ export const App: FC = () => {
     if (tokenExpired) {
         navigate('/login')
         dispatch(actionsUser.errors(null))
+    }
+
+    if (errorApp) {
+        toast.error(errorApp, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        })
+        dispatch(appErrorThunk(null))
     }
 
     useEffect(() => {
@@ -47,6 +62,7 @@ export const App: FC = () => {
         }}>
             <div className="App">
                 {routes}
+                <ToastContainer/>
             </div>
         </AuthContext.Provider>
     );

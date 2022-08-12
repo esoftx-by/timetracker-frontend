@@ -1,4 +1,4 @@
-import React, {FC, useLayoutEffect} from 'react'
+import React, {FC, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
 import style from './Project.module.css'
@@ -8,10 +8,8 @@ import TasksProject from "../../components/TasksProject";
 import {setAllTracksByProjectIdThunk} from "../../redux/reducers/thunk-creators/trackThunk";
 import CircularIndeterminate from "../../components/Loader";
 import {Helmet} from "react-helmet-async";
-import {AppStateType} from "../../redux/store";
+import {AppDispatch} from "../../redux/store";
 import NotFoundPage from "../notFoundPage";
-import {ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Button from "@mui/material/Button";
 import {setIsFetchingProjectSelector, setProjectSelector} from "../../redux/selectors/projectSelector";
@@ -23,7 +21,6 @@ import {setProjectIdThunk} from "../../redux/reducers/thunk-creators/projectThun
 
 export const ProjectContainer: FC = () => {
 
-    type AppDispatch = ThunkDispatch<AppStateType, any, AnyAction>;
     const dispatch: AppDispatch = useDispatch()
     const {id} = useSelector(userDataSelector)
     const isFetching = useSelector(setIsFetchingProjectSelector)
@@ -36,19 +33,19 @@ export const ProjectContainer: FC = () => {
 
     const navigate = useNavigate()
 
-    useLayoutEffect(() => {
-        dispatch(setAllTasksProjectThunk(projectId))
-    }, [])
-
-    useLayoutEffect(() => {
+    useEffect(() => {
         if (Number.isFinite(projectId)) {
             dispatch(setProjectIdThunk(projectId))
         }
 
     }, [])
 
+    useEffect(() => {
+        dispatch(setAllTasksProjectThunk(projectId))
+    }, [])
 
-    useLayoutEffect(() => {
+
+    useEffect(() => {
         dispatch(setAllTracksByProjectIdThunk(projectId))
     }, [])
 

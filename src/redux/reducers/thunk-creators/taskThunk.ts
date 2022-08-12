@@ -1,6 +1,7 @@
 import TaskAPI from "../../../API/taskAPI";
 import {TaskType} from "../../../types";
 import {actions, ThunkTypes} from "../taskReducer";
+import {appErrorThunk} from "./authThunk";
 
 export const SetTaskByIdThunk = (id: number): ThunkTypes => {
     return async dispatch => {
@@ -16,7 +17,7 @@ export const SetTaskByIdThunk = (id: number): ThunkTypes => {
             }, 500)
 
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }
@@ -47,7 +48,7 @@ export const setNewTaskThunk = (name: string, description: string, estimatedHour
             }, 500)
 
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
 
     }
@@ -75,7 +76,7 @@ export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }
@@ -100,7 +101,7 @@ export const deleteTaskThunk = (id: number): ThunkTypes => {
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }

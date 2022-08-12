@@ -83,7 +83,7 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                     }}>
                         <ModalWindow title="Edit track. Please indicate the time." btnName="Edit Track"
                                      btnType="outlined" open={openModal} setOpen={setOpenModal}>
-                            <DateTimeValidation id={tracks.id}/>
+                            <DateTimeValidation tracks={tracks} handleClose={handleClose} id={tracks.id}/>
                         </ModalWindow>
                         <DeleteModal callback={deleteTrack} title={'Are you sure you want to delete the track?'}>
                             <Button variant="contained">Delete track</Button>

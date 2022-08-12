@@ -34,7 +34,13 @@ export const updateProfileThunk = (id: number, firstName?: string | null, lastNa
                 dispatch(actionsUser.isSent(true))
             }
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
+    }
+}
+
+export const appErrorThunk = (error: string | null): ThunkTypes => {
+    return dispatch => {
+        dispatch(actionsUser.errorApp(error))
     }
 }

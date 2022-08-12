@@ -5,7 +5,7 @@ import Menu, {MenuProps} from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AddIcon from '@mui/icons-material/Add';
-import Dialog, {DialogProps} from '@mui/material/Dialog';
+import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -100,7 +100,7 @@ export const CustomizedMenus: FC<OwnToPropsCustomizedMenus> = ({project, allUser
                 open={open}
                 onClose={handleCloseBtn}
             >
-                <AlertDialogSlide handleCloseBtn={handleCloseBtn} allUsers={allUsers} project={project}/>
+                <AlertDialogSlide handleCloseBtn={handleCloseBtn} project={project}/>
                 <DeleteUserInProject handleCloseBtn={handleCloseBtn} project={project}/>
             </StyledMenu>
         </div>
@@ -121,12 +121,11 @@ const Transition = React.forwardRef(function Transition(
 
 type OwnToPropsAlertDialogSlide = {
     project: ProjectType
-    allUsers: Array<UserType> | null
     handleCloseBtn: (p: any) => void
 }
 
 
-const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, handleCloseBtn}) => {
+const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, handleCloseBtn}) => {
     const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
@@ -140,8 +139,6 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
         handleCloseBtn(null)
     };
 
-    const [fullWidth, setFullWidth] = React.useState(true);
-    const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('sm');
     return (
         <div>
             <MenuItem onClick={handleClickOpen} disableRipple>
@@ -150,8 +147,8 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, allUsers, ha
             </MenuItem>
             <Dialog
                 open={open}
-                fullWidth={fullWidth}
-                maxWidth={maxWidth}
+                fullWidth={true}
+                maxWidth={'sm'}
                 TransitionComponent={Transition}
                 keepMounted
                 onClose={handleClose}

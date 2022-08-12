@@ -60,7 +60,8 @@ export const trackReducers = (state = initialState, action: ActionsType): initia
         case UPDATE_TRACK: {
             return {
                 ...state,
-                tracksByTaskId: state.tracksByTaskId.map(el => el.id === action.updateTrack.id ? action.updateTrack : el)
+                tracksByTaskId: state.tracksByTaskId.map(el => el.id === action.updateTrack.id ? action.updateTrack : el),
+                allTracksByProjectId: state.allTracksByProjectId.map(el => el.id === action.updateTrack.id ? action.updateTrack : el)
             }
         }
         case SET_ALL_TRACK_BY_USER_ID:{

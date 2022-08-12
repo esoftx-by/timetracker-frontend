@@ -38,7 +38,7 @@ export const TaskPage: FC = () => {
             dispatch(SetTaskByIdThunk(id))
             dispatch(setTracksByTaskIdThunk(id))
         }
-    }, [id, dispatch])
+    }, [])
 
 
     useEffect(() => {
@@ -60,10 +60,10 @@ export const TaskPage: FC = () => {
     }
 
     return (
-        <Box sx={{flexGrow: 1}} style={{'padding': '2rem'}}>
+        <Box sx={{flexGrow: 1, padding: '2rem'}}>
             <div className={style.taskHeader}>
                 <Button className={style.btnBack} onClick={() => navigate(-1)}><ArrowBackIcon/></Button>
-                <div style={{display: 'flex', alignItems: 'center'}}>
+                <div className={style.taskHeaderItem}>
                     <DeleteModal callback={deleteTask} id={taskById.id} title={'Are you sure you want to delete the task?'}>
                         <Button variant="contained">Delete Task</Button>
                     </DeleteModal>
@@ -75,12 +75,7 @@ export const TaskPage: FC = () => {
                     <OutlinedCard data={taskById}/>
                     <div className={style.tracksBlock}>
 
-                        <div style={{
-                            margin: '0.5rem 1rem',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
+                        <div className={style.tracksBlockItemFirst}>
                             <h3>Tracks: </h3>
                             <FormDialogTrack userId={user && user.id} taskId={taskById.id}/>
                         </div>

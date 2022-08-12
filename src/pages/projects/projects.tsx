@@ -13,14 +13,14 @@ import {
     setProjectsSelector
 } from "../../redux/selectors/projectSelector";
 import {setAllUsersSelector, userDataSelector} from "../../redux/selectors/authSelectors";
-import CircularIndeterminate from '../../components/Loader';
 import {setProjectsByUserIdThunk, setProjectsThunk} from "../../redux/reducers/thunk-creators/projectThunk";
+import {ProjectType, UserType} from "../../types";
+import CircularIndeterminate from "../../components/Loader";
 
 
 export const Projects: FC = () => {
 
     const dispatch: AppDispatch = useDispatch()
-
 
     const {id, applicationRole} = useSelector(userDataSelector)
     const projects = useSelector(setProjectsSelector)
@@ -49,18 +49,9 @@ export const Projects: FC = () => {
             <div className={style.projects__list}>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2}>
-                        {applicationRole === 'ADMIN' ? (isFetching ?  <CircularIndeterminate/> : projects.length ? projects.map(project =>
-                                <ProjectCard
-                                    allUsers={allUsers}
-                                    project={project}
-                                    key={project.id} role={applicationRole}/>) :
-                            <Grid item xs={12} md={12}><h2>No projects</h2>
-                            </Grid>) : (isFetching ?  <CircularIndeterminate/> : projectsByUser?.length ? projectsByUser.map(project =>
-                                <ProjectCard
-                                    allUsers={allUsers}
-                                    project={project}
-                                    key={project.id} role={applicationRole}/>) :
-                            <Grid item xs={12} md={12}><h2>No projects</h2></Grid>)}
+                        {isFetching ? <CircularIndeterminate/> :
+                            <ProjectCardContainer object={applicationRole === 'ADMIN' ? projects : projectsByUser}
+                                                  role={applicationRole} allUsers={allUsers}/>}
                     </Grid>
                 </Box>
             </div>
@@ -68,4 +59,23 @@ export const Projects: FC = () => {
     )
 }
 
+type OwnToProps = {
+    object: Array<ProjectType>
+    allUsers: Array<UserType> | null
+    role: string
+}
+
+const ProjectCardContainer: FC<OwnToProps> = ({object, allUsers, role}) => {
+    return (
+        <>
+            {object.length
+                ?
+                object.map(el => <ProjectCard project={el} role={role} allUsers={allUsers}/>)
+                :
+                <Grid item xs={12} md={12}><h2>No projects</h2></Grid>}
+        </>
+
+    )
+
+}
 

@@ -1,6 +1,7 @@
 import ProjectAPI from "../../../API/projectAPI";
 import {ProjectType, UserType} from "../../../types";
 import {actionsProject, ThunkTypes} from "../projectsReducer";
+import {appErrorThunk} from "./authThunk";
 
 export const deleteProjectThunk = (id: number): ThunkTypes => {
     return async dispatch => {
@@ -12,7 +13,8 @@ export const deleteProjectThunk = (id: number): ThunkTypes => {
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+            dispatch(actionsProject.toggleIsFetching(false))
         }
     }
 }
@@ -25,7 +27,8 @@ export const newUserInProject = (userId: number, projectId: number, role: string
                 dispatch(actionsProject.successMessage(true))
             }
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+            dispatch(actionsProject.toggleIsFetching(false))
         }
     }
 }
@@ -41,7 +44,8 @@ export const setProjectsThunk = (): ThunkTypes => {
             }
             dispatch(actionsProject.toggleIsFetching(false))
         } catch (e: any) {
-
+            dispatch(appErrorThunk(e.message))
+            dispatch(actionsProject.toggleIsFetching(false))
         }
     }
 }
@@ -69,7 +73,8 @@ export const setNewProjectThunk = (name: string, description: string, customer: 
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+            dispatch(actionsProject.toggleIsFetching(false))
         }
     }
 }
@@ -87,7 +92,8 @@ export const setProjectIdThunk = (id: number): ThunkTypes => {
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+            dispatch(actionsProject.toggleIsFetching(false))
         }
 
     }
@@ -104,7 +110,9 @@ export const setProjectsByUserIdThunk = (id: number): ThunkTypes => {
             }
             dispatch(actionsProject.toggleIsFetching(false))
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+            // console.log(e.message)
+            dispatch(actionsProject.toggleIsFetching(false))
         }
 
     }
@@ -112,6 +120,11 @@ export const setProjectsByUserIdThunk = (id: number): ThunkTypes => {
 
 export const deleteUserInProjectThunk = (id: number): ThunkTypes => {
     return async dispatch => {
-        await ProjectAPI.deleteUser(id)
+        try {
+            await ProjectAPI.deleteUser(id)
+            dispatch(actionsProject.successMessage(true))
+        } catch (e: any) {
+            console.log(e.message)
+        }
     }
 }

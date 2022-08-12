@@ -21,17 +21,7 @@ type OwnToProps = {
 export const NewUser: FC<OwnToProps> = ({newUser, projectId}) => {
 
     const [values, setValues] = useState({userId: '', userRole: ''})
-
     const [error, setError] = useState(false)
-
-    const success = useSelector(successMessageSelector)
-
-    const dispatch: AppDispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(setAllUsersThunk())
-    }, [newUser])
-
 
     const role = [
         {role: 'DEVELOPER', label: 'DEV'},
@@ -41,6 +31,14 @@ export const NewUser: FC<OwnToProps> = ({newUser, projectId}) => {
     ]
 
     const allUser = useSelector(setAllUsersSelector)
+
+    const success = useSelector(successMessageSelector)
+
+    const dispatch: AppDispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setAllUsersThunk())
+    }, [newUser])
 
     const addUser = () => {
         if (values.userId && values.userRole) {
