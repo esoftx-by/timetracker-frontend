@@ -62,7 +62,7 @@ const CalendarPage = () => {
             'start': Utilities.timeZone(obj.startTime),
             'end': Utilities.timeZone(obj.endTime),
             'url': `task/${obj.task.id}`,
-            'backgroundColor': Utilities.stringToColor(obj.task.name)
+            'backgroundColor': Utilities.stringToColor(obj.task.project.name)
         }
     })
 
