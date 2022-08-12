@@ -133,4 +133,13 @@ code {
   .fc-dayGridMonth-view .fc-event-title{
       display: none;
   }
+  .fc-view-harness{
+      min-height: 70vh!important;
+  }
+  .fc-header-toolbar{
+      flex-direction: column;
+  }
+  .fc-toolbar-chunk{
+      margin: .5rem 0;
+  }
 }

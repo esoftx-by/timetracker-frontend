@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import {FC} from "react";
+import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -21,8 +22,8 @@ const Transition = React.forwardRef(function Transition(
 
 type OwnToProps = {
     title: string
-    btnName: string
-    btnType: "text" | "contained" | "outlined" | undefined
+    btnName?: string
+    btnType?: "text" | "contained" | "outlined" | undefined
     children:
         | JSX.Element
         | JSX.Element[]
@@ -30,9 +31,10 @@ type OwnToProps = {
         | string[];
     open: boolean
     setOpen: (p: boolean) => void
+    buttonComponent?: ReactJSXElement
 }
 
-const ModalWindow: FC<OwnToProps> = ({title, btnName, children, open, setOpen, btnType}) => {
+const ModalWindow: FC<OwnToProps> = ({title, btnName, children, open, setOpen, btnType, buttonComponent}) => {
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -44,9 +46,9 @@ const ModalWindow: FC<OwnToProps> = ({title, btnName, children, open, setOpen, b
 
     return (
         <div>
-            <Button variant={btnType} onClick={handleClickOpen}>
+            {buttonComponent ? buttonComponent : <Button variant={btnType} onClick={handleClickOpen}>
                 {btnName}
-            </Button>
+            </Button>}
             <Dialog
                 open={open}
                 TransitionComponent={Transition}

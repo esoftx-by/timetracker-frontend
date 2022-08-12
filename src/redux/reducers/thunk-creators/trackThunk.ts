@@ -1,6 +1,7 @@
 import TracksAPI from "../../../API/trackAPI";
 import {AllTracksByProjectIdType} from "../../../types";
 import {actions, ThunkTypes} from "../trackReducer";
+import {appErrorThunk} from "./authThunk";
 
 export const deleteTrackThunk = (id: number): ThunkTypes => {
     return async dispatch => {
@@ -9,7 +10,7 @@ export const deleteTrackThunk = (id: number): ThunkTypes => {
             dispatch(actions.deleteTrack(id))
 
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }
@@ -33,7 +34,7 @@ export const updateTrackThunk = (id: number, startTime: string, endTime: string)
                 dispatch(actions.updateTrack(response.data.response))
             }
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }
@@ -70,7 +71,7 @@ export const setAllTracksByUserIdThunk = (userId: number): ThunkTypes => {
                 dispatch(actions.setAllTracksByUserId(allTracksByUser))
             }
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 
@@ -84,7 +85,7 @@ export const setTracksByTaskIdThunk = (TaskId: number): ThunkTypes => {
                 dispatch(actions.setTracksByTaskId(allTracksByTask))
             }
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
         }
     }
 }

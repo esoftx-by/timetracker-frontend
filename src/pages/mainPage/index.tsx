@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useMemo, useState} from 'react'
 import './mainPage.scss'
-import {Grid, Select, SelectChangeEvent} from "@mui/material";
+import {Grid, Select} from "@mui/material";
 import Box from "@mui/material/Box";
 import CircularIndeterminate from "../../components/Loader";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,7 +10,6 @@ import {AppDispatch} from "../../redux/store";
 import {AllTasksProjectType} from "../../types";
 import {Helmet} from "react-helmet-async";
 import {NavLink} from "react-router-dom";
-import style from "../project/Project.module.css";
 import {setIsFetchingTask, setTaskUserIdSelector} from "../../redux/selectors/taskSelectors";
 import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,16 +20,8 @@ import {setProjectsByUserIdThunk} from "../../redux/reducers/thunk-creators/proj
 
 export const MainPage: FC = () => {
 
-    const {id, firstName, lastName} = useSelector(userDataSelector)
-
-    useEffect(() => {
-        dispatch(setProjectsByUserIdThunk(id))
-    }, [])
-
-
-    const allProjectsByUser = useSelector(setProjectsByUserSelector)
-    // @ts-ignore
-    const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
+    const [projectName, setProjectName] = useState<string>('')
+    const [searchQuery, setSearchQuery] = useState<string>('')
 
     const FILTER_STATUSES = ['FINISHED', 'CANCELLED', 'LONG_TERM']
     const STATUS_ORDER: any = {
@@ -43,25 +34,31 @@ export const MainPage: FC = () => {
         CANCELLED: 6
     }
 
-    const dispatch: AppDispatch = useDispatch()
+    const {id, firstName, lastName} = useSelector(userDataSelector)
     const isFetching = useSelector(setIsFetchingTask)
     const allTasksUserId = useSelector(setTaskUserIdSelector)
-    const filterTasksStatuses = allTasksUserId.filter(task => !FILTER_STATUSES.includes(task.status))
 
-    const [projectName, setProjectName] = useState<string>('')
-    const [searchQuery, setSearchQuery] = useState<string>('')
+    const dispatch: AppDispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(setProjectsByUserIdThunk(id))
+    }, [])
+
+    useEffect(() => {
+        dispatch(setAllTaskUserIdThunk(id))
+    }, [])
+
+    const allProjectsByUser = useSelector(setProjectsByUserSelector)
+    // @ts-ignore
+    const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
+
+    const filterTasksStatuses = allTasksUserId.filter(task => !FILTER_STATUSES.includes(task.status))
 
     const allTasksUserIdFilter = useMemo(() => {
         return [...filterTasksStatuses]
             .sort((a, b) => a.project.name.localeCompare(b.project.name))
             .sort((t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status])
     }, [projectName, allTasksUserId])
-
-
-    useEffect(() => {
-        dispatch(setAllTaskUserIdThunk(id))
-    }, [id])
-
 
     const newAllTasksUserId = allTasksUserIdFilter.filter((el) => projectName === '' ? el : el.project.name === projectName)
 
@@ -77,10 +74,6 @@ export const MainPage: FC = () => {
         return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
     }
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setProjectName(event.target.value);
-    };
-
     return <div className="mainPage">
         <Helmet>
             <title>{firstName + ' ' + lastName}</title>
@@ -95,7 +88,7 @@ export const MainPage: FC = () => {
                     <Select
                         displayEmpty
                         value={projectName}
-                        onChange={handleChange}
+                        onChange={event => setProjectName(event.target.value)}
                         inputProps={{'aria-label': 'Without label'}}
                     >
                         <MenuItem value="">

@@ -19,21 +19,21 @@ import {Helmet} from "react-helmet-async";
 
 const CalendarPage = () => {
 
-    const dispatch: AppDispatch = useDispatch()
+    const [projectName, setProjectName] = useState<string>('')
+
     const {id} = useSelector(userDataSelector)
     const isFetching = useSelector(isFetchingTrackSelector)
 
+    const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setProjectsByUserIdThunk(id))
     }, [])
 
-
     const allProjectsByUser = useSelector(setProjectsByUserSelector)
     // @ts-ignore
     const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
 
-    const [projectName, setProjectName] = useState<string>('')
 
     useEffect(() => {
         dispatch(setAllTracksByUserIdThunk(id))
@@ -79,6 +79,7 @@ const CalendarPage = () => {
             </div>
             <FullCalendar
                 schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
+                initialView="timeGridWeek"
                 headerToolbar={{
                     left: "prev,next today",
                     center: "title",
