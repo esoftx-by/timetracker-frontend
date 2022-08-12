@@ -16,6 +16,7 @@ import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import {Select} from "@mui/material";
 import {Helmet} from "react-helmet-async";
+import Utilities from "../../utilities";
 
 const CalendarPage = () => {
 
@@ -47,8 +48,8 @@ const CalendarPage = () => {
         return {
             'id': obj.id,
             'title': obj.task.name,
-            'start': new Date(obj.startTime).setMilliseconds(3 * 60 * 60 * 1000),
-            'end': new Date(obj.endTime).setMilliseconds(3 * 60 * 60 * 1000)
+            'start': Utilities.timeZone(obj.startTime),
+            'end': Utilities.timeZone(obj.endTime),
         }
     })
 

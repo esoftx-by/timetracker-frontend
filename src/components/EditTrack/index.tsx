@@ -20,13 +20,13 @@ type OwnToProps = {
 }
 
 export const DateTimeValidation: FC<OwnToProps> = ({id, handleClose, tracks}) => {
-    const [firstValue, setFirstValue] = useState<Date | null>(new Date(tracks.startTime));
-    const [secondValue, setSecondValue] = useState<Date | null>(new Date(tracks.endTime));
+    const [firstValue, setFirstValue] = useState<Date | number | null>(Utilities.timeZone(tracks.startTime));
+    const [secondValue, setSecondValue] = useState<Date | number |null>(Utilities.timeZone(tracks.endTime));
     const [error, setError] = useState<boolean>(false)
     const dispatch: AppDispatch = useDispatch()
     const sendDate = () => {
         if (firstValue && secondValue) {
-            dispatch(updateTrackThunk(id, Utilities.formatDateTime(firstValue), Utilities.formatDateTime(secondValue)))
+            dispatch(updateTrackThunk(id, Utilities.formatDateTime(firstValue as Date), Utilities.formatDateTime(secondValue as Date)))
             handleClose()
             setError(false)
         } else {

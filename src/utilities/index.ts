@@ -15,4 +15,8 @@ export default class Utilities {
     static formatDateTime(date: Date | string) {
         return moment(new Date(date)).format();
     }
+
+    static timeZone(date: Date | string | number) {
+        return new Date(date).setMilliseconds(3 * 60 * 60 * 1000)
+    }
 }
