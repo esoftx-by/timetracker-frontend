@@ -1,50 +1,62 @@
 import React, {useEffect, useState} from "react";
-import FullCalendar from "@fullcalendar/react";
+import FullCalendar, {EventSourceInput} from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/timegrid";
 import {useDispatch, useSelector} from "react-redux";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
-import {setAllTracksByUserIdThunk} from "../../redux/reducers/thunk-creators/trackThunk";
-import {allTracksByUserIdSelector, isFetchingTrackSelector} from "../../redux/selectors/trackSelectors";
+import {setAllTracksByUserIdThunk, SetAllTracksThunks} from "../../redux/reducers/thunk-creators/trackThunk";
+import {
+    allTracksByUserIdSelector,
+    isFetchingTrackSelector,
+    setAllTracksSelector
+} from "../../redux/selectors/trackSelectors";
 import resourceTimeGridPlugin from "@fullcalendar/resource-timegrid";
 import style from './CalendarPage.module.css'
 import CircularIndeterminate from "../../components/Loader";
 import {AppDispatch} from "../../redux/store";
-import {setProjectsByUserIdThunk} from "../../redux/reducers/thunk-creators/projectThunk";
-import {setProjectsByUserSelector} from "../../redux/selectors/projectSelector";
+import {setProjectsByUserIdThunk, setProjectsThunk} from "../../redux/reducers/thunk-creators/projectThunk";
+import {setProjectsByUserSelector, setProjectsSelector} from "../../redux/selectors/projectSelector";
 import MenuItem from "@mui/material/MenuItem";
 import {Select} from "@mui/material";
 import {Helmet} from "react-helmet-async";
 import Utilities from "../../utilities";
 import {useNavigate} from "react-router-dom";
+import {AllTracksByProjectIdType, Events} from "../../types";
+import {useProjectSorted, UseSortedTracks} from "../../Hooks/calendar.hooks";
 
 const CalendarPage = () => {
 
     const [projectName, setProjectName] = useState<string>('')
 
-    const {id} = useSelector(userDataSelector)
+    const {id, applicationRole} = useSelector(userDataSelector)
     const isFetching = useSelector(isFetchingTrackSelector)
+    const allProjects = useSelector(setProjectsSelector)
+    const allProjectsByUser = useSelector(setProjectsByUserSelector)
+    const allTracks = useSelector(setAllTracksSelector)
+    const allTracksByUserId = useSelector(allTracksByUserIdSelector)
+
+    const projectSorted = useProjectSorted(allProjects, allProjectsByUser, applicationRole)
+    const sortedTracks = UseSortedTracks(allTracks as AllTracksByProjectIdType[], allTracksByUserId, applicationRole, projectName)
+    const navigate = useNavigate()
 
     const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setProjectsByUserIdThunk(id))
+        if (applicationRole === 'ADMIN') {
+            dispatch(setProjectsThunk())
+        } else {
+            dispatch(setProjectsByUserIdThunk(id))
+        }
     }, [])
 
-    const allProjectsByUser = useSelector(setProjectsByUserSelector)
-    // @ts-ignore
-    const newArrayProjects = [...new Set(allProjectsByUser.map(hs => hs.name))];
-
-    const navigate = useNavigate()
-
     useEffect(() => {
-        dispatch(setAllTracksByUserIdThunk(id))
+        if (applicationRole === 'ADMIN') {
+            dispatch(SetAllTracksThunks())
+        } else {
+            dispatch(setAllTracksByUserIdThunk(id))
+        }
     }, [projectName])
-
-    const allTracksByUserId = useSelector(allTracksByUserIdSelector)
-
-    const newAllTracksUserId = allTracksByUserId.filter((el) => projectName === '' ? el : el.task.project.name === projectName)
 
     const eventClick = (info: any) => {
         info.jsEvent.preventDefault();
@@ -54,8 +66,7 @@ const CalendarPage = () => {
         }
     }
 
-
-    const events: Array<object> = newAllTracksUserId.map(function (obj) {
+    const events: Events[] = sortedTracks.map(function (obj) {
         return {
             'id': obj.id,
             'title': obj.task.name,
@@ -87,8 +98,8 @@ const CalendarPage = () => {
                     <MenuItem value="">
                         <em>All</em>
                     </MenuItem>
-                    {newArrayProjects.map((el, index) => <MenuItem key={index}
-                                                                   value={el}><em>{el}</em></MenuItem>)}
+                    {projectSorted.map((el, index) => <MenuItem key={index}
+                                                                value={el}><em>{el}</em></MenuItem>)}
                 </Select>
             </div>
             <FullCalendar
@@ -107,7 +118,7 @@ const CalendarPage = () => {
                     timeGridPlugin,
                     resourceTimeGridPlugin]}
                 themeSystem="bootstrap"
-                events={events}
+                events={events as EventSourceInput}
 
             />
         </div>

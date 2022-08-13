@@ -50,3 +50,13 @@ export type AuthContextType = {
     logout: () => void,
     isAuthenticated: boolean
 }
+
+
+export type Events = {
+    id: number
+    title: string
+    start: number
+    end: number
+    url: string
+    backgroundColor: string
+}
