@@ -24,7 +24,8 @@ const FormDialogTask: FC<OwnToProps> = ({userId, projectId}) => {
 
     return (
         <div>
-            <ModalWindow open={open} setOpen={setOpen} btnName={'New Task'}
+            <ModalWindow open={open} setOpen={setOpen}
+                         btnName={'New Task'}
                          description={'Create a new task. Please indicate the name of the task, description and estimated hours.'}
                          title={'New task'}
                          btnType={'contained'}>

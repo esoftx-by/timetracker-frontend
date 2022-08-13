@@ -6,6 +6,7 @@ import {AllTasksProjectType, AllTracksByProjectIdType, ProjectType} from "../../
 import {useSelector} from "react-redux";
 import {setIsFetchingTask} from "../../redux/selectors/taskSelectors";
 import CircularIndeterminate from "../Loader";
+import {useStatusOrderSort} from "../../Hooks/statusOrder.hook";
 
 
 type OwnToProps = {
@@ -20,17 +21,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
 
     const isFetching = useSelector(setIsFetchingTask)
 
-    const STATUS_ORDER = {
-        LONG_TERM: 0,
-        OPEN: 1,
-        IN_PROGRESS: 2,
-        IN_TESTING: 3,
-        IN_REVIEW: 4,
-        FINISHED: 5,
-        CANCELLED: 6
-    }
-    // @ts-ignore
-    const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
+    const sortTasks = useStatusOrderSort(AllTaskByProject)
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
@@ -42,7 +33,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>
                 {isFetching ? <CircularIndeterminate/> :
-                    AllTaskByProject && AllTaskByProject.length ? [...AllTaskByProject].sort(comparator).map(task =>
+                    sortTasks && sortTasks.length ? sortTasks.map(task =>
                         <OutlinedCardTask
                             key={task.id}
                             allTracksByProjectId={allTracksByProjectId} userId={userId}
