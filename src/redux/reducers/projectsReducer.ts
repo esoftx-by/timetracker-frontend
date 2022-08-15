@@ -10,6 +10,7 @@ const SET_ALL_USERS_IN_PROJECT = 'project/SET_ALL_USERS_IN_PROJECT'
 const DELETE_PROJECT = 'project/DELETE_PROJECT'
 const SUCCESS = 'project/SUCCESS'
 const IS_FETCHING = 'project/IS_FETCHING'
+const UPDATE_PROJECT = 'project/UPDATE_PROJECT'
 
 
 export type initialStateType = {
@@ -67,6 +68,11 @@ export const projectReducer = (state = initialState, action: ActionsType): initi
                 ...state,
                 projects: state.projects.filter(el => el.id !== action.id)
             }
+        case UPDATE_PROJECT:
+            return {
+                ...state,
+                projects: state.projects.map(el => el.id === action.updateProject.id ? action.updateProject : el),
+            }
         case SUCCESS:
             return {
                 ...state,
@@ -89,7 +95,8 @@ export const actionsProject = {
     toggleIsFetching: (isFetching: boolean) => ({type: IS_FETCHING, isFetching} as const),
     setAllUsersInProject: (users: Array<UserType>) => ({type: SET_ALL_USERS_IN_PROJECT, users} as const),
     successMessage: (success: boolean) => ({type: SUCCESS, success} as const),
-    deleteProject: (id: number) => ({type: DELETE_PROJECT, id} as const)
+    deleteProject: (id: number) => ({type: DELETE_PROJECT, id} as const),
+    updateProject: (updateProject: ProjectType) => ({type: UPDATE_PROJECT, updateProject} as const)
 }
 
 

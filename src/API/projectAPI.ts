@@ -50,4 +50,13 @@ export default class ProjectAPI {
     static deleteProject(id: number) {
         return instance.delete(`projects/${id}`)
     }
+
+    static updateProject(id: number, name: string, description: string, customer: string) {
+        return instance.patch('projects/', {
+            id: id,
+            name: name,
+            description: description,
+            customer: customer
+        })
+    }
 }

@@ -20,3 +20,9 @@ export const useProjectSorted = (allProjects: ProjectType[], allProjectsByUser: 
         return [...new Set(allProjectsByUser.map(hs => hs.name))]
     }, [allProjects, allProjectsByUser])
 }
+
+export const useUsersFilet = (name: string, projects: AllTracksByProjectIdType[]) => {
+    return useMemo(() => {
+        return projects.filter((el) => name === '' ? el : el.user.email === name)
+    }, [name, projects])
+}
