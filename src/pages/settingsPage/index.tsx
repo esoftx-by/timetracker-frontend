@@ -13,10 +13,10 @@ import {updateProfileThunk} from "../../redux/reducers/thunk-creators/authThunk"
 
 const SettingsPage = () => {
 
-    const userData = useSelector(userDataSelector)
-    const id = userData && userData.id
-    const dispatch: AppDispatch = useDispatch()
+    const {firstName, lastName, email, id} = useSelector(userDataSelector)
     const isSent = useSelector(isSentSelector)
+
+    const dispatch: AppDispatch = useDispatch()
 
     return (
         <div className={style.settingsPage}>
@@ -26,15 +26,15 @@ const SettingsPage = () => {
             <h1>Edit profile</h1>
             <p>Here you can change your personal data.</p>
             <Formik
-                initialValues={userData ? {
-                    firstName: userData.firstName,
-                    lastName: userData.lastName,
-                    email: userData.email,
+                initialValues={{
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
                     password: ''
-                } : {}}
+                }}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
                     setTimeout(() => {
-                        dispatch(updateProfileThunk(id as number, values.firstName, values.lastName, values.email, values.password))
+                        dispatch(updateProfileThunk(id, values.firstName, values.lastName, values.email, values.password))
                         setSubmitting(false);
                     }, 400);
                 }}

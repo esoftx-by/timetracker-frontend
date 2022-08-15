@@ -19,6 +19,7 @@ import {ProjectType, UserType} from "../../types";
 import {TransitionProps} from "@mui/material/transitions";
 import DeleteUserInProject from "../DeleteUserInProject";
 import NewUser from "../NewUser";
+import UpdateProject from "../UpdateProject";
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -100,8 +101,9 @@ export const CustomizedMenus: FC<OwnToPropsCustomizedMenus> = ({project, allUser
                 open={open}
                 onClose={handleCloseBtn}
             >
-                <AlertDialogSlide handleCloseBtn={handleCloseBtn} project={project}/>
-                <DeleteUserInProject handleCloseBtn={handleCloseBtn} project={project}/>
+                <AlertDialogSlide project={project}/>
+                <DeleteUserInProject project={project}/>
+                <UpdateProject project={project}/>
             </StyledMenu>
         </div>
     );
@@ -121,11 +123,10 @@ const Transition = React.forwardRef(function Transition(
 
 type OwnToPropsAlertDialogSlide = {
     project: ProjectType
-    handleCloseBtn: (p: any) => void
 }
 
 
-const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, handleCloseBtn}) => {
+const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project}) => {
     const [newUser, setNewUser] = useState(false)
 
     const [open, setOpen] = React.useState(false);
@@ -136,7 +137,6 @@ const AlertDialogSlide: FC<OwnToPropsAlertDialogSlide> = ({project, handleCloseB
 
     const handleClose = () => {
         setOpen(false);
-        handleCloseBtn(null)
     };
 
     return (

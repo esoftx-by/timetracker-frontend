@@ -1,7 +1,8 @@
 .mainProjectCard {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    /*display: flex;*/
+    /*justify-content: space-between;*/
+    /*align-items: baseline;*/
+    /*min-height: 300px;*/
 }
 
 .mainProjectCardItem{
@@ -10,16 +11,24 @@
     align-items: center;
     justify-content: space-between;
 }
+.mainProjectCardBlock{
+    min-height: 200px;
+}
 
 .btn{
     margin: 1rem 0!important;
 }
 
 .btn a{
-    color: #fff;
+    color: #1976d2;
     text-decoration: none;
 }
 
 .projectName{
     word-break: break-all;
+}
+
+.mainProjectCardDescription{
+    min-height: 50px;
+    max-height: 150px;
 }

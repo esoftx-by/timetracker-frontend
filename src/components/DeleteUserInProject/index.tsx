@@ -21,10 +21,9 @@ import {actionsProject} from "../../redux/reducers/projectsReducer";
 
 type OwnToProps = {
     project: ProjectType
-    handleCloseBtn: (p: any) => void
 }
 
-const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
+const DeleteUserInProject: FC<OwnToProps> = ({project}) => {
 
     const allUsersInProject = useSelector(setAllUsersInProjectSelector)
 
@@ -49,7 +48,7 @@ const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
     };
 
     const sendStatus = () => {
-        if (localUser){
+        if (localUser) {
             dispatch(deleteUserInProjectThunk(+localUser))
             setError(false)
             setTimeout(() => {
@@ -62,7 +61,7 @@ const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
 
     return (
         <div>
-            <ModalWindow title={'Delete user'}  open={open}
+            <ModalWindow title={'Delete user'} open={open}
                          setOpen={setOpen} buttonComponent={<MenuItem onClick={handleClickOpen} disableRipple>
                 <PersonRemoveIcon/>
                 Delete User
@@ -87,7 +86,8 @@ const DeleteUserInProject: FC<OwnToProps> = ({project, handleCloseBtn}) => {
                 <Fade in={error} unmountOnExit><Alert
                     onClose={() => setError(false)} severity="error">Specify user</Alert></Fade>
                 <Fade in={success} unmountOnExit><Alert
-                    onClose={() => dispatch(actionsProject.successMessage(false))} severity="success">User deleted</Alert></Fade>
+                    onClose={() => dispatch(actionsProject.successMessage(false))} severity="success">User
+                    deleted</Alert></Fade>
             </ModalWindow>
         </div>
     );

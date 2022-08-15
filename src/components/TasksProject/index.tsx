@@ -21,14 +21,16 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
 
     const isFetching = useSelector(setIsFetchingTask)
 
+    const {name, description, customer} = project as ProjectType
+
     const sortTasks = useStatusOrderSort(AllTaskByProject)
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
             {project && <div>
-                <h1>{project.name}</h1>
-                <div className={style.description}>{project.description}</div>
-                <div className={style.customer}>{project.customer}</div>
+                <h1>{name}</h1>
+                <div className={style.description}>{description}</div>
+                <div className={style.customer}>{customer}</div>
             </div>}
             <h2>Project tasks: </h2>
             <Grid container spacing={3}>

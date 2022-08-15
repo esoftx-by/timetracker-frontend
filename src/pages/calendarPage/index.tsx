@@ -4,7 +4,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/timegrid";
 import {useDispatch, useSelector} from "react-redux";
-import {userDataSelector} from "../../redux/selectors/authSelectors";
+import {setAllUsersSelector, userDataSelector} from "../../redux/selectors/authSelectors";
 import {setAllTracksByUserIdThunk, SetAllTracksThunks} from "../../redux/reducers/thunk-creators/trackThunk";
 import {
     allTracksByUserIdSelector,
@@ -23,11 +23,13 @@ import {Helmet} from "react-helmet-async";
 import Utilities from "../../utilities";
 import {useNavigate} from "react-router-dom";
 import {AllTracksByProjectIdType, Events} from "../../types";
-import {useProjectSorted, UseSortedTracks} from "../../Hooks/calendar.hooks";
+import {useProjectSorted, UseSortedTracks, useUsersFilet} from "../../Hooks/calendar.hooks";
+import {setAllUsersThunk} from "../../redux/reducers/thunk-creators/authThunk";
 
 const CalendarPage = () => {
 
     const [projectName, setProjectName] = useState<string>('')
+    const [userName, setUserName] = useState<string>('')
 
     const {id, applicationRole} = useSelector(userDataSelector)
     const isFetching = useSelector(isFetchingTrackSelector)
@@ -35,9 +37,11 @@ const CalendarPage = () => {
     const allProjectsByUser = useSelector(setProjectsByUserSelector)
     const allTracks = useSelector(setAllTracksSelector)
     const allTracksByUserId = useSelector(allTracksByUserIdSelector)
+    const allUsers = useSelector(setAllUsersSelector)
 
     const projectSorted = useProjectSorted(allProjects, allProjectsByUser, applicationRole)
     const sortedTracks = UseSortedTracks(allTracks as AllTracksByProjectIdType[], allTracksByUserId, applicationRole, projectName)
+    const sortedByUserName = useUsersFilet(userName, sortedTracks)
     const navigate = useNavigate()
 
     const dispatch: AppDispatch = useDispatch()
@@ -58,6 +62,12 @@ const CalendarPage = () => {
         }
     }, [projectName])
 
+    useEffect(() => {
+        if (applicationRole === 'ADMIN') {
+            dispatch(setAllUsersThunk())
+        }
+    }, [])
+
     const eventClick = (info: any) => {
         info.jsEvent.preventDefault();
 
@@ -66,7 +76,7 @@ const CalendarPage = () => {
         }
     }
 
-    const events: Events[] = sortedTracks.map(function (obj) {
+    const events: Events[] = sortedByUserName.map(function (obj) {
         return {
             'id': obj.id,
             'title': obj.task.name,
@@ -96,11 +106,26 @@ const CalendarPage = () => {
                     inputProps={{'aria-label': 'Without label'}}
                 >
                     <MenuItem value="">
-                        <em>All</em>
+                        <em>All projects</em>
                     </MenuItem>
                     {projectSorted.map((el, index) => <MenuItem key={index}
                                                                 value={el}><em>{el}</em></MenuItem>)}
                 </Select>
+                {applicationRole === 'ADMIN' && <Select
+                    displayEmpty
+                    value={userName}
+                    onChange={(event) => {
+                        setUserName(event.target.value)
+                    }}
+                    inputProps={{'aria-label': 'Without label'}}
+                    style={{marginLeft: '1rem'}}
+                >
+                    <MenuItem value="">
+                        <em>All users</em>
+                    </MenuItem>
+                    {allUsers && allUsers.map((el) => <MenuItem key={el.id}
+                                                                value={el.email}><em>{el.email}</em></MenuItem>)}
+                </Select>}
             </div>
             <FullCalendar
                 height={700}

@@ -124,7 +124,20 @@ export const deleteUserInProjectThunk = (id: number): ThunkTypes => {
             await ProjectAPI.deleteUser(id)
             dispatch(actionsProject.successMessage(true))
         } catch (e: any) {
-            console.log(e.message)
+            dispatch(appErrorThunk(e.message))
+        }
+    }
+}
+
+export const UpdateProjectThunk = (id: number, name: string, description: string, customer: string): ThunkTypes => {
+    return async dispatch => {
+        try {
+            let response = await ProjectAPI.updateProject(id, name, description, customer)
+            if (response.data.success){
+                dispatch(actionsProject.updateProject(response.data.response))
+            }
+        } catch (e: any){
+            dispatch(appErrorThunk(e.message))
         }
     }
 }
