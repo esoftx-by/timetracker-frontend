@@ -8,11 +8,11 @@ export const SetTaskByIdThunk = (id: number): ThunkTypes => {
         try {
             dispatch(actions.toggleIsFetching(true))
             let response = await TaskAPI.taskById(id)
+            if (response.data.success) {
+                let data: TaskType = response.data.response
+                dispatch(actions.setTaskById(data))
+            }
             setTimeout(() => {
-                if (response.data.success) {
-                    let data: TaskType = response.data.response
-                    dispatch(actions.setTaskById(data))
-                }
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
 
@@ -39,11 +39,11 @@ export const setNewTaskThunk = (name: string, description: string, estimatedHour
         try {
             dispatch(actions.toggleIsFetching(true))
             let response = await TaskAPI.newTask(name, description, estimatedHours, authorId, projectId)
+            if (response.data.success) {
+                let data = response.data.response
+                dispatch(actions.setNewTask(data))
+            }
             setTimeout(() => {
-                if (response.data.success) {
-                    let data = response.data.response
-                    dispatch(actions.setNewTask(data))
-                }
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
 
@@ -68,11 +68,11 @@ export const setAllTaskUserIdThunk = (id: number): ThunkTypes => {
         try {
             dispatch(actions.toggleIsFetching(true))
             let response = await TaskAPI.allTaskUserId(id)
+            if (response.data.success) {
+                let data: Array<TaskType> = response.data.response
+                dispatch(actions.setAllTaskUserId(data))
+            }
             setTimeout(() => {
-                if (response.data.success) {
-                    let data: Array<TaskType> = response.data.response
-                    dispatch(actions.setAllTaskUserId(data))
-                }
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
@@ -96,8 +96,8 @@ export const deleteTaskThunk = (id: number): ThunkTypes => {
         try {
             dispatch(actions.toggleIsFetching(true))
             await TaskAPI.deleteTask(id)
+            dispatch(actions.deleteTask(id))
             setTimeout(() => {
-                dispatch(actions.deleteTask(id))
                 dispatch(actions.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {

@@ -8,8 +8,8 @@ export const deleteProjectThunk = (id: number): ThunkTypes => {
         try {
             dispatch(actionsProject.toggleIsFetching(true))
             await ProjectAPI.deleteProject(id)
+            dispatch(actionsProject.deleteProject(id))
             setTimeout(() => {
-                dispatch(actionsProject.deleteProject(id))
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
@@ -65,11 +65,11 @@ export const setNewProjectThunk = (name: string, description: string, customer: 
         try {
             dispatch(actionsProject.toggleIsFetching(true))
             let response = await ProjectAPI.newProject(name, description, customer)
+            if (response.data.success) {
+                let data: ProjectType = response.data.response
+                dispatch(actionsProject.setNewProject(data))
+            }
             setTimeout(() => {
-                if (response.data.success) {
-                    let data: ProjectType = response.data.response
-                    dispatch(actionsProject.setNewProject(data))
-                }
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
@@ -84,11 +84,11 @@ export const setProjectIdThunk = (id: number): ThunkTypes => {
         try {
             dispatch(actionsProject.toggleIsFetching(true))
             let response = await ProjectAPI.getProjectId(id)
+            if (response.data.success) {
+                const project: ProjectType = response.data.response
+                dispatch(actionsProject.setProject(project))
+            }
             setTimeout(() => {
-                if (response.data.success) {
-                    const project: ProjectType = response.data.response
-                    dispatch(actionsProject.setProject(project))
-                }
                 dispatch(actionsProject.toggleIsFetching(false))
             }, 500)
         } catch (e: any) {
@@ -111,7 +111,6 @@ export const setProjectsByUserIdThunk = (id: number): ThunkTypes => {
             dispatch(actionsProject.toggleIsFetching(false))
         } catch (e: any) {
             dispatch(appErrorThunk(e.message))
-            // console.log(e.message)
             dispatch(actionsProject.toggleIsFetching(false))
         }
 
@@ -133,10 +132,10 @@ export const UpdateProjectThunk = (id: number, name: string, description: string
     return async dispatch => {
         try {
             let response = await ProjectAPI.updateProject(id, name, description, customer)
-            if (response.data.success){
+            if (response.data.success) {
                 dispatch(actionsProject.updateProject(response.data.response))
             }
-        } catch (e: any){
+        } catch (e: any) {
             dispatch(appErrorThunk(e.message))
         }
     }

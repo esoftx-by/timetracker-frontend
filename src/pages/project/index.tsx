@@ -29,7 +29,7 @@ export const ProjectContainer: FC = () => {
     const allTasksProject = useSelector(setAllTasksProjectSelector)
 
     const params = useParams();
-    let projectId: number = Number(params.id)
+    let projectId = Number(params.id)
 
     const navigate = useNavigate()
 

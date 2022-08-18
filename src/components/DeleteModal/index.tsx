@@ -9,16 +9,27 @@ import {FC} from "react";
 
 type OwnToProps = {
     callback: () => void
+    variant?: "text" | "outlined" | "contained" | undefined
     title: string
     id?: number
+    size?: "small" | "medium" | "large" | undefined
     children:
         | JSX.Element
         | JSX.Element[]
         | string
         | string[];
+    endIcon?: JSX.Element
 }
 
-export const DeleteModal: FC<OwnToProps> = ({children, id, title, callback}) => {
+export const DeleteModal: FC<OwnToProps> = ({
+                                                size,
+                                                children,
+                                                id,
+                                                title
+                                                , callback,
+                                                endIcon,
+                                                variant
+                                            }) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -32,7 +43,8 @@ export const DeleteModal: FC<OwnToProps> = ({children, id, title, callback}) => 
 
     return (
         <div>
-            <Button onClick={handleClickOpen}>{children}</Button>
+            <Button size={size && size} variant={variant && variant} style={{width: '100%'}} endIcon={endIcon ? endIcon : null}
+                    onClick={handleClickOpen}>{children}</Button>
             <Dialog
                 open={open}
                 onClose={handleClose}

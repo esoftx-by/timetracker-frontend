@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {Grid, Select, SelectChangeEvent} from "@mui/material";
+import {Grid} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 import {AllTasksProjectType, AllTracksByProjectIdType} from "../../types";
@@ -11,15 +11,14 @@ import style from './Task.module.css'
 import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import {deleteTaskThunk, updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
+import {deleteTaskThunk} from "../../redux/reducers/thunk-creators/taskThunk";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
-import MenuItem from "@mui/material/MenuItem";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import {DeleteModal} from "../DeleteModal";
 import {TransitionGroup,  CSSTransition} from "react-transition-group";
 import Utilities from "../../utilities";
+import SelectStatus from "../SelectStatus";
 
 
 type OwnToProps = {
@@ -30,9 +29,11 @@ type OwnToProps = {
 
 const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
 
-    let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === tasksProject.id)
+    const {id, currentAssignee, description, status, estimatedHours} = tasksProject
 
-    const [localStatus, setLocalStatus] = useState(tasksProject.status)
+    let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === id)
+
+    const [localStatus, setLocalStatus] = useState(status)
 
     const [editMode, setEditMode] = useState(false)
 
@@ -52,14 +53,14 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                             <div className={style.cardContent}>
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                        {tasksProject.currentAssignee.firstName + ' ' + tasksProject.currentAssignee.lastName}
+                                        {currentAssignee.firstName + ' ' + currentAssignee.lastName}
                                     </Typography>
 
                                 </div>
                                 {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                                   onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
-                                    <BasicSelect setLocalStatus={setLocalStatus} activeStatus={localStatus}
-                                                 taskId={tasksProject.id}
+                                    <SelectStatus setLocalStatus={setLocalStatus} activeStatus={localStatus}
+                                                 taskId={id}
                                                  setEditMode={setEditMode}/>}
 
                             </div>
@@ -67,16 +68,16 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                 {tasksProject.name}
                             </Typography>
                             <Typography sx={{mb: 1.5}} color="text.secondary">
-                                Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(tasksProject.estimatedHours * 60)}</em>
+                                Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(estimatedHours * 60)}</em>
                             </Typography>
                             <Typography variant="body2">
-                                {tasksProject.description}
+                                {description}
                             </Typography>
                             <div style={{display: 'flex', marginTop: '1rem'}}>
-                                <FormDialogTrack userId={userId} taskId={tasksProject.id}/>
+                                <FormDialogTrack userId={userId} taskId={id}/>
                                 <Button style={{marginLeft: '1rem'}} variant="outlined"><NavLink
                                     style={{'color': '#1976d2', 'textDecoration': 'none'}}
-                                    to={`/task/${tasksProject.id}`}>More...</NavLink></Button>
+                                    to={`/task/${id}`}>More...</NavLink></Button>
                             </div>
                         </CardContent>
                     </React.Fragment>
@@ -92,7 +93,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                     </TransitionGroup>
                         </div>
                     <div className={style.taskDelete}>
-                        <DeleteModal callback={deleteTask} id={tasksProject.id} title={'Are you sure you want to delete the task?'}>
+                        <DeleteModal callback={deleteTask} id={id} title={'Are you sure you want to delete the task?'}>
                             <DeleteOutlineOutlinedIcon/>
                         </DeleteModal>
                     </div>
@@ -103,46 +104,3 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
 }
 
 export default OutlinedCardTask
-
-type OwnPropsType = {
-    taskId: number
-    activeStatus: string
-    setEditMode: (p: boolean) => void
-    setLocalStatus: (p: string) => void
-}
-
-const BasicSelect: FC<OwnPropsType> = ({setEditMode, activeStatus, setLocalStatus, taskId}) => {
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setLocalStatus(event.target.value as string);
-    };
-
-    const dispatch: AppDispatch = useDispatch()
-
-    const statusValue: Array<string> = ['OPEN', 'IN_PROGRESS', 'IN_REVIEW', 'IN_TESTING', 'FINISHED', 'CANCELLED', 'LONG_TERM']
-
-    const sendStatus = () => {
-
-        dispatch(updateTask(taskId as number, null, null, null, activeStatus, null))
-        setEditMode(false)
-        // @ts-ignore
-        handleClose(false)
-    }
-
-    return (
-        <Box sx={{minWidth: 80}}>
-            <FormControl fullWidth>
-                <Select
-                    onBlur={sendStatus}
-                    displayEmpty
-                    value={activeStatus}
-                    onChange={handleChange}
-                    inputProps={{'aria-label': 'Without label'}}
-                    defaultValue={activeStatus}
-                >
-                    {statusValue.map((el, index) => <MenuItem key={index} value={el}>{el.replace('_', ' ')}</MenuItem>)}
-                </Select>
-            </FormControl>
-        </Box>
-    );
-}

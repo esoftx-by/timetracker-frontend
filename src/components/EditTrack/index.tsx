@@ -15,20 +15,23 @@ import {AllTracksByProjectIdType} from "../../types";
 
 type OwnToProps = {
     id: number
-    handleClose: () => void
     tracks: AllTracksByProjectIdType
+    setOpen: (p: boolean) => void
 }
 
-export const DateTimeValidation: FC<OwnToProps> = ({id, handleClose, tracks}) => {
+export const DateTimeValidation: FC<OwnToProps> = ({id, tracks, setOpen}) => {
     const [firstValue, setFirstValue] = useState<Date | number | null>(Utilities.timeZone(tracks.startTime));
-    const [secondValue, setSecondValue] = useState<Date | number |null>(Utilities.timeZone(tracks.endTime));
+    const [secondValue, setSecondValue] = useState<Date | number | null>(Utilities.timeZone(tracks.endTime));
+
     const [error, setError] = useState<boolean>(false)
+
     const dispatch: AppDispatch = useDispatch()
+
     const sendDate = () => {
         if (firstValue && secondValue) {
             dispatch(updateTrackThunk(id, Utilities.formatDateTime(firstValue as Date), Utilities.formatDateTime(secondValue as Date)))
-            handleClose()
             setError(false)
+            setOpen(false)
         } else {
             setError(true)
         }

@@ -41,4 +41,8 @@ export default class AuthAPI {
                 return response
             })
     }
+
+    static deleteUser(id: number){
+        return instance.delete(`users/${id}`)
+    }
 }

@@ -44,3 +44,13 @@ export const appErrorThunk = (error: string | null): ThunkTypes => {
         dispatch(actionsUser.errorApp(error))
     }
 }
+
+export const deleteUserThunk = (id: number): ThunkTypes => {
+    return async dispatch => {
+        try {
+            await AuthAPI.deleteUser(id)
+        } catch (e: any){
+            dispatch(actionsUser.errorApp(e.message))
+        }
+    }
+}
