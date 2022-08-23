@@ -22,6 +22,7 @@ export type TaskType = {
     currentAssignee: UserType,
     project: ProjectType,
     status: string
+    pinned: boolean
 }
 
 export type AllTracksByProjectIdType = {
@@ -40,6 +41,7 @@ export type AllTasksProjectType = {
     currentAssignee: UserType,
     project: ProjectType,
     status: string
+    pinned: boolean
 }
 
 export type AuthContextType = {

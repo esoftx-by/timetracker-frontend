@@ -7,6 +7,8 @@ import style from './TaskCard.module.css'
 import {FC, memo, useState} from "react";
 import Utilities from "../../utilities";
 import SelectStatus from "../SelectStatus";
+import {Checkbox} from "@mui/material";
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
 
 
 type OwnToProps = {
@@ -20,6 +22,9 @@ const OutlinedCard: FC<OwnToProps> = memo(({data}) => {
     const [editMode, setEditMode] = useState(false)
 
     const [localStatus, setLocalStatus] = useState(status)
+
+
+
 
     return (
         <Card variant="outlined" style={{borderRadius: "10px", margin: "1rem 0"}}>

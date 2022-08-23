@@ -26,6 +26,9 @@ import {AllTracksByProjectIdType, Events} from "../../types";
 import {useProjectSorted, UseSortedTracks, useUsersFilet} from "../../Hooks/calendar.hooks";
 import {setAllUsersThunk} from "../../redux/reducers/thunk-creators/authThunk";
 
+
+import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+
 const CalendarPage = () => {
 
     const [projectName, setProjectName] = useState<string>('')
@@ -129,6 +132,7 @@ const CalendarPage = () => {
             </div>
             <FullCalendar
                 height={700}
+                navLinks={true}
                 eventClick={eventClick}
                 schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
                 initialView="timeGridWeek"
@@ -141,8 +145,9 @@ const CalendarPage = () => {
                 plugins={[dayGridPlugin,
                     interactionPlugin,
                     timeGridPlugin,
-                    resourceTimeGridPlugin]}
-                themeSystem="bootstrap"
+                    resourceTimeGridPlugin,
+                    bootstrap5Plugin]}
+                themeSystem="standard"
                 events={events as EventSourceInput}
 
             />

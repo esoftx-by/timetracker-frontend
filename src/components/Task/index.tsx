@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import {Grid} from "@mui/material";
+import {Checkbox, Grid} from "@mui/material";
 import VirtualizedList from "../Track";
 import FormDialogTrack from "../NewTrack";
 import {AllTasksProjectType, AllTracksByProjectIdType} from "../../types";
@@ -11,7 +11,7 @@ import style from './Task.module.css'
 import {FC, useState} from "react";
 import {NavLink} from "react-router-dom";
 import Button from "@mui/material/Button";
-import {deleteTaskThunk} from "../../redux/reducers/thunk-creators/taskThunk";
+import {deleteTaskThunk, updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
 import {AppDispatch} from "../../redux/store";
 import {useDispatch} from "react-redux";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
@@ -19,6 +19,9 @@ import {DeleteModal} from "../DeleteModal";
 import {TransitionGroup,  CSSTransition} from "react-transition-group";
 import Utilities from "../../utilities";
 import SelectStatus from "../SelectStatus";
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import {pink} from "@mui/material/colors";
 
 
 type OwnToProps = {
@@ -29,7 +32,7 @@ type OwnToProps = {
 
 const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
 
-    const {id, currentAssignee, description, status, estimatedHours} = tasksProject
+    const {id, currentAssignee, description, status, estimatedHours, pinned} = tasksProject
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === id)
 
@@ -37,12 +40,20 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
 
     const [editMode, setEditMode] = useState(false)
 
+    const [localPinned, setLocalPinned] = useState(pinned)
+
+    let updatePinnded = () => {
+        setLocalPinned(!pinned)
+        dispatch(updateTask(id, null, null, null, null, null, !pinned))
+    }
+
+
     const dispatch: AppDispatch = useDispatch()
 
     const deleteTask = () => {
         dispatch(deleteTaskThunk(tasksProject.id))
     }
-
+    const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
     return (
         <Grid item xs={12} md={4}>
@@ -54,9 +65,24 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                     <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
                                         {currentAssignee.firstName + ' ' + currentAssignee.lastName}
+                                        {/*<Checkbox {...label} icon={<FavoriteBorder />} value={localPinned} onChange={() => setLocalPinned(!localPinned)} checkedIcon={<Favorite />} />*/}
+                                        <Checkbox
+                                            sx={{
+                                                color: '#ffc400',
+                                                '&.Mui-checked': {
+                                                    color: '#ffc400',
+                                                },
+                                            }}
+                                            checked={localPinned}
+                                            {...label}
+                                            onChange={updatePinnded}
+                                            icon={<BookmarkBorderIcon />}
+                                            checkedIcon={<BookmarkIcon />}
+                                        />
                                     </Typography>
 
                                 </div>
+
                                 {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                                   onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
                                     <SelectStatus setLocalStatus={setLocalStatus} activeStatus={localStatus}
@@ -82,6 +108,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                         </CardContent>
                     </React.Fragment>
                     <div className={style.tracks}>
+
                     <TransitionGroup className="todo-list">
                     {projectTracks && projectTracks.reverse().map(tracks =>
                         <CSSTransition
@@ -92,6 +119,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
                             <VirtualizedList tracks={tracks}/></CSSTransition>)}
                     </TransitionGroup>
                         </div>
+
                     <div className={style.taskDelete}>
                         <DeleteModal callback={deleteTask} id={id} title={'Are you sure you want to delete the task?'}>
                             <DeleteOutlineOutlinedIcon/>

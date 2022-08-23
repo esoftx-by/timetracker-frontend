@@ -16,7 +16,7 @@ type OwnPropsType = {
 
 const SelectStatus: FC<OwnPropsType> = ({activeStatus, setLocalStatus, taskId, setEditMode}) => {
 
-    const statusValue: Array<string> = ['OPEN', 'IN_PROGRESS', 'IN_REVIEW', 'IN_TESTING', 'FINISHED', 'CANCELLED', 'LONG_TERM']
+    const statusValue: string[] = ['OPEN', 'IN_PROGRESS', 'IN_REVIEW', 'IN_TESTING', 'FINISHED', 'CANCELLED', 'LONG_TERM']
 
     const handleChange = (event: SelectChangeEvent) => {
         setLocalStatus(event.target.value as string);
