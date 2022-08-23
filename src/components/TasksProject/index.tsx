@@ -6,7 +6,7 @@ import {AllTasksProjectType, AllTracksByProjectIdType, ProjectType} from "../../
 import {useSelector} from "react-redux";
 import {setIsFetchingTask} from "../../redux/selectors/taskSelectors";
 import CircularIndeterminate from "../Loader";
-import {useStatusOrderSort} from "../../Hooks/statusOrder.hook";
+import {usePinnedSorted, useStatusOrderSort} from "../../Hooks/statusOrder.hook";
 
 
 type OwnToProps = {
@@ -23,7 +23,7 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
 
     const {name, description, customer} = project as ProjectType
 
-    const sortTasks = useStatusOrderSort(AllTaskByProject)
+    const sortTasks = usePinnedSorted(AllTaskByProject)
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>

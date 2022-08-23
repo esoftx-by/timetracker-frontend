@@ -15,6 +15,7 @@ import {DeleteModal} from "../DeleteModal";
 import Utilities from "../../utilities";
 import ModalWindow from "../Modal";
 import {DateTimeValidation} from "../EditTrack/index";
+import moment from 'moment';
 
 type OwnToProps = {
     tracks: AllTracksByProjectIdType
@@ -36,13 +37,11 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
     };
 
     function getTimeISO(date: string) {
-        return new Date(date).toLocaleDateString()
+        return moment(Utilities.timeZone(new Date(date))).format('MMMM Do YYYY, h:mm a')
     }
 
     let endTime: number = +(new Date(tracks.endTime))
     let startTime: number = +(new Date(tracks.startTime))
-
-
     let timeInMinutes = (endTime - startTime) / 1000 / 60
 
     let deleteTrack = () => {
@@ -67,7 +66,7 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {getTimeISO(tracks.startTime)}
+                        <b>{getTimeISO(tracks.startTime)}</b>
                     </DialogContentText>
                     <DialogContentText id="alert-dialog-description">
                         {Utilities.getTimeFromMins(timeInMinutes)}
@@ -75,15 +74,10 @@ const VirtualizedList: FC<OwnToProps> = ({tracks}) => {
                     <DialogContentText id="alert-dialog-description">
                         {tracks.user.firstName + ' ' + tracks.user.lastName}
                     </DialogContentText>
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginTop: "1rem"
-                    }}>
+                    <div className={style.trackModalBtn}>
                         <ModalWindow title="Edit track. Please indicate the time." btnName="Edit Track"
                                      btnType="outlined" open={openModal} setOpen={setOpenModal}>
-                            <DateTimeValidation tracks={tracks} handleClose={handleClose} id={tracks.id}/>
+                            <DateTimeValidation setOpen={setOpenModal} tracks={tracks} id={tracks.id}/>
                         </ModalWindow>
                         <DeleteModal callback={deleteTrack} title={'Are you sure you want to delete the track?'}>
                             <Button variant="contained">Delete track</Button>

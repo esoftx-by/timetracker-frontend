@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {Grid} from "@mui/material";
-import {Link, NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import CustomizedMenus from "../CustomizationMenu";
 import style from './ProjectCard.module.css'
 import {ProjectType, UserType} from "../../types";
@@ -27,6 +27,8 @@ export const ProjectCard: FC<OwnToProps> = memo(({project, role, allUsers}) => {
 
     const dispatch: AppDispatch = useDispatch()
 
+    const {id, name, customer, description} = project
+
     const deleteProject = () => {
         dispatch(deleteProjectThunk(project.id))
     }
@@ -37,28 +39,29 @@ export const ProjectCard: FC<OwnToProps> = memo(({project, role, allUsers}) => {
                 <div className={style.mainProjectCard}>
                     <CardContent className={style.mainProjectCardBlock}>
                         <Typography className={style.projectName} variant="h5" component="div">
-                            {project.name}
+                            {name}
                         </Typography>
                         <Typography sx={{mb: 1.5}} color="text.secondary">
-                            {project.customer}
+                            {customer}
                         </Typography>
                         <Typography className={style.mainProjectCardDescription} variant="body2">
-                            {project.description}
+                            {description}
                         </Typography>
-                        <Button className={style.btn} variant="outlined" size="small"><Link
-                            to={'/projects/' + project.id}>More</Link>
+                        <Button className={style.btn} variant="outlined" size="medium"><Link
+                            to={'/projects/' + id}>More</Link>
                         </Button>
                     </CardContent>
-                    <div className={style.mainProjectCardItem}>
-                        {role === 'ADMIN' && <>
-                            <DeleteModal callback={deleteProject} title={'Are you sure you want to delete the project?'}
-                                         id={project.id}>
+                    {role === 'ADMIN' && <div className={style.mainProjectCardItem}>
+                        <>
+                            <DeleteModal callback={deleteProject}
+                                         title={'Are you sure you want to delete the project?'}
+                                         id={id}>
                                 <DeleteOutlineOutlinedIcon/>
                             </DeleteModal>
                             <CustomizedMenus allUsers={allUsers}
                                              project={project}/>
-                        </>}
-                    </div>
+                        </>
+                    </div>}
                 </div>
             </Card>
         </Grid>

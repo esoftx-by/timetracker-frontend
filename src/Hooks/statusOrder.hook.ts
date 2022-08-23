@@ -13,7 +13,15 @@ export const useStatusOrderSort = (objSort: any) => {
     }
     // @ts-ignore
     const comparator = (t1: AllTasksProjectType, t2: AllTasksProjectType): number => STATUS_ORDER[t1.status] - STATUS_ORDER[t2.status];
-    return [...objSort].sort(comparator)
+    return [...objSort]
+        .sort(comparator)
+}
+
+export const usePinnedSorted = (useStatusOrderSort: any) => {
+    return useMemo(() => {
+        return [...useStatusOrderSort].sort((t1: AllTasksProjectType, t2: AllTasksProjectType) => +t2.pinned - +t1.pinned)
+    }, [useStatusOrderSort])
+
 }
 
 export const useTaskUserIdFilter = (projectName: string, allTasksUserId: TaskType[]) => {

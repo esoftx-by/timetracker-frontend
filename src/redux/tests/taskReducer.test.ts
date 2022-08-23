@@ -5,8 +5,8 @@ const state: initialStateType = {
     allTask: null,
     taskUserId: [],
     allTasksProject: [
-        {id: 1, name: '', description: '', estimatedHours: 1, currentAssignee: {} as UserType, project: {} as ProjectType, status: ''},
-        {id: 2, name: '', description: '', estimatedHours: 2, currentAssignee: {} as UserType, project: {} as ProjectType, status: ''}
+        {id: 1, name: '', description: '', estimatedHours: 1, currentAssignee: {} as UserType, project: {} as ProjectType, status: '', pinned: false},
+        {id: 2, name: '', description: '', estimatedHours: 2, currentAssignee: {} as UserType, project: {} as ProjectType, status: '', pinned: false}
     ],
     taskById: null,
     isFetching: false

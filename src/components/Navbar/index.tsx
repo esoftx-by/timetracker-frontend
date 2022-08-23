@@ -13,12 +13,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AvTimerIcon from '@mui/icons-material/AvTimer';
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import style from './Navbar.module.css'
-import {FC, useContext} from "react";
+import {FC, useContext, useEffect, useState} from "react";
 import {AuthContext} from "../../context/AuthContext";
-import {Avatar} from "@mui/material";
+import {Avatar, BottomNavigation, BottomNavigationAction} from "@mui/material";
 import {useSelector} from "react-redux";
 import {userDataSelector} from "../../redux/selectors/authSelectors";
 import Utilities from "../../utilities";
+
 
 
 const pages: Array<string> = ['projects', 'calendar'];
@@ -33,7 +34,15 @@ function stringAvatar(name: string) {
 }
 
 
-const ResponsiveAppBar: FC = () => {
+type OwnToProps = {
+    matches: boolean
+}
+
+const ResponsiveAppBar: FC<OwnToProps> = ({matches}) => {
+
+
+
+
     const {firstName, lastName} = useSelector(userDataSelector)
     let fullName = firstName + ' ' + lastName
 
@@ -87,7 +96,7 @@ const ResponsiveAppBar: FC = () => {
                             Tracker
                         </NavLink>
                     </Typography>
-                    <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
+                    {matches && <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -124,7 +133,7 @@ const ResponsiveAppBar: FC = () => {
                                 </MenuItem>
                             ))}
                         </Menu>
-                    </Box>
+                    </Box>}
                     <AvTimerIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
                     <Typography
                         variant="h5"
@@ -199,6 +208,7 @@ const ResponsiveAppBar: FC = () => {
                 </Toolbar>
             </Container>
         </AppBar>
+
     );
 };
 

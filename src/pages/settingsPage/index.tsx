@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import style from './settings.module.css'
 import {Alert, Box, Button, TextField} from "@mui/material";
 import ContactPageIcon from '@mui/icons-material/ContactPage';
@@ -8,15 +8,29 @@ import {useDispatch, useSelector} from "react-redux";
 import {isSentSelector, userDataSelector} from "../../redux/selectors/authSelectors";
 import {AppDispatch} from "../../redux/store";
 import {actionsUser} from "../../redux/reducers/authReducer";
-import {updateProfileThunk} from "../../redux/reducers/thunk-creators/authThunk";
+import {deleteUserThunk, updateProfileThunk} from "../../redux/reducers/thunk-creators/authThunk";
+import {AuthContext} from "../../context/AuthContext";
+import {useNavigate} from "react-router-dom";
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import {DeleteModal} from "../../components/DeleteModal";
 
 
 const SettingsPage = () => {
 
     const {firstName, lastName, email, id} = useSelector(userDataSelector)
     const isSent = useSelector(isSentSelector)
+    const navigate = useNavigate()
 
     const dispatch: AppDispatch = useDispatch()
+    const auth = useContext(AuthContext)
+
+    const deleteUser = () => {
+        dispatch(deleteUserThunk(id))
+        auth.logout()
+        setTimeout(() => {
+            navigate('/')
+        }, 3000)
+    }
 
     return (
         <div className={style.settingsPage}>
@@ -33,8 +47,8 @@ const SettingsPage = () => {
                     password: ''
                 }}
                 onSubmit={(values, {setSubmitting, resetForm}) => {
+                    dispatch(updateProfileThunk(id, values.firstName, values.lastName, values.email, values.password ? values.password : undefined))
                     setTimeout(() => {
-                        dispatch(updateProfileThunk(id, values.firstName, values.lastName, values.email, values.password))
                         setSubmitting(false);
                     }, 400);
                 }}
@@ -113,6 +127,17 @@ const SettingsPage = () => {
                     </form>
                 )}
             </Formik>
+            <Box sx={{
+                '& > :not(style)': {width: '100%'},
+            }} style={{margin: '1rem 0'}}>
+            <DeleteModal size="large"
+                         variant="outlined"
+                         callback={deleteUser}
+                         title={'Are you sure you want to delete the profile?'}
+                         endIcon={<PersonRemoveIcon/>}>
+                Delete profile
+            </DeleteModal>
+            </Box>
         </div>
     )
 }

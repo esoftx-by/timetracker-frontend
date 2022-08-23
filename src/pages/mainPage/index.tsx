@@ -33,12 +33,13 @@ export const MainPage: FC = () => {
     const dispatch: AppDispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(setProjectsByUserIdThunk(id))
-    }, [])
+        dispatch(setAllTaskUserIdThunk(id))
+    }, [id])
 
     useEffect(() => {
-        dispatch(setAllTaskUserIdThunk(id))
-    }, [])
+        dispatch(setProjectsByUserIdThunk(id))
+    }, [id])
+
 
     const allProjectsByUser = useSelector(setProjectsByUserSelector)
     // @ts-ignore
@@ -54,13 +55,13 @@ export const MainPage: FC = () => {
 
     const nameFilter = useNameFilter(searchQuery, newAllTasksUserId)
 
-    if (isFetching) {
-        return <CircularIndeterminate/>
-
-    }
-    if (!allTasksUserId) {
-        return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
-    }
+    // if (isFetching) {
+    //     return <CircularIndeterminate/>
+    //
+    // }
+    // if (!allTasksUserId) {
+    //     return <Box sx={{flexGrow: 1}}><Grid container spacing={3}><CircularIndeterminate/></Grid></Box>
+    // }
 
     return <div className="mainPage">
         <Helmet>
@@ -89,7 +90,7 @@ export const MainPage: FC = () => {
             </div>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing={3}>
-                    {nameFilter.length ? nameFilter.map(data => <Grid item xs={12}
+                    {isFetching ? <CircularIndeterminate/> : nameFilter.length ? nameFilter.map(data => <Grid item xs={12}
                                                                       md={4}><Box
                             sx={{maxWidth: 500}}><NavLink to={`/task/${data.id}`}><OutlinedCard
                             key={data.id}

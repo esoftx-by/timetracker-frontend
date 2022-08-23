@@ -5,14 +5,10 @@ import Typography from '@mui/material/Typography';
 import {TaskType} from "../../types";
 import style from './TaskCard.module.css'
 import {FC, memo, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppStateType} from "../../redux/store";
-import {Select, SelectChangeEvent} from "@mui/material";
-import {updateTask} from "../../redux/reducers/thunk-creators/taskThunk";
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import MenuItem from "@mui/material/MenuItem";
 import Utilities from "../../utilities";
+import SelectStatus from "../SelectStatus";
+import {Checkbox} from "@mui/material";
+import {Favorite, FavoriteBorder} from "@mui/icons-material";
 
 
 type OwnToProps = {
@@ -21,9 +17,14 @@ type OwnToProps = {
 
 const OutlinedCard: FC<OwnToProps> = memo(({data}) => {
 
+    const {status, currentAssignee, estimatedHours, description, name, id} = data
+
     const [editMode, setEditMode] = useState(false)
 
-    const [localStatus, setLocalStatus] = useState(data.status)
+    const [localStatus, setLocalStatus] = useState(status)
+
+
+
 
     return (
         <Card variant="outlined" style={{borderRadius: "10px", margin: "1rem 0"}}>
@@ -31,20 +32,20 @@ const OutlinedCard: FC<OwnToProps> = memo(({data}) => {
                 <CardContent>
                     <div className={style.taskCard}>
                         <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                            {data.currentAssignee.firstName + ' ' + data.currentAssignee.lastName}
+                            {currentAssignee.firstName + ' ' + currentAssignee.lastName}
                         </Typography>
                         {!editMode ? <div style={{cursor: 'pointer'}} className={localStatus}
                                           onClick={() => setEditMode(true)}>{localStatus.replace('_', ' ')}</div> :
-                            <BasicSelect setLocalStatus={setLocalStatus} setEditMode={setEditMode}/>}
+                            <SelectStatus activeStatus={localStatus} taskId={id} setLocalStatus={setLocalStatus} setEditMode={setEditMode}/>}
                     </div>
                     <Typography variant="h5" component="div">
-                        {data.name}
+                        {name}
                     </Typography>
                     <Typography sx={{mb: 1.5}} color="text.secondary">
-                        Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(data.estimatedHours * 60)}</em>
+                        Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(estimatedHours * 60)}</em>
                     </Typography>
                     <Typography variant="body2">
-                        {data.description}
+                        {description}
                     </Typography>
                 </CardContent>
             </React.Fragment>
@@ -53,47 +54,3 @@ const OutlinedCard: FC<OwnToProps> = memo(({data}) => {
 })
 
 export default OutlinedCard
-
-
-type OwnPropsType = {
-    setEditMode: (p: boolean) => void
-    setLocalStatus: (p: string) => void
-}
-
-const BasicSelect: FC<OwnPropsType> = ({setEditMode, setLocalStatus}) => {
-    const activeStatus = useSelector((state: AppStateType) => state.tasks.taskById?.status)
-    const taskId = useSelector((state: AppStateType) => state.tasks.taskById?.id)
-
-    const [status, setStatus] = React.useState(activeStatus);
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setStatus(event.target.value as string);
-    };
-
-    const dispatch: AppDispatch = useDispatch()
-
-    const statusValue: Array<string> = ['OPEN', 'IN_PROGRESS', 'IN_REVIEW', 'IN_TESTING', 'FINISHED', 'CANCELLED', 'LONG_TERM']
-
-    const sendStatus = () => {
-        setLocalStatus(status as string)
-        dispatch(updateTask(taskId as number, null, null, null, status, null))
-        setEditMode(false)
-    }
-
-    return (
-        <Box sx={{minWidth: 80}}>
-            <FormControl fullWidth>
-                <Select
-                    onBlur={sendStatus}
-                    displayEmpty
-                    value={status}
-                    onChange={handleChange}
-                    inputProps={{'aria-label': 'Without label'}}
-                    defaultValue={activeStatus}
-                >
-                    {statusValue.map((el, index) => <MenuItem key={index} value={el}>{el.replace('_', ' ')}</MenuItem>)}
-                </Select>
-            </FormControl>
-        </Box>
-    );
-}
