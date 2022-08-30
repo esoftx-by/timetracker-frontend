@@ -23,7 +23,9 @@ const TasksProject: FC<OwnToProps> = ({project, AllTaskByProject, userId, allTra
 
     const {name, description, customer} = project as ProjectType
 
-    const sortTasks = usePinnedSorted(AllTaskByProject)
+    const sortTasksByStatus = useStatusOrderSort(AllTaskByProject)
+
+    const sortTasks = usePinnedSorted(sortTasksByStatus)
 
     return (
         <Box sx={{flexGrow: 1}} className={style.tasks}>
