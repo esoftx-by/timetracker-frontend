@@ -21,7 +21,6 @@ import Utilities from "../../utilities";
 import SelectStatus from "../SelectStatus";
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import {pink} from "@mui/material/colors";
 
 
 type OwnToProps = {
@@ -32,7 +31,7 @@ type OwnToProps = {
 
 const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, userId}) => {
 
-    const {id, currentAssignee, description, status, estimatedHours, pinned} = tasksProject
+    const {id, currentAssignee, description, status, estimatedHours, pinned, name} = tasksProject
 
     let projectTracks = allTracksByProjectId.filter(tracks => tracks.task.id === id)
 
@@ -91,7 +90,7 @@ const OutlinedCardTask: FC<OwnToProps> = ({allTracksByProjectId, tasksProject, u
 
                             </div>
                             <Typography variant="h5" component="div">
-                                {tasksProject.name}
+                                {name}
                             </Typography>
                             <Typography sx={{mb: 1.5}} color="text.secondary">
                                 Estimated time: <em className={style.time}>{Utilities.getTimeFromMins(estimatedHours * 60)}</em>

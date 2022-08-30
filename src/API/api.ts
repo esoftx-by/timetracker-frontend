@@ -3,7 +3,7 @@ import {AllTracksByProjectIdType, ProjectType, TaskType, UserType} from "../type
 
 
 export const instance = axios.create({
-    baseURL: (process.env.NODE_ENV !== 'production') ? 'http://localhost:8080/api/v1/' : 'http://158.160.7.205:8080/api/v1/'
+    baseURL: (process.env.NODE_ENV !== 'production') ? 'http://localhost:8080/api/v1/' : `${window.location.origin}:8080/api/v1/`
 })
 
 export type AllProject = {
